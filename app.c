@@ -53,6 +53,7 @@
 #include "comparator.h"
 #include "rtcc.h"
 #include "sleep.h"
+#include "spi.h"
 
 APP_DATA appData;
 
@@ -228,6 +229,7 @@ bool APP_Initialize(void)
 	UART_Init(); //Initialize the UART
 	Timers_Init(); //Initialize the timers
 	CMP_Init(); //Initialize CVref and CMP2
+	SPI_Init();
 
 #ifdef USE_SLEEP            //see config.h, Application settings section
 #ifdef SLEEP_MODE_RTCC

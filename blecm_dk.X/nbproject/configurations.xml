@@ -15,6 +15,7 @@
       <itemPath>../uart.h</itemPath>
       <itemPath>../sleep.h</itemPath>
       <itemPath>../config.h</itemPath>
+      <itemPath>../spi.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -34,6 +35,7 @@
       <itemPath>../timers.c</itemPath>
       <itemPath>../uart.c</itemPath>
       <itemPath>../sleep.c</itemPath>
+      <itemPath>../spi.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -54,7 +56,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>ICD3PlatformTool</platformTool>
         <languageToolchain>XC16</languageToolchain>
-        <languageToolchainVersion>1.23</languageToolchainVersion>
+        <languageToolchainVersion>1.26</languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
       <compileType>
@@ -96,7 +98,7 @@
         <property key="enable-unroll-loops" value="false"/>
         <property key="extra-include-directories" value=""/>
         <property key="isolate-each-function" value="false"/>
-        <property key="keep-inline" value="false"/>
+        <property key="keep-inline" value="true"/>
         <property key="oXC16gcc-align-arr" value="false"/>
         <property key="oXC16gcc-cnsts-mauxflash" value="false"/>
         <property key="oXC16gcc-data-sects" value="false"/>
@@ -111,7 +113,7 @@
         <property key="oXC16gcc-sfr-warn" value="false"/>
         <property key="oXC16gcc-smar-io-lvl" value="1"/>
         <property key="oXC16gcc-smart-io-fmt" value=""/>
-        <property key="optimization-level" value="0"/>
+        <property key="optimization-level" value="1"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
         <property key="preprocessor-macros" value=""/>
@@ -124,17 +126,17 @@
       </C30-AR>
       <C30-AS>
         <property key="assembler-symbols" value=""/>
-        <property key="expand-macros" value="false"/>
+        <property key="expand-macros" value="true"/>
         <property key="extra-include-directories-for-assembler" value=""/>
         <property key="extra-include-directories-for-preprocessor" value=""/>
         <property key="false-conditionals" value="false"/>
         <property key="keep-locals" value="false"/>
-        <property key="list-assembly" value="false"/>
-        <property key="list-section-info" value="false"/>
-        <property key="list-source" value="false"/>
-        <property key="list-symbols" value="false"/>
+        <property key="list-assembly" value="true"/>
+        <property key="list-section-info" value="true"/>
+        <property key="list-source" value="true"/>
+        <property key="list-symbols" value="true"/>
         <property key="oXC16asm-extra-opts" value=""/>
-        <property key="oXC16asm-list-to-file" value="false"/>
+        <property key="oXC16asm-list-to-file" value="true"/>
         <property key="omit-debug-dirs" value="false"/>
         <property key="omit-forms" value="false"/>
         <property key="preprocessor-macros" value=""/>
@@ -262,7 +264,7 @@
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="5.5"/>
+        <property key="voltagevalue" value="5.0"/>
       </ICD3PlatformTool>
       <RealICEPlatformTool>
         <property key="ADC" value="true"/>

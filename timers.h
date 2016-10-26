@@ -55,6 +55,7 @@ enum APP_TIMERS {
 	TMR_SW4_DEBOUNCE,
 	TMR_BT_TX,
 	TMR_BAT_CHECK,
+	TMR_SPI,
 	//
 	//(Add timers here as needed)
 	//

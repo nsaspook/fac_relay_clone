@@ -49,13 +49,13 @@ static volatile uint16_t tickCount[TMR_COUNT] = {0};
 
 void Timers_Init(void)
 {
-	//Timer 5 is used for interrupt based software timers counting 1ms intervals to a resolution of 500us
-	T1CON = TIMER_OFF; //Timer 5 off
-	TMR1 = 0; //Clear timer 5
+	//Timer 1 is used for interrupt based software timers counting 1ms intervals to a resolution of 500us
+	T1CON = TIMER_OFF; //Timer 1 off
+	TMR1 = 0; //Clear timer 1
 	PR1 = TIMER_500US_PERIOD; //Set the period value for 500us
-	T1CON |= TIMER_ON_PRESCALE1; //using 1:1 prescaler and turn on timer 5
+	T1CON |= TIMER_ON_PRESCALE1; //using 1:1 prescaler and turn on timer 1
 	IFS0bits.T1IF = 0; //Clear the interrupt flag
-	IEC0bits.T1IE = 1; //Enable the timer 5 interrupt
+	IEC0bits.T1IE = 1; //Enable the timer 1 interrupt
 
 #ifdef USE_SLEEP                //see config.h, Application setting section
 	//Timer 2/3 is used in 32-bit mode as inactivity timer to trigger sleep mode

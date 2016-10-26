@@ -119,6 +119,7 @@
 //Buffer sizes
 #define SIZE_RxBuffer   256               //UART RX software buffer size in bytes
 #define SIZE_TxBuffer   256               //UART TX software buffer size in bytes
+#define SIZE_SPI_Buffer 128
 
 #define BT_RX_PKT_SZ    100               //Max receive packet length
 #define BT_TX_PKT_SZ    100               //Max transmit packet length
@@ -189,6 +190,15 @@
 
 #define UART_TX_BUF     U1TXREG
 #define UART_RX_BUF     U1RXREG
+
+#define SPI_X_IF      IFS3bits.SSP2IF
+#define SPI_E_IF      IFS3bits.BCL2IF
+
+#define SPI_X_IE      IEC3bits.SSP2IE
+#define SPI_E_IE      IEC3bits.BCL2IE
+
+#define SPI_BUF		SSP2BUF
+#define SPI_BUF_FULL	SSP2STATbits.BF
 
 // RELAY outputs
 #define RELAY1	LATBbits.LATB13 // output 0 (low) turns on relay

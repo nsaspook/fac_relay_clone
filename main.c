@@ -45,6 +45,8 @@
 #include <stdint.h>
 #include "app.h"
 #include "config.h"
+#include "spi.h"
+#include "timers.h"
 
 void initBoard(void);
 
@@ -54,6 +56,7 @@ void initBoard(void);
 
 // FBS
 
+// FBS
 #pragma config BWRP = OFF               // Boot Segment Write Protect (Disabled)
 #pragma config BSS = OFF                // Boot segment Protect (No boot program flash segment)
 
@@ -63,9 +66,9 @@ void initBoard(void);
 
 // FOSCSEL
 #pragma config FNOSC = FRC              // Oscillator Select (Fast RC Oscillator (FRC))
-#pragma config SOSCSRC = DIG            // SOSC Source Type (Analog Mode for use with crystal)
+#pragma config SOSCSRC = DIG            // SOSC Source Type (Digital Mode for use with external source)
 #pragma config LPRCSEL = HP             // LPRC Oscillator Power and Accuracy (High Power, High Accuracy Mode)
-#pragma config IESO = OFF                // Internal External Switch Over bit (Internal External Switchover mode enabled (Two-speed Start-up enabled))
+#pragma config IESO = OFF               // Internal External Switch Over bit (Internal External Switchover mode disabled (Two-speed Start-up disabled))
 
 // FOSC
 #pragma config POSCMOD = NONE           // Primary Oscillator Configuration bits (Primary oscillator disabled)
@@ -77,7 +80,7 @@ void initBoard(void);
 // FWDT
 #pragma config WDTPS = PS32768          // Watchdog Timer Postscale Select bits (1:32768)
 #pragma config FWPSA = PR128            // WDT Prescaler bit (WDT prescaler ratio of 1:128)
-#pragma config FWDTEN = OFF             // Watchdog Timer Enable bits (WDT disabled in hardware; SWDTEN bit disabled)
+#pragma config FWDTEN = ON              // Watchdog Timer Enable bits (WDT enabled in hardware)
 #pragma config WINDIS = OFF             // Windowed Watchdog Timer Disable bit (Standard WDT selected(windowed WDT disabled))
 
 // FPOR
@@ -105,7 +108,15 @@ int main(void)
 		APP_Tasks();
 		Idle(); //Idle until an interrupt is generated
 		RCONbits.IDLE = 0;
-		LED2 = !LED2;
+		if (SPI_GetTXBufferFreeSpace() > 8) {
+			SPI_WriteTxBuffer(0x81);
+			SPI_WriteTxBuffer('O');
+			SPI_WriteTxBuffer('U');
+			SPI_WriteTxBuffer(0xff);
+			SPI_TxStart();
+			WaitMs(2);
+		}
+		ClrWdt();
 	}
 
 	//End of while(1) main loop
@@ -132,6 +143,8 @@ void initBoard(void)
 
 	//Enable low voltage retention sleep mode
 	RCONbits.RETEN = 1;
+
+	RCONbits.SWDTEN = 0;
 
 #ifdef SET_PMD_BITS    //see config.h, Application settings section
 	/****************************************************************************
@@ -252,6 +265,13 @@ void initBoard(void)
 	 * Interrupt-enabled peripherals being used for Click Boards should be
 	 * configured here as well
 	 ***************************************************************************/
+
+	// SPI
+	// error
+	IPC12bits.BCL2IP = 6;
+	// spi_buf
+	IPC12bits.SSP2IP = 5;
+
 	//    UERI: U1E - UART1 Error
 	//    Priority: 6
 	IPC16bits.U1ERIP = 6;
