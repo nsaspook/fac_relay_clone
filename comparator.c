@@ -43,7 +43,7 @@
 
 uint16_t CMP_Tasks(void)
 {
-
+	return 1000;
 }
 
 //Initialize CMP2 for low input voltage detection

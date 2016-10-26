@@ -45,12 +45,16 @@
 #include <stdint.h>
 #include "app.h"
 #include "config.h"
+#include "spi.h"
+#include "timers.h"
 
 void initBoard(void);
 
 // PIC24FV16KM202 Configuration Bit Settings
 
 // 'C' source line config statements
+
+// FBS
 
 // FBS
 #pragma config BWRP = OFF               // Boot Segment Write Protect (Disabled)
@@ -61,10 +65,10 @@ void initBoard(void);
 #pragma config GCP = OFF                // General Segment Code Protect (No Protection)
 
 // FOSCSEL
-#pragma config FNOSC = FRCPLL           // Oscillator Select (Fast RC Oscillator with Postscaler and PLL Module (FRCDIV+PLL))
-#pragma config SOSCSRC = ANA            // SOSC Source Type (Analog Mode for use with crystal)
+#pragma config FNOSC = FRC              // Oscillator Select (Fast RC Oscillator (FRC))
+#pragma config SOSCSRC = DIG            // SOSC Source Type (Digital Mode for use with external source)
 #pragma config LPRCSEL = HP             // LPRC Oscillator Power and Accuracy (High Power, High Accuracy Mode)
-#pragma config IESO = ON                // Internal External Switch Over bit (Internal External Switchover mode enabled (Two-speed Start-up enabled))
+#pragma config IESO = OFF               // Internal External Switch Over bit (Internal External Switchover mode disabled (Two-speed Start-up disabled))
 
 // FOSC
 #pragma config POSCMOD = NONE           // Primary Oscillator Configuration bits (Primary oscillator disabled)
@@ -76,7 +80,7 @@ void initBoard(void);
 // FWDT
 #pragma config WDTPS = PS32768          // Watchdog Timer Postscale Select bits (1:32768)
 #pragma config FWPSA = PR128            // WDT Prescaler bit (WDT prescaler ratio of 1:128)
-#pragma config FWDTEN = SWON            // Watchdog Timer Enable bits (WDT controlled with the SWDTEN bit setting)
+#pragma config FWDTEN = ON              // Watchdog Timer Enable bits (WDT enabled in hardware)
 #pragma config WINDIS = OFF             // Windowed Watchdog Timer Disable bit (Standard WDT selected(windowed WDT disabled))
 
 // FPOR
@@ -104,6 +108,15 @@ int main(void)
 		APP_Tasks();
 		Idle(); //Idle until an interrupt is generated
 		RCONbits.IDLE = 0;
+		if (SPI_GetTXBufferFreeSpace() > 8) {
+			SPI_WriteTxBuffer(0x81);
+			SPI_WriteTxBuffer('O');
+			SPI_WriteTxBuffer('U');
+			SPI_WriteTxBuffer(0xff);
+			SPI_TxStart();
+			WaitMs(2);
+		}
+		ClrWdt();
 	}
 
 	//End of while(1) main loop
@@ -121,14 +134,17 @@ void initBoard(void)
 	 * Self-tune on SOF is enabled if USB is enabled and connected to host
 	 ***************************************************************************/
 	// DOZEN disabled; DOZE 1:16; CPDIV 1:1; RCDIV FRC/1; PLLEN disabled; ROI disabled;
-	CLKDIV = 0x4000;
-	while (OSCCONbits.LOCK == 0); //wait for PLL lock
+	CLKDIVbits.RCDIV = 1;
+	OSCCONbits.COSC = 0x1;
+	OSCCONbits.NOSC = 0x1;
 
 	// STSRC USB; STEN enabled; STOR disabled; STORPOL Interrupt when STOR is 1; STLOCK disabled; STLPOL Interrupt when STLOCK is 1; STSIDL disabled; TUN Center frequency; 
-	OSCTUN = 0x9000;
+	OSCTUN = 0x0;
 
 	//Enable low voltage retention sleep mode
 	RCONbits.RETEN = 1;
+
+	RCONbits.SWDTEN = 0;
 
 #ifdef SET_PMD_BITS    //see config.h, Application settings section
 	/****************************************************************************
@@ -170,6 +186,7 @@ void initBoard(void)
 	/****************************************************************************
 	 * GPIO Init
 	 ***************************************************************************/
+	ANSA = 0x00;
 	ANSB = 0x00;
 
 
@@ -186,26 +203,18 @@ void initBoard(void)
 
 	ODCB = 0x0000;
 
-	//Potentiometer Setup
-	POT_TRIS = 1; // Set pin to input
-	POT_AN = 1; // Analog mode
-
-	//Input Voltage Sense Setup
-	V_SENSE_TRIS = 1; // Set pin to input
-	V_SENSE_AN = 1; // Analog mode
-
 	IEC1bits.CNIE = 1;
 
 	// RELAYs are outputs and open-drain
 	// to drive ILQ2 opto
 	// setup in Mikrobus header
-//	ODCDbits.ODD3 = 1; // pin 16
-//	ODCDbits.ODD9 = 1; // pin 11
-//	ODCDbits.ODD10 = 1; // pin 12
-//	ODCDbits.ODD4 = 1; // pin 2
+	//	ODCDbits.ODD3 = 1; // pin 16
+	//	ODCDbits.ODD9 = 1; // pin 11
+	//	ODCDbits.ODD10 = 1; // pin 12
+	//	ODCDbits.ODD4 = 1; // pin 2
 
 	// LEDs are outputs and off
-	LED1 = 0;
+	LED1 = 1;
 	LED2 = 0;
 	LED3 = 0;
 	LED4 = 0;
@@ -214,6 +223,8 @@ void initBoard(void)
 	LED7 = 0;
 	LED_TRIS1 = 0;
 	LED_TRIS2 = 0;
+	LED_TRIS3 = 0;
+	LED_TRIS4 = 0;
 
 	//RN4020 module - UART1
 	BT_WAKE_HW = 1; //Dormant line is set high
@@ -235,13 +246,6 @@ void initBoard(void)
 	U1RTS_TRIS = 0;
 	U1TX_TRIS = 0;
 
-
-	//Mikrobus header - used to drive relay board; output low
-	//Modify as needed to use Click Boards
-	//AN
-	LATBbits.LATB3 = 0;
-	TRISBbits.TRISB3 = 0;
-
 	/****************************************************************************
 	 * PPS Init - Peripheral Pin Select
 	 * Click Boards using PPS-controlled peripherals will require additional
@@ -261,6 +265,13 @@ void initBoard(void)
 	 * Interrupt-enabled peripherals being used for Click Boards should be
 	 * configured here as well
 	 ***************************************************************************/
+
+	// SPI
+	// error
+	IPC12bits.BCL2IP = 6;
+	// spi_buf
+	IPC12bits.SSP2IP = 5;
+
 	//    UERI: U1E - UART1 Error
 	//    Priority: 6
 	IPC16bits.U1ERIP = 6;

@@ -38,7 +38,7 @@
 
 #include <xc.h>
 
-#define APP_VERSION_STR "1.2"       //This firmware version
+#define APP_VERSION_STR "2.0"       //This firmware version
 
 /*******************************************************************************
  * Application settings - these will change application behavior
@@ -119,6 +119,7 @@
 //Buffer sizes
 #define SIZE_RxBuffer   256               //UART RX software buffer size in bytes
 #define SIZE_TxBuffer   256               //UART TX software buffer size in bytes
+#define SIZE_SPI_Buffer 128
 
 #define BT_RX_PKT_SZ    100               //Max receive packet length
 #define BT_TX_PKT_SZ    100               //Max transmit packet length
@@ -139,26 +140,26 @@
  ******************************************************************************/
 
 // Clock frequency
-#define FCY (16000000)                              //8MHz FRC x 4 PLL = 32 MHz (2 clocks per instruction)
+#define FCY (4000000)                              //8MHz FRC
 
 //RN4020 BTLE
-#define BT_WAKE_HW      LATBbits.LATB1                       //Hardware wake from dormant state; BT_WAKE_HW
-#define BT_WAKE_HW_TRIS TRISBbits.TRISB1
+#define BT_WAKE_HW      LATBbits.LATB10                       //Hardware wake from dormant state; BT_WAKE_HW
+#define BT_WAKE_HW_TRIS TRISBbits.TRISB10
 
-#define BT_WAKE_SW      LATBbits.LATB7                       //Deep sleep wake; BT_WAKE_SW
-#define BT_WAKE_SW_TRIS TRISBbits.TRISB7
+#define BT_WAKE_SW      LATBbits.LATB11                       //Deep sleep wake; BT_WAKE_SW
+#define BT_WAKE_SW_TRIS TRISBbits.TRISB11
 
-#define BT_CMD      LATBbits.LATB6                 //Place RN4020 module in command mode, low for MLDP mode
-#define BT_CMD_TRIS TRISBbits.TRISB6
+#define BT_CMD      LATAbits.LATA0                 //Place RN4020 module in command mode, low for MLDP mode
+#define BT_CMD_TRIS TRISAbits.TRISA0
 
-#define BT_CONNECTED        PORTBbits.RB4                     //RN4020 module is connected to central device
-#define BT_CONNECTED_TRIS   TRISBbits.TRISB4
+#define BT_CONNECTED        PORTAbits.RA1                     //RN4020 module is connected to central device
+#define BT_CONNECTED_TRIS   TRISAbits.TRISA1
 
-#define BT_WS       PORTBbits.RB2                         //RN4020 module is awake and active
-#define BT_WS_TRIS  TRISBbits.TRISB2
+#define BT_WS       PORTAbits.RA2                         //RN4020 module is awake and active
+#define BT_WS_TRIS  TRISAbits.TRISA2
 
-#define BT_MLDP_EV      PORTBbits.RB3                         //RN4020 module in MLDP mode has a pending event
-#define BT_MLDP_EV_TRIS TRISBbits.TRISB3
+#define BT_MLDP_EV      PORTAbits.RA4                         //RN4020 module in MLDP mode has a pending event
+#define BT_MLDP_EV_TRIS TRISAbits.TRISA4
 
 //UART
 #define U1CTS_TRIS      TRISBbits.TRISB8
@@ -190,34 +191,34 @@
 #define UART_TX_BUF     U1TXREG
 #define UART_RX_BUF     U1RXREG
 
+#define SPI_X_IF      IFS3bits.SSP2IF
+#define SPI_E_IF      IFS3bits.BCL2IF
+
+#define SPI_X_IE      IEC3bits.SSP2IE
+#define SPI_E_IE      IEC3bits.BCL2IE
+
+#define SPI_BUF		SSP2BUF
+#define SPI_BUF_FULL	SSP2STATbits.BF
+
 // RELAY outputs
-#define RELAY1	LATBbits.LATB9 // output 0 (low) turns on relay
-#define RELAY2	LATBbits.LATB9
-#define RELAY3	LATBbits.LATB9
-#define RELAY4	LATBbits.LATB9
+#define RELAY1	LATBbits.LATB13 // output 0 (low) turns on relay
+#define RELAY2	LATBbits.LATB12
+#define RELAY3	LATBbits.LATB4
+#define RELAY4	LATBbits.LATB3
 
 // LED outputs
 #define LED1 LATBbits.LATB13
 #define LED2 LATBbits.LATB12
-#define LED3 LATBbits.LATB13
-#define LED4 LATBbits.LATB13
+#define LED3 LATBbits.LATB4
+#define LED4 LATBbits.LATB3
 #define LED5 LATBbits.LATB13
 #define LED6 LATBbits.LATB13
 #define LED7 LATBbits.LATB13
 
 #define LED_TRIS1 TRISBbits.TRISB13
 #define LED_TRIS2 TRISBbits.TRISB12
-
-//Potentiometer
-#define POT_TRIS        TRISBbits.TRISB5
-#define POT_AN          ANSBbits.ANSB5
-#define POT_AN_CHAN     5
-
-//Input voltage sense
-#define V_SENSE_TRIS        TRISBbits.TRISB2
-#define V_SENSE_AN          ANSBbits.ANSB2
-#define V_SENSE_CMP_CHAN    0b00                //C2INB select
-#define V_SENSE_OUT_RP_REG  RPOR14bits.RP29R    //for C2OUT
+#define LED_TRIS3 TRISBbits.TRISB4
+#define LED_TRIS4 TRISBbits.TRISB3
 
 //Timer initialization
 #define TIMER_OFF 0
