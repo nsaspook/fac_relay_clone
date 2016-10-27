@@ -249,7 +249,7 @@ bool BT_SetupModule(void)
 	BT_SendCommand("gr\r", false); //Get RN4020 module feature settings
 	if (!BT_CheckResponse("22000000\r\n")) //Check if features are set for auto advertize and flow control
 	{ //auto enable MLDP, suppress messages during MLDP
-		BT_SendCommand("sr,22000000\r", false); //Features not correect so set features
+		BT_SendCommand("sr,22000000\r", false); //Features not correct so set features
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -327,6 +327,8 @@ bool BT_SetupModule(void)
 
 bool BT_RebootEnFlow(void)
 {
+	uint32_t sled_flash=0;
+	
 	//Send "R,1" to save changes and reboot
 	BT_SendCommand("r,1\r", false); //Force reboot
 	if (!BT_CheckResponse("Reboot\r\n")) {
@@ -359,6 +361,45 @@ bool BT_RebootEnFlow(void)
 				return false; //If timed out then return failure
 			}
 		}
+	}
+
+	/* Jumper on OTA UPDATE */
+	if (BT_OTA_UPD == 1) {
+		BT_SendCommand("SF,2\r", false); // perform complete factory reset
+		BT_SendCommand("SR,10008000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
+		BT_SendCommand("r,1\r", false); //Force reboot
+
+		BT_WAKE_SW = 1; //wake module
+		//Wait for WS status high
+		StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
+		while (BT_WS == 0) {
+			if (TimerDone(TMR_RN_COMMS)) //Check if timed out
+			{
+				return false;
+			}
+		}
+
+		//Wait for end of "CMD\r\n" - we don't check for full "CMD\r\n" string because we may 
+		//miss some bits or bytes at the beginning while the UART starts up
+		StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
+		while (UART_ReadRxBuffer() != '\n') {
+			if (TimerDone(TMR_RN_COMMS)) //Check if timed out
+			{
+				return false;
+			}
+		}
+		BT_SendCommand("A\r", false); // start advertising
+		
+		/* wait controller for power cycle/reset */
+		while (true) {
+			
+			while (sled_flash++ < 2000000) {
+			ClrWdt();
+			}
+			sled_flash=0;			
+			SLED=!SLED;
+		}
+
 	}
 
 	return BT_CheckResponse("MD\r\n"); //Check that we received CMD indicating reboot is done	

@@ -125,6 +125,8 @@ void initBoard(void)
 	 * Self-tune on SOF is enabled if USB is enabled and connected to host
 	 ***************************************************************************/
 	// DOZEN disabled; DOZE 1:16; CPDIV 1:1; RCDIV FRC/1; PLLEN disabled; ROI disabled;
+	TRISBbits.TRISB0=1; // OTA update jumper
+	TRISBbits.TRISB14=0; // status led output
 	TRISAbits.TRISA3 = 0;
 	CLKDIVbits.RCDIV = 0;
 	OSCCONbits.COSC = 0x1;
@@ -182,7 +184,7 @@ void initBoard(void)
 	ANSB = 0x00;
 
 
-	CNPU1 = 0;
+	CNPU1 = 1; // pullup for RB0
 	CNPU2 = 0;
 
 
@@ -217,6 +219,7 @@ void initBoard(void)
 	LED_TRIS2 = 0;
 	LED_TRIS3 = 0;
 	LED_TRIS4 = 0;
+	SLED=0;
 
 	//RN4020 module - UART1
 	BT_WAKE_HW = 1; //Dormant line is set high

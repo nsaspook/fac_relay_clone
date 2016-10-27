@@ -285,7 +285,7 @@ bool APP_Initialize(void)
 			WaitMs(100);
 		}
 	}
-
-
+	
+	SLED=1; // init completed
 	return true;
 }

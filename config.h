@@ -143,6 +143,8 @@
 #define FCY (16000000)                              //8MHz FRC
 
 //RN4020 BTLE
+#define BT_OTA_UPD	LATBbits.LATB0
+
 #define BT_WAKE_HW      LATBbits.LATB10                       //Hardware wake from dormant state; BT_WAKE_HW
 #define BT_WAKE_HW_TRIS TRISBbits.TRISB10
 
@@ -214,6 +216,8 @@
 #define LED5 LATBbits.LATB13
 #define LED6 LATBbits.LATB13
 #define LED7 LATBbits.LATB13
+
+#define SLED LATBbits.LATB14
 
 #define LED_TRIS1 TRISBbits.TRISB13
 #define LED_TRIS2 TRISBbits.TRISB12
