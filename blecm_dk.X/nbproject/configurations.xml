@@ -56,7 +56,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>ICD3PlatformTool</platformTool>
         <languageToolchain>XC16</languageToolchain>
-        <languageToolchainVersion>1.26</languageToolchainVersion>
+        <languageToolchainVersion></languageToolchainVersion>
         <platform>2</platform>
       </toolsSet>
       <compileType>
@@ -264,7 +264,7 @@
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="5.0"/>
+        <property key="voltagevalue" value="3.375"/>
       </ICD3PlatformTool>
       <RealICEPlatformTool>
         <property key="ADC" value="true"/>
