@@ -74,6 +74,7 @@ void UART_Init(void)
 	txBuf.byteCount = rxBuf.byteCount = 0;
 
 	U1BRG = 34; //Baud rate 115,200 - actually 115,384 baud 0.16% error
+//	U1BRG = 7;
 	U1MODE = 0x8008; //Enable UART, no flow control, BRGH = 1 for high speed baud mode
 	U1STA = 0x0400; //Enable transmit
 	UART_RX_IF = 0; //Clear UART interrupt flags

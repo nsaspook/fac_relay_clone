@@ -140,7 +140,7 @@
  ******************************************************************************/
 
 // Clock frequency
-#define FCY (4000000)                              //8MHz FRC
+#define FCY (16000000)                              //8MHz FRC
 
 //RN4020 BTLE
 #define BT_WAKE_HW      LATBbits.LATB10                       //Hardware wake from dormant state; BT_WAKE_HW

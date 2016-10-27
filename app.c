@@ -237,6 +237,7 @@ bool APP_Initialize(void)
 #endif  //SLEEP_MODE_RTCC
 #endif  //USE_SLEEP
 
+	LED2 = 1;
 	BT_WAKE_SW = 1; //wake module
 	//Wait for WS status high
 	StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
@@ -248,6 +249,7 @@ bool APP_Initialize(void)
 		}
 	}
 
+
 	//Wait for end of "CMD\r\n" - we don't check for full "CMD\r\n" string because we may 
 	//miss some bits or bytes at the beginning while the UART starts up
 	StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
@@ -258,11 +260,14 @@ bool APP_Initialize(void)
 			return false;
 		}
 	}
+
+
 	//Module is now in command mode and ready for input
 	if (!BT_SetupModule()) { //Setup RN4020 module
 		appData.error_code = ERROR_INITIALIZATION;
 		return false;
 	}
+
 
 #ifdef VERIFY_RN_FW_VER
 	//Verify RN4020 module's firmware version
@@ -270,7 +275,8 @@ bool APP_Initialize(void)
 		appData.error_code = ERROR_RN_FW;
 		return false;
 	}
-#endif // VERIFY_RN_FW_VER  
+#endif // VERIFY_RN_FW_VER 
+
 
 	//flush UART RX buffer as a precaution before starting app state machine
 	while (UART_IsNewRxData()) { //While buffer contains old data
@@ -279,6 +285,7 @@ bool APP_Initialize(void)
 			WaitMs(100);
 		}
 	}
+
 
 	return true;
 }

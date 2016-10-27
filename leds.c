@@ -47,7 +47,7 @@ void LED_Tasks()
 	switch (lightShow) {
 	case LED_IDLE:
 		LED1 = 0;
-		LED2 = 0;
+//		LED2 = 0;
 		LED3 = 0;
 		LED4 = 0;
 		LED5 = 1;
@@ -56,7 +56,7 @@ void LED_Tasks()
 
 	case LED_BTLE_ADVERTISING:
 		LED1 = 0;
-		LED2 = 0;
+//		LED2 = 0;
 		LED3 = 0;
 		LED4 = 0;
 		LED6 = 0;
@@ -69,7 +69,7 @@ void LED_Tasks()
 	case LED_BTLE_PAIRED:
 		LED1 = appData.led1; // logic high turns on led
 		RELAY1 = !appData.led1; // logic low turns on relay
-		LED2 = appData.led2;
+//		LED2 = appData.led2;
 		RELAY2 = !appData.led2;
 		LED3 = appData.led3;
 		RELAY3 = !appData.led3;
@@ -83,7 +83,7 @@ void LED_Tasks()
 		switch (appData.error_code) {
 		case ERROR_INITIALIZATION:
 			LED1 = 1;
-			LED2 = 0;
+//			LED2 = 0;
 			LED3 = 0;
 			LED4 = 0;
 			LED5 = 1;
@@ -91,7 +91,7 @@ void LED_Tasks()
 			break;
 		case ERROR_RN_FW:
 			LED1 = 1;
-			LED2 = 1;
+//			LED2 = 1;
 			LED3 = 0;
 			LED4 = 0;
 			LED5 = 1;
@@ -99,7 +99,7 @@ void LED_Tasks()
 			break;
 		default:
 			LED1 = 1;
-			LED2 = 1;
+//			LED2 = 1;
 			LED3 = 1;
 			LED4 = 1;
 			LED5 = 1;
@@ -110,7 +110,7 @@ void LED_Tasks()
 
 	case LED_SLEEP:
 		LED1 = 0;
-		LED2 = 0;
+//		LED2 = 0;
 		LED3 = 0;
 		LED4 = 0;
 		LED5 = 0;

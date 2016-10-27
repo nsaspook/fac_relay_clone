@@ -361,7 +361,7 @@ bool BT_RebootEnFlow(void)
 		}
 	}
 
-	return BT_CheckResponse("MD\r\n"); //Check that we received CMD indicating reboot is done
+	return BT_CheckResponse("MD\r\n"); //Check that we received CMD indicating reboot is done	
 }
 
 #ifdef VERIFY_RN_FW_VER

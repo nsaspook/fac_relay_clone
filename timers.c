@@ -129,7 +129,6 @@ void _ISR_NO_AUTO_PSV _T1Interrupt(void)
 {
 	uint8_t i;
 
-	LATAbits.LATA0 = 1;
 	IFS0bits.T1IF = 0; //Clear the interrupt flag
 	//Decrement each software timer
 	for (i = 0; i < TMR_COUNT; i++) {
@@ -137,7 +136,6 @@ void _ISR_NO_AUTO_PSV _T1Interrupt(void)
 			tickCount[i]--;
 		}
 	}
-	LATAbits.LATA0 = 0;
 }
 
 #ifdef USE_SLEEP                //see config.h, Application setting section
