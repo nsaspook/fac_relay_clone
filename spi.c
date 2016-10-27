@@ -1,3 +1,4 @@
+/* SPI Master Driver */
 
 #include <xc.h>
 #include <stdint.h>
@@ -30,9 +31,9 @@ static SPI_TX_BUFFER_T txBuf;
 
 void SPI_Init(void)
 {
-	TRISBbits.TRISB6 = 0;
-	TRISBbits.TRISB5 = 0;
-	TRISAbits.TRISA7 = 1;
+	SPI_SDO = 0;
+	SPI_SCK = 0;
+	SPI_SDI = 1;
 	rxBuf.tail = &rxBuf.buffer[0]; //Initialize the pointers
 	rxBuf.head = &rxBuf.buffer[0];
 	txBuf.tail = &txBuf.buffer[0];
@@ -40,6 +41,7 @@ void SPI_Init(void)
 	txBuf.byteCount = 0;
 	rxBuf.byteCount = 0;
 
+	/* SPI2 HW setup */
 	SSP2CON1bits.SSPM = 1; // SPI SCK speed
 	SSP2CON1bits.CKP = 1; // SCK polarity mode 3
 	SSP2STATbits.CKE = 1; // SCK select 

@@ -327,8 +327,8 @@ bool BT_SetupModule(void)
 
 bool BT_RebootEnFlow(void)
 {
-	uint32_t sled_flash=0;
-	
+	uint32_t sled_flash = 0;
+
 	//Send "R,1" to save changes and reboot
 	BT_SendCommand("r,1\r", false); //Force reboot
 	if (!BT_CheckResponse("Reboot\r\n")) {
@@ -363,8 +363,12 @@ bool BT_RebootEnFlow(void)
 		}
 	}
 
-	/* Jumper on OTA UPDATE */
-	if (BT_OTA_UPD == 1) {
+	/* Jumper on DFU OTA UPDATE */
+	BT_OTA_UPD_TRIS = 1; // set for jumper input
+	CNPU1bits.CN7PUE = 1; // pullup for RB3
+	WaitMs(2); // jumper pullup read delay, rise time is slow
+	if (BT_OTA_UPD == 0) {
+		BT_OTA_UPD_TRIS = 0; // set back to output
 		BT_SendCommand("SF,2\r", false); // perform complete factory reset
 		BT_SendCommand("SR,10008000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
 		BT_SendCommand("r,1\r", false); //Force reboot
@@ -389,18 +393,18 @@ bool BT_RebootEnFlow(void)
 			}
 		}
 		BT_SendCommand("A\r", false); // start advertising
-		
+
 		/* wait controller for power cycle/reset */
 		while (true) {
-			
-			while (sled_flash++ < 2000000) {
-			ClrWdt();
+			while (sled_flash++ < 500000) { // fast flash waiting for OTA
+				ClrWdt();
 			}
-			sled_flash=0;			
-			SLED=!SLED;
+			sled_flash = 0;
+			SLED = !SLED;
 		}
 
 	}
+	BT_OTA_UPD_TRIS = 0;
 
 	return BT_CheckResponse("MD\r\n"); //Check that we received CMD indicating reboot is done	
 }
