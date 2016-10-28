@@ -367,31 +367,28 @@ bool BT_RebootEnFlow(void)
 	WaitMs(2); // jumper pullup read delay, rise time is slow
 	if (BT_OTA_UPD == 0) {
 		BT_OTA_UPD_TRIS = 0; // set back to output
-		// OTA testing
-		//		BT_SendCommand("+\r", false); // echo on
 		BT_WAKE_SW = 1;
 		BT_WAKE_HW = 1;
 		BT_CMD = 0;
 
 		WaitMs(100);
-		BT_SendCommand("SF,1\r", false); // perform complete factory reset
+		BT_SendCommand("SF,2\r", false); // perform complete factory reset
 		WaitMs(100);
-		if (!BT_CheckResponse(AOK)) {
-			//		return false;
-		}
-		BT_SendCommand("SF,1\r", false); // perform complete factory reset
+		BT_CheckResponse(AOK);
+
+		BT_SendCommand("SF,2\r", false); // perform complete factory reset again
 		WaitMs(100);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
-		BT_SendCommand("SS,C0000000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
+		BT_SendCommand("SS,C0000000\r", false); // add service
 		WaitMs(100);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
-		BT_SendCommand("SR,30000000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
+		BT_SendCommand("SR,32008000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
 		WaitMs(100);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
@@ -417,7 +414,7 @@ bool BT_RebootEnFlow(void)
 			}
 		}
 
-		BT_SendCommand("I\r", false); // start advertising
+		BT_SendCommand("I\r", false); // MLDP mode
 		BT_SendCommand("A\r", false); // start advertising
 
 		/* wait controller for power cycle/reset */

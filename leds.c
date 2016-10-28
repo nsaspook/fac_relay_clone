@@ -68,6 +68,7 @@ void LED_Tasks()
 
 	case LED_BTLE_PAIRED:
 		LED1 = appData.led1; // logic high turns on led
+		SLED = appData.led1; // logic high turns on led
 		RELAY1 = !appData.led1; // logic low turns on relay
 		LED2 = appData.led2;
 		RELAY2 = !appData.led2;
