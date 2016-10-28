@@ -327,8 +327,6 @@ bool BT_SetupModule(void)
 
 bool BT_RebootEnFlow(void)
 {
-	uint32_t sled_flash = 0;
-
 	//Send "R,1" to save changes and reboot
 	BT_SendCommand("r,1\r", false); //Force reboot
 	if (!BT_CheckResponse("Reboot\r\n")) {
@@ -369,11 +367,37 @@ bool BT_RebootEnFlow(void)
 	WaitMs(2); // jumper pullup read delay, rise time is slow
 	if (BT_OTA_UPD == 0) {
 		BT_OTA_UPD_TRIS = 0; // set back to output
-		BT_SendCommand("SF,2\r", false); // perform complete factory reset
-		BT_SendCommand("SR,10008000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
-		BT_SendCommand("r,1\r", false); //Force reboot
+		// OTA testing
+		//		BT_SendCommand("+\r", false); // echo on
+		BT_WAKE_SW = 1;
+		BT_WAKE_HW = 1;
+		BT_CMD = 0;
 
-		BT_WAKE_SW = 1; //wake module
+		WaitMs(100);
+		BT_SendCommand("SF,1\r", false); // perform complete factory reset
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			//		return false;
+		}
+		BT_SendCommand("SF,1\r", false); // perform complete factory reset
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SS,C0000000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SR,30000000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+		BT_SendCommand("R,1\r", false); //Force reboot
+
 		//Wait for WS status high
 		StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
 		while (BT_WS == 0) {
@@ -392,15 +416,24 @@ bool BT_RebootEnFlow(void)
 				return false;
 			}
 		}
+
+		BT_SendCommand("I\r", false); // start advertising
 		BT_SendCommand("A\r", false); // start advertising
 
 		/* wait controller for power cycle/reset */
 		while (true) {
-			while (sled_flash++ < 500000) { // fast flash waiting for OTA
+			while (true) { // fast flash waiting for OTA
 				ClrWdt();
+				while (UART_IsNewRxData()) { //While buffer contains old data
+					UART_ReadRxBuffer(); //Keep reading until empty
+					if (!UART_IsNewRxData()) {
+						WaitMs(200);
+					}
+				}
+				WaitMs(200);
+				SLED = !SLED;
 			}
-			sled_flash = 0;
-			SLED = !SLED;
+
 		}
 
 	}
