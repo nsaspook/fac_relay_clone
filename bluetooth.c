@@ -382,6 +382,29 @@ bool BT_RebootEnFlow(void)
 			return false;
 		}
 
+		BT_SendCommand("SDH,4.1\r", false); // defaults
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+		BT_SendCommand("SDM,RN4020\r", false); // defaults
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SDN,Microchip\r", false); // defaults
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SP,7\r", false); // defaults
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
 		BT_SendCommand("SS,C0000000\r", false); // add service
 		WaitMs(100);
 		if (!BT_CheckResponse(AOK)) {
@@ -483,13 +506,13 @@ bool BT_CheckFwVer(void)
 	sscanf(fpVer, "%u.%u.%u", &verMajor, &verMinor, &verPatch);
 
 	//Verify version number
-	if (verMajor != RN_FW_VER_MAJOR) {
+	if ((verMajor != RN_FW_VER_MAJOR133) && (verMajor != RN_FW_VER_MAJOR)) {
 		return false;
 	}
-	if (verMinor != RN_FW_VER_MINOR) {
+	if ((verMinor != RN_FW_VER_MINOR133) && (verMinor != RN_FW_VER_MINOR)) {
 		return false;
 	}
-	if (verPatch != RN_FW_VER_PATCH) {
+	if ((verPatch != RN_FW_VER_PATCH) && (verMinor == RN_FW_VER_MINOR)) {
 		return false;
 	}
 
