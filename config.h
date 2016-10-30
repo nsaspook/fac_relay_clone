@@ -38,7 +38,7 @@
 
 #include <xc.h>
 
-#define APP_VERSION_STR "2.0"       //This firmware version
+#define APP_VERSION_STR "2.2"       //This firmware version
 
 /*******************************************************************************
  * Application settings - these will change application behavior
@@ -103,6 +103,10 @@
 #define RN_FW_VER_MINOR     23          //These values can be changed as needed
 #define RN_FW_VER_PATCH     5
 
+#define RN_FW_VER_MAJOR133     1 
+#define RN_FW_VER_MINOR133     33 
+#define RN_FW_VER_PATCH133     0
+
 //Application timers
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
@@ -140,9 +144,12 @@
  ******************************************************************************/
 
 // Clock frequency
-#define FCY (4000000)                              //8MHz FRC
+#define FCY (16000000)                              //8MHz FRC
 
 //RN4020 BTLE
+#define BT_OTA_UPD	PORTBbits.RB3
+#define BT_OTA_UPD_TRIS	TRISBbits.TRISB3
+
 #define BT_WAKE_HW      LATBbits.LATB10                       //Hardware wake from dormant state; BT_WAKE_HW
 #define BT_WAKE_HW_TRIS TRISBbits.TRISB10
 
@@ -215,10 +222,19 @@
 #define LED6 LATBbits.LATB13
 #define LED7 LATBbits.LATB13
 
+#define SLED LATBbits.LATB14
+#define SLED_TRIS TRISBbits.TRISB14
+
 #define LED_TRIS1 TRISBbits.TRISB13
 #define LED_TRIS2 TRISBbits.TRISB12
 #define LED_TRIS3 TRISBbits.TRISB4
 #define LED_TRIS4 TRISBbits.TRISB3
+
+// SPI
+#define SPI_CS0	TRISAbits.TRISA3
+#define SPI_SDO	TRISBbits.TRISB6
+#define SPI_SCK	TRISBbits.TRISB5
+#define SPI_SDI	TRISAbits.TRISA7
 
 //Timer initialization
 #define TIMER_OFF 0

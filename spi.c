@@ -1,3 +1,4 @@
+/* SPI Master Driver */
 
 #include <xc.h>
 #include <stdint.h>
@@ -30,9 +31,9 @@ static SPI_TX_BUFFER_T txBuf;
 
 void SPI_Init(void)
 {
-	TRISBbits.TRISB6 = 0;
-	TRISBbits.TRISB5 = 0;
-	TRISAbits.TRISA7 = 1;
+	SPI_SDO = 0;
+	SPI_SCK = 0;
+	SPI_SDI = 1;
 	rxBuf.tail = &rxBuf.buffer[0]; //Initialize the pointers
 	rxBuf.head = &rxBuf.buffer[0];
 	txBuf.tail = &txBuf.buffer[0];
@@ -40,6 +41,7 @@ void SPI_Init(void)
 	txBuf.byteCount = 0;
 	rxBuf.byteCount = 0;
 
+	/* SPI2 HW setup */
 	SSP2CON1bits.SSPM = 1; // SPI SCK speed
 	SSP2CON1bits.CKP = 1; // SCK polarity mode 3
 	SSP2STATbits.CKE = 1; // SCK select 
@@ -156,7 +158,6 @@ uint8_t SPI_PeekRxBuffer(void)
 
 void __attribute__((interrupt, no_auto_psv)) _MSSP2Interrupt(void)
 {
-	LED2 = 1;
 	SPI_X_IF = 0; //Clear interrupt flag
 	if (txBuf.byteCount > 0) { //Check if more data is in the buffer
 		/* read data HERE */
@@ -177,18 +178,14 @@ void __attribute__((interrupt, no_auto_psv)) _MSSP2Interrupt(void)
 	} else {
 		SPI_X_IE = 0; //No more data to transmit, so stop interrupts
 	}
-	LED2 = 0;
 }
 
 void __attribute__((interrupt, no_auto_psv)) _MSSP2BCInterrupt(void)
 {
 	SPI_E_IF = 0; //Clear interrupt flag
 
-	LED2 = 1;
 	//Handle an overflow error by reading next byte and clearing flags
 	if (SSP2CON1bits.WCOL || SSP2CON1bits.SSPOV) {
-		LED2 = 0;
-		LED2 = 1;
 		*rxBuf.head++ = SPI_BUF; //Put received byte in the buffer
 		if (rxBuf.head > &rxBuf.buffer[SIZE_SPI_Buffer - 1]) { //Check if end of buffer
 			rxBuf.head = &rxBuf.buffer[0]; //Wrap pointer to beginning
@@ -201,6 +198,5 @@ void __attribute__((interrupt, no_auto_psv)) _MSSP2BCInterrupt(void)
 	}
 
 	//Clear any other error bits
-	LED2 = 0;
 
 }

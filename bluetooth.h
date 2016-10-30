@@ -61,7 +61,7 @@ bool BT_SetupModule(void);
 bool BT_RebootEnFlow(void);
 
 #ifdef VERIFY_RN_FW_VER
-bool BT_CheckFwVer(void);
+uint16_t BT_CheckFwVer(void);
 #endif
 
 #endif //BLUETOOTH_H

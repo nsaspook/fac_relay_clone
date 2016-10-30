@@ -26,18 +26,13 @@
  *
  *
  * File:        main.c
- * Date:        July 24, 2014
- * Compiler:    XC16 v1.23
+ * Date:        Oct 27, 2016
+ * Compiler:    XC16 v1.26
  * 
  * Remote Relay mods Oct 2016 FGB@MCHP
- * 
- * 	// RELAYs are outputs and open-drain
-	// to drive ILQ2 opto
-	// setup in Mikrobus header
-	ODCDbits.ODD3 = 1; // pin 16 PWM
-	ODCDbits.ODD9 = 1; // pin 11 SDA
-	ODCDbits.ODD10 = 1; // pin 12 SCL
-	ODCDbits.ODD4 = 1; // pin 2 RST
+ * ported to PIC24FV 
+ * Version updates
+ * V2.1 DFU OTA mode added, input port shared with relay #4 output
  *
  */
 
@@ -55,8 +50,6 @@ void initBoard(void);
 // 'C' source line config statements
 
 // FBS
-
-// FBS
 #pragma config BWRP = OFF               // Boot Segment Write Protect (Disabled)
 #pragma config BSS = OFF                // Boot segment Protect (No boot program flash segment)
 
@@ -65,17 +58,17 @@ void initBoard(void);
 #pragma config GCP = OFF                // General Segment Code Protect (No Protection)
 
 // FOSCSEL
-#pragma config FNOSC = FRC              // Oscillator Select (Fast RC Oscillator (FRC))
+#pragma config FNOSC = FRCPLL           // Oscillator Select (Fast RC Oscillator with Postscaler and PLL Module (FRCDIV+PLL))
 #pragma config SOSCSRC = DIG            // SOSC Source Type (Digital Mode for use with external source)
 #pragma config LPRCSEL = HP             // LPRC Oscillator Power and Accuracy (High Power, High Accuracy Mode)
 #pragma config IESO = OFF               // Internal External Switch Over bit (Internal External Switchover mode disabled (Two-speed Start-up disabled))
 
 // FOSC
 #pragma config POSCMOD = NONE           // Primary Oscillator Configuration bits (Primary oscillator disabled)
-#pragma config OSCIOFNC = CLKO          // CLKO Enable Configuration bit (CLKO output signal enabled)
-#pragma config POSCFREQ = HS            // Primary Oscillator Frequency Range Configuration bits (Primary oscillator/external clock input frequency greater than 8MHz)
-#pragma config SOSCSEL = SOSCHP         // SOSC Power Selection Configuration bits (Secondary Oscillator configured for high-power operation)
-#pragma config FCKSM = CSDCMD           // Clock Switching and Monitor Selection (Both Clock Switching and Fail-safe Clock Monitor are disabled)
+#pragma config OSCIOFNC = IO            // CLKO Enable Configuration bit (Port I/O enabled (CLKO disabled))
+#pragma config POSCFREQ = LS            // Primary Oscillator Frequency Range Configuration bits (Primary oscillator/external clock input frequency less than 100kHz)
+#pragma config SOSCSEL = SOSCLP         // SOSC Power Selection Configuration bits (Secondary Oscillator configured for low-power operation)
+#pragma config FCKSM = CSECME           // Clock Switching and Monitor Selection (Both Clock Switching and Fail-safe Clock Monitor are enabled)
 
 // FWDT
 #pragma config WDTPS = PS32768          // Watchdog Timer Postscale Select bits (1:32768)
@@ -134,7 +127,7 @@ void initBoard(void)
 	 * Self-tune on SOF is enabled if USB is enabled and connected to host
 	 ***************************************************************************/
 	// DOZEN disabled; DOZE 1:16; CPDIV 1:1; RCDIV FRC/1; PLLEN disabled; ROI disabled;
-	CLKDIVbits.RCDIV = 1;
+	CLKDIVbits.RCDIV = 0;
 	OSCCONbits.COSC = 0x1;
 	OSCCONbits.NOSC = 0x1;
 
@@ -192,6 +185,7 @@ void initBoard(void)
 
 	CNPU1 = 0;
 	CNPU2 = 0;
+	CNPU1bits.CN7PUE = 1; // pullup for RB3
 
 
 	CNPD1 = 0;
@@ -225,6 +219,8 @@ void initBoard(void)
 	LED_TRIS2 = 0;
 	LED_TRIS3 = 0;
 	LED_TRIS4 = 0;
+	SLED = 0;
+	SLED_TRIS = 0;
 
 	//RN4020 module - UART1
 	BT_WAKE_HW = 1; //Dormant line is set high
@@ -245,6 +241,9 @@ void initBoard(void)
 	U1RTS_LAT = 0;
 	U1RTS_TRIS = 0;
 	U1TX_TRIS = 0;
+
+	// SPI Master Devices
+	SPI_CS0 = 0;
 
 	/****************************************************************************
 	 * PPS Init - Peripheral Pin Select

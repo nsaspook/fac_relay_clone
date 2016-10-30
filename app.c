@@ -258,6 +258,7 @@ bool APP_Initialize(void)
 			return false;
 		}
 	}
+
 	//Module is now in command mode and ready for input
 	if (!BT_SetupModule()) { //Setup RN4020 module
 		appData.error_code = ERROR_INITIALIZATION;
@@ -266,11 +267,11 @@ bool APP_Initialize(void)
 
 #ifdef VERIFY_RN_FW_VER
 	//Verify RN4020 module's firmware version
-	if (!BT_CheckFwVer()) {
+	if (!(appData.version_code = BT_CheckFwVer())) {
 		appData.error_code = ERROR_RN_FW;
 		return false;
 	}
-#endif // VERIFY_RN_FW_VER  
+#endif // VERIFY_RN_FW_VER 
 
 	//flush UART RX buffer as a precaution before starting app state machine
 	while (UART_IsNewRxData()) { //While buffer contains old data
@@ -280,5 +281,6 @@ bool APP_Initialize(void)
 		}
 	}
 
+	SLED = 1; // init completed
 	return true;
 }
