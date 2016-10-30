@@ -72,7 +72,7 @@ typedef struct {
 	timer1Flag, //Timer1 has tripped
 	CNint, //CN interrupt has tripped (flag to exit sleep)
 	sleepFlag; //sleep mode triggered
-	uint16_t potValue, potValueOld, potValueLastTX; //potentiometer values - current, previous, and last transmitted
+	uint16_t potValue, potValueOld, potValueLastTX, version_code; //potentiometer values - current, previous, and last transmitted, firmware version
 } APP_DATA;
 
 void APP_Tasks(void);

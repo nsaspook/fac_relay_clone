@@ -43,6 +43,8 @@
 #include "uart.h"
 #include "timers.h"
 
+uint16_t BT_CheckFwVer(void);
+
 //**********************************************************************************************************************
 // Receive a message over the Bluetooth link
 
@@ -240,6 +242,11 @@ bool BT_CheckResponseWithWildcard(const char *data, char Wildcard)
 
 bool BT_SetupModule(void)
 {
+	uint16_t version_code;
+
+	//Check RN4020 module's firmware version for version specific setups
+	version_code = BT_CheckFwVer();
+
 	BT_SendCommand("sf,2\r", false); //Get RN4020 module feature settings
 	if (!BT_CheckResponse(AOK)) {
 		return false;
@@ -466,7 +473,7 @@ bool BT_RebootEnFlow(void)
 //Retrieve firmware version on module and check against the required version
 //Returns true if version is correct; false if not or communication failure
 
-bool BT_CheckFwVer(void)
+uint16_t BT_CheckFwVer(void)
 {
 	char fpVer[20];
 	char *pfpVer = fpVer;
@@ -516,6 +523,6 @@ bool BT_CheckFwVer(void)
 		return false;
 	}
 
-	return true;
+	return verMinor;
 }
 #endif //VERIFY_RN_FW_VER

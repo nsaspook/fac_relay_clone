@@ -237,7 +237,6 @@ bool APP_Initialize(void)
 #endif  //SLEEP_MODE_RTCC
 #endif  //USE_SLEEP
 
-	LED2 = 1;
 	BT_WAKE_SW = 1; //wake module
 	//Wait for WS status high
 	StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
@@ -268,7 +267,7 @@ bool APP_Initialize(void)
 
 #ifdef VERIFY_RN_FW_VER
 	//Verify RN4020 module's firmware version
-	if (!BT_CheckFwVer()) {
+	if (!(appData.version_code = BT_CheckFwVer())) {
 		appData.error_code = ERROR_RN_FW;
 		return false;
 	}
