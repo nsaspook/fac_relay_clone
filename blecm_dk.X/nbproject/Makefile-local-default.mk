@@ -20,7 +20,6 @@ PATH:=/opt/microchip/mplabx/v3.35/mplab_ide/mplab_ide/modules/../../bin/:$(PATH)
 # Path to java used to run MPLAB X when this makefile was created
 MP_JAVA_PATH="/opt/microchip/mplabx/v3.35/sys/java/jre1.8.0_91/bin/"
 OS_CURRENT="$(shell uname -s)"
-<<<<<<< HEAD
 MP_CC="/opt/microchip/xc16/v1.26/bin/xc16-gcc"
 # MP_CPPC is not defined
 # MP_BC is not defined
@@ -34,19 +33,4 @@ MP_CC_DIR="/opt/microchip/xc16/v1.26/bin"
 MP_AS_DIR="/opt/microchip/xc16/v1.26/bin"
 MP_LD_DIR="/opt/microchip/xc16/v1.26/bin"
 MP_AR_DIR="/opt/microchip/xc16/v1.26/bin"
-=======
-MP_CC="/sdd/opt/microchip/xc16/v1.26/bin/xc16-gcc"
-# MP_CPPC is not defined
-# MP_BC is not defined
-MP_AS="/sdd/opt/microchip/xc16/v1.26/bin/xc16-as"
-MP_LD="/sdd/opt/microchip/xc16/v1.26/bin/xc16-ld"
-MP_AR="/sdd/opt/microchip/xc16/v1.26/bin/xc16-ar"
-DEP_GEN=${MP_JAVA_PATH}java -jar "/opt/microchip/mplabx/v3.35/mplab_ide/mplab_ide/modules/../../bin/extractobjectdependencies.jar"
-MP_CC_DIR="/sdd/opt/microchip/xc16/v1.26/bin"
-# MP_CPPC_DIR is not defined
-# MP_BC_DIR is not defined
-MP_AS_DIR="/sdd/opt/microchip/xc16/v1.26/bin"
-MP_LD_DIR="/sdd/opt/microchip/xc16/v1.26/bin"
-MP_AR_DIR="/sdd/opt/microchip/xc16/v1.26/bin"
->>>>>>> 5d9cde890867d59d3debc9bdb3bc234dcee6687d
 # MP_BC_DIR is not defined

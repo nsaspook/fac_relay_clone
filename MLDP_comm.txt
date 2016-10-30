@@ -1,0 +1,13 @@
+Central: SR,1A000000  
+Central: R,1  
+Peripheral: SR,12000800
+Peripheral: R,1  
+Peripheral: A
+Central: F
+Central: X
+Central: E,0,xxxxxxxxxxxx
+Central: I
+Peripheral: I
+
+Setting up MLDP communication
+

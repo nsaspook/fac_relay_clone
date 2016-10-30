@@ -105,7 +105,7 @@
 
 #define RN_FW_VER_MAJOR133     1 
 #define RN_FW_VER_MINOR133     33 
-#define RN_FW_VER_PATCH133     0
+#define RN_FW_VER_PATCH133     4
 
 //Application timers
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
