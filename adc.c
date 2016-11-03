@@ -36,11 +36,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "adc.h"
+#include "spi.h"
 #include "app.h"
 #include "config.h"
 #include "timers.h"
 
 extern APP_DATA appData;
+extern ADC_DATA adcData;
 
 /******************************************************************************
  * Function:        void ADC_Init()
@@ -61,15 +63,65 @@ extern APP_DATA appData;
 
 void ADC_Init()
 {
-
+	adcData.mcp3208_cmd.ld = 0;
+	adcData.mcp3208_cmd.map.start_bit = 1;
+	adcData.mcp3208_cmd.map.single_diff = 1;
+	adcData.mcp3208_cmd.map.index = 0;
+	appData.ADCcalFlag = true;
+	SPI_CS0 = 1;
+	SPI_CS1 = 1;
 }
 
 //State machine for restarting ADC and taking new readings from pot
-//Returns true when module is on, calibrated, and started sampling; false otherwise
+//Returns true when SPI data has been returned from the mpc3208; false otherwise
 
 bool ADC_Tasks(void)
 {
-	return true;
+	static uint8_t count = 0;
+
+	if (!adcData.mcp3208_cmd.map.in_progress) {
+		adcData.mcp3208_cmd.map.in_progress = true;
+		adcData.mcp3208_cmd.map.finish = false;
+		count = 0;
+		if (SPI_GetTXBufferFreeSpace() > 8) {
+			SPI_ClearBufs();
+			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[2]);
+			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[1]);
+			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[0]);
+			SPI_CS0 = 0;
+			SPI_TxStart();
+		}
+		return false;
+	}
+
+	if (adcData.mcp3208_cmd.map.in_progress) {
+		while (SPI_IsNewRxData()) {
+			switch (count) {
+			case 0:
+				SPI_ReadRxBuffer();
+				break;
+			case 1:
+				adcData.potValue = (SPI_ReadRxBuffer()&0x0f) << 8;
+				break;
+			case 2:
+				adcData.potValue += SPI_ReadRxBuffer();
+				break;
+			default:
+				SPI_ReadRxBuffer();
+				break;
+			}
+			count++;
+		}
+		adcData.mcp3208_cmd.map.finish = true;
+	}
+
+	if (adcData.mcp3208_cmd.map.finish) {
+		adcData.mcp3208_cmd.map.in_progress = false;
+		appData.accumReady = true;
+		return true;
+	}
+
+	return false;
 }
 
 //Process the accumulator value once it is ready
@@ -77,7 +129,8 @@ bool ADC_Tasks(void)
 
 void ADC_ProcAccum(void)
 {
-
+	appData.potValueOld = appData.potValue; //Save previous value
+	appData.potValue = adcData.potValue;
 }
 
 //ADC ISR

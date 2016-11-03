@@ -101,14 +101,14 @@ int main(void)
 		APP_Tasks();
 		Idle(); //Idle until an interrupt is generated
 		RCONbits.IDLE = 0;
-		if (SPI_GetTXBufferFreeSpace() > 8) {
-			SPI_WriteTxBuffer(0x81);
-			SPI_WriteTxBuffer('O');
-			SPI_WriteTxBuffer('U');
-			SPI_WriteTxBuffer(0xff);
-			SPI_TxStart();
-			WaitMs(2);
-		}
+//		if (SPI_GetTXBufferFreeSpace() > 8) {
+//			SPI_WriteTxBuffer(0x81);
+//			SPI_WriteTxBuffer('O');
+//			SPI_WriteTxBuffer('U');
+//			SPI_WriteTxBuffer(0xff);
+//			SPI_TxStart();
+//			WaitMs(2);
+//		}
 		ClrWdt();
 	}
 
@@ -120,8 +120,8 @@ int main(void)
 // Initialize the pins and peripherals
 
 void initBoard(void)
-{
-	/****************************************************************************
+
+{	/****************************************************************************
 	 * Oscillator Init
 	 * Clocking is setup at 32MHz sys clock and to allow USB functionality
 	 * Self-tune on SOF is enabled if USB is enabled and connected to host
@@ -243,7 +243,8 @@ void initBoard(void)
 	U1TX_TRIS = 0;
 
 	// SPI Master Devices
-	SPI_CS0 = 0;
+	SPI_CS0_TRIS = 0;
+	SPI_CS1_TRIS = 0;
 
 	/****************************************************************************
 	 * PPS Init - Peripheral Pin Select

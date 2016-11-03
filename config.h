@@ -233,10 +233,14 @@
 #define LED_TRIS4 TRISBbits.TRISB3
 
 // SPI
-#define SPI_CS0	TRISAbits.TRISA3
+#define SPI_CS0_TRIS	TRISAbits.TRISA3
+#define SPI_CS1_TRIS	TRISBbits.TRISB15
 #define SPI_SDO	TRISBbits.TRISB6
 #define SPI_SCK	TRISBbits.TRISB5
 #define SPI_SDI	TRISAbits.TRISA7
+
+#define SPI_CS0 LATAbits.LATA3
+#define SPI_CS1 LATBbits.LATB15
 
 //Timer initialization
 #define TIMER_OFF 0

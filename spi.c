@@ -34,6 +34,7 @@ void SPI_Init(void)
 	SPI_SDO = 0;
 	SPI_SCK = 0;
 	SPI_SDI = 1;
+	SPI_CS0 = 1;
 	rxBuf.tail = &rxBuf.buffer[0]; //Initialize the pointers
 	rxBuf.head = &rxBuf.buffer[0];
 	txBuf.tail = &txBuf.buffer[0];
@@ -42,7 +43,7 @@ void SPI_Init(void)
 	rxBuf.byteCount = 0;
 
 	/* SPI2 HW setup */
-	SSP2CON1bits.SSPM = 1; // SPI SCK speed
+	SSP2CON1bits.SSPM = 2; // SPI SCK speed
 	SSP2CON1bits.CKP = 1; // SCK polarity mode 3
 	SSP2STATbits.CKE = 1; // SCK select 
 	SSP2STATbits.SMP = 0; // sample mid
@@ -54,6 +55,18 @@ void SPI_Init(void)
 	SPI_E_IF = 0;
 	SPI_X_IE = 0; //Setup SPI Receive and Error interrupt
 	SPI_E_IE = 1;
+}
+
+void SPI_ClearBufs(void)
+{
+	__builtin_disi(0x3FFF); //disable interrupts
+	rxBuf.tail = &rxBuf.buffer[0]; //Initialize the pointers
+	rxBuf.head = &rxBuf.buffer[0];
+	txBuf.tail = &txBuf.buffer[0];
+	txBuf.head = &txBuf.buffer[0];
+	txBuf.byteCount = 0;
+	rxBuf.byteCount = 0;
+	__builtin_disi(0); //enable interrupts
 }
 
 void SPI_TxStart(void)
@@ -176,7 +189,17 @@ void __attribute__((interrupt, no_auto_psv)) _MSSP2Interrupt(void)
 		}
 		txBuf.byteCount--; //Decrement byte count
 	} else {
+		/* read data HERE */
+		*rxBuf.head++ = SPI_BUF; //Put received byte in the buffer
+		if (rxBuf.head > &rxBuf.buffer[SIZE_SPI_Buffer - 1]) { //Check if end of buffer
+			rxBuf.head = &rxBuf.buffer[0]; //Wrap pointer to beginning
+		}
+		if (rxBuf.byteCount < SIZE_SPI_Buffer) { //Increment byte count
+			rxBuf.byteCount++;
+		}
 		SPI_X_IE = 0; //No more data to transmit, so stop interrupts
+		SPI_CS0 = 1; // deselect all devices here
+		SPI_CS1 = 1;
 	}
 }
 

@@ -15,6 +15,7 @@ extern "C" {
 #include <stdbool.h>
 
 	void SPI_Init(void);
+	void SPI_ClearBufs(void);
 	void SPI_TxStart(void);
 	bool SPI_IsNewRxData(void);
 	uint8_t SPI_ReadRxBuffer(void);

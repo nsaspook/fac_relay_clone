@@ -56,6 +56,7 @@
 #include "spi.h"
 
 APP_DATA appData;
+ADC_DATA adcData;
 
 //Primary application state machine
 
@@ -151,6 +152,22 @@ void APP_Tasks(void)
 			if (appData.potValue != appData.potValueLastTX) {
 				//Form message
 				sprintf(appData.transmit_packet, "suw,"PRIVATE_CHAR_POTENTIOMETER",%04d\r", appData.potValue);
+				//Try to transmit the message; reset timer if successful
+				if (BT_SendCommand(appData.transmit_packet, true)) {
+					appData.potValueLastTX = appData.potValue;
+					StartTimer(TMR_POT, POT_TX_MS);
+				}
+			} else {
+				StartTimer(TMR_POT, POT_TX_MS);
+			} //value not changed - skip this transmission
+		}
+
+		//Transmit new SPI ADC readings?
+		if (TimerDone(TMR_POT)) {
+			//Send message only if pot value has changed
+			if (appData.potValue != appData.potValueLastTX) {
+				//Form message
+				sprintf(appData.transmit_packet, "suw,"PRIVATE_CHAR_ADC",%04d\r", appData.potValue);
 				//Try to transmit the message; reset timer if successful
 				if (BT_SendCommand(appData.transmit_packet, true)) {
 					appData.potValueLastTX = appData.potValue;
