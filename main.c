@@ -101,14 +101,6 @@ int main(void)
 		APP_Tasks();
 		Idle(); //Idle until an interrupt is generated
 		RCONbits.IDLE = 0;
-//		if (SPI_GetTXBufferFreeSpace() > 8) {
-//			SPI_WriteTxBuffer(0x81);
-//			SPI_WriteTxBuffer('O');
-//			SPI_WriteTxBuffer('U');
-//			SPI_WriteTxBuffer(0xff);
-//			SPI_TxStart();
-//			WaitMs(2);
-//		}
 		ClrWdt();
 	}
 
@@ -121,7 +113,7 @@ int main(void)
 
 void initBoard(void)
 
-{	/****************************************************************************
+{ /****************************************************************************
 	 * Oscillator Init
 	 * Clocking is setup at 32MHz sys clock and to allow USB functionality
 	 * Self-tune on SOF is enabled if USB is enabled and connected to host
@@ -245,6 +237,15 @@ void initBoard(void)
 	// SPI Master Devices
 	SPI_CS0_TRIS = 0;
 	SPI_CS1_TRIS = 0;
+
+	/* SPI2 HW setup */
+	SSP2CON1bits.SSPM = 2; // SPI SCK speed
+	SSP2CON1bits.CKP = 0; // SCK polarity mode 0,0
+	SSP2STATbits.CKE = 0; // SCK select 
+	SSP2STATbits.SMP = 0; // sample mid
+	SSP2CON1bits.SSPEN = 1; // enable spi ports
+	PADCFG1bits.SCK2DIS = 0;
+	PADCFG1bits.SDA2DIS = 0;
 
 	/****************************************************************************
 	 * PPS Init - Peripheral Pin Select

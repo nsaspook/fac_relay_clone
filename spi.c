@@ -41,16 +41,6 @@ void SPI_Init(void)
 	txBuf.head = &txBuf.buffer[0];
 	txBuf.byteCount = 0;
 	rxBuf.byteCount = 0;
-
-	/* SPI2 HW setup */
-	SSP2CON1bits.SSPM = 2; // SPI SCK speed
-	SSP2CON1bits.CKP = 0; // SCK polarity mode 0,0
-	SSP2STATbits.CKE = 0; // SCK select 
-	SSP2STATbits.SMP = 0; // sample mid
-	SSP2CON1bits.SSPEN = 1; // enable spi ports
-	PADCFG1bits.SCK2DIS = 0;
-	PADCFG1bits.SDA2DIS = 0;
-
 	SPI_X_IF = 0; //Clear SPI interrupt flags
 	SPI_E_IF = 0;
 	SPI_X_IE = 0; //Setup SPI Receive and Error interrupt
