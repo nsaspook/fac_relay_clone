@@ -28,6 +28,7 @@
  * File:        adc.c
  * Date:        January 20, 2015
  * Compiler:    XC16 v1.23
+ * modified for MCP3208 device Nov 2016
  *
  *
  */
@@ -63,10 +64,11 @@ extern ADC_DATA adcData;
 
 void ADC_Init()
 {
-	adcData.mcp3208_cmd.ld = 0;
+	adcData.mcp3208_cmd.ld = 0; // clear the command word
+	adcData.mcp3208_cmd.map.chan = 0;
 	adcData.mcp3208_cmd.map.start_bit = 1;
 	adcData.mcp3208_cmd.map.single_diff = 1;
-	adcData.mcp3208_cmd.map.index = 0;
+	adcData.mcp3208_cmd.map.index = 0; // channel
 	appData.ADCcalFlag = true;
 	SPI_CS0 = 1;
 	SPI_CS1 = 1;
@@ -79,42 +81,43 @@ bool ADC_Tasks(void)
 {
 	static uint8_t count = 0;
 
+	/* send the command sequence to the adc */
 	if (!adcData.mcp3208_cmd.map.in_progress) {
 		adcData.mcp3208_cmd.map.in_progress = true;
 		adcData.mcp3208_cmd.map.finish = false;
 		count = 0;
 		if (SPI_GetTXBufferFreeSpace() > 8) {
-			SPI_ClearBufs();
+			adcData.mcp3208_cmd.map.index = adcData.mcp3208_cmd.map.chan;
+			SPI_ClearBufs(); // dump the spi buffers
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[2]);
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[1]);
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[0]);
-			SPI_CS0 = 0;
+			SPI_CS0 = 0; // select the ADC
 			SPI_TxStart();
 		}
 		return false;
 	}
 
+	/* read the returned spi data from the buffer and format it */
 	if (adcData.mcp3208_cmd.map.in_progress) {
 		while (SPI_IsNewRxData()) {
 			switch (count) {
-			case 0:
-				SPI_ReadRxBuffer();
-				break;
 			case 1:
 				adcData.potValue = (SPI_ReadRxBuffer()&0x0f) << 8;
 				break;
 			case 2:
 				adcData.potValue += SPI_ReadRxBuffer();
+				adcData.mcp3208_cmd.map.finish = true;
 				break;
 			default:
-				SPI_ReadRxBuffer();
+				SPI_ReadRxBuffer(); // eat extra bytes
 				break;
 			}
 			count++;
 		}
-		adcData.mcp3208_cmd.map.finish = true;
 	}
 
+	/* cleanup for next time */
 	if (adcData.mcp3208_cmd.map.finish) {
 		adcData.mcp3208_cmd.map.in_progress = false;
 		appData.accumReady = true;
@@ -140,4 +143,11 @@ void _ISR_NO_AUTO_PSV _ISR _ADC1Interrupt(void)
 	IFS0bits.AD1IF = 0;
 	//Accumulation complete
 
+}
+
+void GetNewADC_Chan(void)
+{
+	static uint8_t chan = 0;
+	chan++;
+	adcData.mcp3208_cmd.map.chan = chan;
 }

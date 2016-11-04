@@ -42,6 +42,7 @@
 void ADC_Init(); //Initialize the ADC
 bool ADC_Tasks(void); //Update ADC reading
 void ADC_ProcAccum(void); //Process full accumulator
+void GetNewADC_Chan(void);
 
 #endif	/* ADC_H */
 

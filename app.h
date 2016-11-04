@@ -84,6 +84,7 @@ typedef struct A_data {
 	uint32_t dummy8 : 8;
 	uint32_t finish : 1;
 	uint32_t in_progress : 1;
+	uint8_t chan;
 } A_data;
 
 /* upper-> lower bytes to 32 bit word for ADC/DAC, etc ... */

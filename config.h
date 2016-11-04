@@ -135,7 +135,7 @@
 #define PRIVATE_CHAR_POTENTIOMETER "362232e5c5a94af6b30ce208f1a9ae3e"
 #define PRIVATE_CHAR_LEDS "cd8306093afa4a9da58b8224cd2ded70"
 #define PRIVATE_CHAR_RELAYS "cd83060a3afa4a9da58b8224cd2ded70"
-#define PRIVATE_CHAR_ADC "cd83060b3afa4a9da58b8224cd2ded70"
+#define PRIVATE_CHAR_ADC_CHAN "cd83060b3afa4a9da58b8224cd2ded70"
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))

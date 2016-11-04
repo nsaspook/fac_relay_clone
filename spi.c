@@ -199,7 +199,7 @@ void __attribute__((interrupt, no_auto_psv)) _MSSP2Interrupt(void)
 		}
 		SPI_X_IE = 0; //No more data to transmit, so stop interrupts
 		SPI_CS0 = 1; // deselect all devices here
-		SPI_CS1 = 1;
+//		SPI_CS1 = 1;
 	}
 }
 

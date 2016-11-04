@@ -162,29 +162,11 @@ void APP_Tasks(void)
 			} //value not changed - skip this transmission
 		}
 
-		//Transmit new SPI ADC readings?
-		if (TimerDone(TMR_POT)) {
-			//Send message only if pot value has changed
-			if (appData.potValue != appData.potValueLastTX) {
-				//Form message
-				sprintf(appData.transmit_packet, "suw,"PRIVATE_CHAR_ADC",%04d\r", appData.potValue);
-				//Try to transmit the message; reset timer if successful
-				if (BT_SendCommand(appData.transmit_packet, true)) {
-					appData.potValueLastTX = appData.potValue;
-					StartTimer(TMR_POT, POT_TX_MS);
-				}
-			} else {
-				StartTimer(TMR_POT, POT_TX_MS);
-			} //value not changed - skip this transmission
-		}
-
 		//Process any new messages received from RN module
 		appData.got_packet = BT_ReceivePacket(appData.receive_packet); //Get new message if one has been received from the RN4020
 		if (appData.got_packet == true) { //true if new packet received
+			SPI_CS1 = 1;
 			if (strstr(appData.receive_packet, "WV,001E,")) { //Check for LED update message 1.23
-				GetNewLEDs(); //Latch new LED values
-			}
-			if (strstr(appData.receive_packet, "WV,0021,")) { //Check for LED update message 1.33
 				GetNewLEDs(); //Latch new LED values
 			}
 			if (strstr(appData.receive_packet, "WV,0021,")) { //Check for LED update message 1.33
@@ -193,6 +175,11 @@ void APP_Tasks(void)
 			//
 			//Other message handling can be added here
 			//
+			//receive new SPI ADC channel
+			if (strstr(appData.receive_packet, "WV,0025,")) { //Check for LED update message 1.33
+				GetNewADC_Chan(); // new ADC config data
+			}
+			SPI_CS1 = 0;
 		}
 		break;
 
