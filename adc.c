@@ -65,7 +65,7 @@ extern ADC_DATA adcData;
 void ADC_Init()
 {
 	adcData.mcp3208_cmd.ld = 0; // clear the command word
-	adcData.mcp3208_cmd.map.chan = 0;
+	adcData.chan = 0;
 	adcData.mcp3208_cmd.map.start_bit = 1;
 	adcData.mcp3208_cmd.map.single_diff = 1;
 	adcData.mcp3208_cmd.map.index = 0; // channel
@@ -87,7 +87,8 @@ bool ADC_Tasks(void)
 		adcData.mcp3208_cmd.map.finish = false;
 		count = 0;
 		if (SPI_GetTXBufferFreeSpace() > 8) {
-			adcData.mcp3208_cmd.map.index = adcData.mcp3208_cmd.map.chan;
+			adcData.mcp3208_cmd.map.single_diff = 1;
+			adcData.mcp3208_cmd.map.index = adcData.chan;
 			SPI_ClearBufs(); // dump the spi buffers
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[2]);
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[1]);
@@ -147,7 +148,6 @@ void _ISR_NO_AUTO_PSV _ISR _ADC1Interrupt(void)
 
 void GetNewADC_Chan(void)
 {
-	static uint8_t chan = 0;
-	chan++;
-	adcData.mcp3208_cmd.map.chan = chan;
+	adcData.chan = appData.receive_packet[13] == '1' ? 1 : 0; // update adc channel 
+	adcData.chan += appData.receive_packet[15] == '1' ? 2 : 0;
 }

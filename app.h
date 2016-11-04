@@ -75,6 +75,7 @@ typedef struct {
 	uint16_t potValue, potValueOld, potValueLastTX, version_code; //potentiometer values - current, previous, and last transmitted, firmware version
 } APP_DATA;
 
+/* for 24-bit transmit and extra status data */
 typedef struct A_data {
 	uint32_t dummy12 : 12; // dummy space for adc data
 	uint32_t nullbits : 2;
@@ -84,7 +85,6 @@ typedef struct A_data {
 	uint32_t dummy8 : 8;
 	uint32_t finish : 1;
 	uint32_t in_progress : 1;
-	uint8_t chan;
 } A_data;
 
 /* upper-> lower bytes to 32 bit word for ADC/DAC, etc ... */
@@ -109,6 +109,7 @@ union adc_buf_type {
 typedef struct {
 	union adc_buf_type mcp3208_cmd;
 	uint16_t potValue;
+	uint8_t chan;
 } ADC_DATA;
 
 void APP_Tasks(void);

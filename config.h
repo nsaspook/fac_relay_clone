@@ -38,7 +38,7 @@
 
 #include <xc.h>
 
-#define APP_VERSION_STR "2.3"       //This firmware version
+#define APP_VERSION_STR "2.4"       //This firmware version
 
 /*******************************************************************************
  * Application settings - these will change application behavior
@@ -123,7 +123,7 @@
 //Buffer sizes
 #define SIZE_RxBuffer   256               //UART RX software buffer size in bytes
 #define SIZE_TxBuffer   256               //UART TX software buffer size in bytes
-#define SIZE_SPI_Buffer 128
+#define SIZE_SPI_Buffer 64
 
 #define BT_RX_PKT_SZ    100               //Max receive packet length
 #define BT_TX_PKT_SZ    100               //Max transmit packet length

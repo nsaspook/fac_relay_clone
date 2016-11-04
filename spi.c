@@ -44,8 +44,8 @@ void SPI_Init(void)
 
 	/* SPI2 HW setup */
 	SSP2CON1bits.SSPM = 2; // SPI SCK speed
-	SSP2CON1bits.CKP = 1; // SCK polarity mode 3
-	SSP2STATbits.CKE = 1; // SCK select 
+	SSP2CON1bits.CKP = 0; // SCK polarity mode 0,0
+	SSP2STATbits.CKE = 0; // SCK select 
 	SSP2STATbits.SMP = 0; // sample mid
 	SSP2CON1bits.SSPEN = 1; // enable spi ports
 	PADCFG1bits.SCK2DIS = 0;

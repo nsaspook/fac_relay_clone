@@ -40,6 +40,7 @@
 #include "app.h"
 
 extern APP_DATA appData;
+extern ADC_DATA adcData;
 static LED_LIGHTSHOW_T lightShow = LED_IDLE;
 
 void LED_Tasks()
@@ -136,4 +137,6 @@ void GetNewLEDs(void)
 	appData.led2 = appData.receive_packet[11] == '1' ? 1 : 0;
 	appData.led3 = appData.receive_packet[13] == '1' ? 1 : 0;
 	appData.led4 = appData.receive_packet[15] == '1' ? 1 : 0;
+	adcData.chan = appData.receive_packet[13] == '1' ? 1 : 0; // update adc channel 
+	adcData.chan += appData.receive_packet[15] == '1' ? 2 : 0;
 }
