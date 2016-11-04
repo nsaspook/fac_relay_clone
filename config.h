@@ -136,6 +136,7 @@
 #define PRIVATE_CHAR_LEDS "cd8306093afa4a9da58b8224cd2ded70"
 #define PRIVATE_CHAR_RELAYS "cd83060a3afa4a9da58b8224cd2ded70"
 #define PRIVATE_CHAR_ADC_CHAN "cd83060b3afa4a9da58b8224cd2ded70"
+#define PRIVATE_CHAR_PIC_SLAVE "cd83060c3afa4a9da58b8224cd2ded70"
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))

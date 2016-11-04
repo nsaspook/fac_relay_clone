@@ -176,8 +176,12 @@ void APP_Tasks(void)
 			//Other message handling can be added here
 			//
 			//receive new SPI ADC channel
-			if (strstr(appData.receive_packet, "WV,0025,")) { //Check for LED update message 1.33
+			if (strstr(appData.receive_packet, "WV,0025,")) {
 				GetNewADC_Chan(); // new ADC config data
+			}
+			//receive new SPI SLAVE request
+			if (strstr(appData.receive_packet, "WV,0027,")) {
+
 			}
 			SPI_CS1 = 0;
 		}

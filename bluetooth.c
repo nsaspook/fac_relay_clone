@@ -326,6 +326,12 @@ bool BT_SetupModule(void)
 		return false;
 	}
 
+	// Custom analog input characteristic with generated UUID //Write w/ACK, Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_PIC_SLAVE",0A,0F\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
 	BT_SendCommand("wc\r", false); //Command to clear script, just in case there is a script
 	if (!BT_CheckResponse(AOK)) {
 		return false;
