@@ -174,36 +174,30 @@ void initBoard(void)
 	ANSA = 0x00;
 	ANSB = 0x00;
 
-
 	CNPU1 = 0;
 	CNPU2 = 0;
-	CNPU1bits.CN7PUE = 1; // pullup for RB3
-
 
 	CNPD1 = 0;
 	CNPD2 = 0;
-
 
 	CNEN1 = 0x0000;
 	CNEN2 = 0x0000;
 
 	ODCB = 0x0000;
 
-	IEC1bits.CNIE = 1;
+	//	IEC1bits.CNIE = 1;
 
-	// RELAYs are outputs and open-drain
-	// to drive ILQ2 opto
-	// setup in Mikrobus header
-	//	ODCDbits.ODD3 = 1; // pin 16
-	//	ODCDbits.ODD9 = 1; // pin 11
-	//	ODCDbits.ODD10 = 1; // pin 12
-	//	ODCDbits.ODD4 = 1; // pin 2
+	// SSR are outputs and open-drain
+	ODCBbits.ODB13 = 1;
+	ODCBbits.ODB12 = 1;
+	ODCBbits.ODB4 = 1;
+	ODCBbits.ODB3 = 1;
 
 	// LEDs are outputs and off
 	LED1 = 1;
-	LED2 = 0;
-	LED3 = 0;
-	LED4 = 0;
+	LED2 = 1;
+	LED3 = 1;
+	LED4 = 1;
 	LED5 = 0;
 	LED6 = 0;
 	LED7 = 0;

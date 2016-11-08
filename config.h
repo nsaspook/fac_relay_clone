@@ -112,7 +112,7 @@
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
 #define ADC_REFRESH_MS      50          //delay between ADC reads
 #define POT_TX_MS           500         //delay between transmitting new pot values
-#define LED_BLINK_MS        500         //LED blink rate for advertise mode
+#define LED_BLINK_MS        900         //LED blink rate for advertise mode
 #define BT_TX_MS            150         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
 #define BAT_CHK_WAIT_MS     10          //CVref & CMP stabilization time
@@ -221,9 +221,9 @@
 #define LED2 LATBbits.LATB12
 #define LED3 LATBbits.LATB4
 #define LED4 LATBbits.LATB3
-#define LED5 LATBbits.LATB13
-#define LED6 LATBbits.LATB13
-#define LED7 LATBbits.LATB13
+#define LED5 LATBbits.LATB0
+#define LED6 LATBbits.LATB0
+#define LED7 LATBbits.LATB0
 
 #define SLED LATBbits.LATB14
 #define SLED_TRIS TRISBbits.TRISB14
