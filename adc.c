@@ -148,6 +148,7 @@ void _ISR_NO_AUTO_PSV _ISR _ADC1Interrupt(void)
 
 void GetNewADC_Chan(void)
 {
-	adcData.chan = appData.receive_packet[13] == '1' ? 1 : 0; // update adc channel 
-	adcData.chan += appData.receive_packet[15] == '1' ? 2 : 0;
+	adcData.chan = appData.receive_packet[9] == '1' ? 1 : 0; // update adc channel 
+	adcData.chan += appData.receive_packet[11] == '1' ? 2 : 0;
+	adcData.chan += appData.receive_packet[13] == '1' ? 4 : 0;
 }

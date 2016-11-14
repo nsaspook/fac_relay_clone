@@ -321,12 +321,12 @@ bool BT_SetupModule(void)
 	}
 
 	// Custom analog input characteristic with generated UUID //Write w/ACK, Read
-	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",0A,02\r", false);
+	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",0A,04\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
-	// Custom analog input characteristic with generated UUID //Write w/ACK, Read
+	// Custom digital device characteristic with generated UUID //Write w/ACK, Read
 	BT_SendCommand("pc,"PRIVATE_CHAR_PIC_SLAVE",0A,0F\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
