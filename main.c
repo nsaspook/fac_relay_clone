@@ -207,6 +207,10 @@ void initBoard(void)
 	LED_TRIS4 = 0;
 	SLED = 0;
 	SLED_TRIS = 0;
+	RELAY1 = 1;
+	RELAY2 = 1;
+	RELAY3 = 1;
+	RELAY4 = 1;
 
 	//RN4020 module - UART1
 	BT_WAKE_HW = 1; //Dormant line is set high
