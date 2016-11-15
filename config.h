@@ -217,10 +217,6 @@
 #define RELAY4	LATBbits.LATB3
 
 // LED outputs
-#define LED1 LATBbits.LATB13
-#define LED2 LATBbits.LATB12
-#define LED3 LATBbits.LATB4
-#define LED4 LATBbits.LATB3
 #define LED5 LATBbits.LATB0
 #define LED6 LATBbits.LATB0
 #define LED7 LATBbits.LATB0

@@ -194,10 +194,10 @@ void initBoard(void)
 	ODCBbits.ODB3 = 1;
 
 	// LEDs are outputs and off
-	LED1 = 1;
-	LED2 = 1;
-	LED3 = 1;
-	LED4 = 1;
+	RELAY1 = 1;
+	RELAY2 = 1;
+	RELAY3 = 1;
+	RELAY4 = 1;
 	LED5 = 0;
 	LED6 = 0;
 	LED7 = 0;
