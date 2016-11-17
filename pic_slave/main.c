@@ -131,43 +131,6 @@ void initBoard(void)
 
 	RCONbits.SWDTEN = 0;
 
-#ifdef SET_PMD_BITS    //see config.h, Application settings section
-	/****************************************************************************
-	 * PMD bits - setting a bit disables clocking to that peripheral
-	 * (drops operating current by about 2 mA when used in this app)
-	 ***************************************************************************/
-	PMD1bits.T4MD = 1;
-
-#if !defined (USE_SLEEP) || defined (SLEEP_MODE_RTCC)    //see config.h, Application settings section
-	PMD1bits.T1MD = 1;
-#endif
-
-	PMD1bits.I2C1MD = 1;
-	PMD1bits.U2MD = 1;
-	PMD1bits.SPI2MD = 1;
-	PMD1bits.SPI1MD = 1;
-	PMD3bits.TXMMD = 1;
-
-#if !defined (USE_SLEEP) || !defined (SLEEP_MODE_RTCC)    //see config.h, Application settings section
-	PMD3bits.RTCCMD = 1;
-#endif
-
-	PMD3bits.PMPMD = 1;
-	PMD3bits.CRCMD = 1;
-	PMD3bits.DAC1MD = 1;
-	PMD3bits.U3MD = 1;
-	PMD3bits.I2C2MD = 1;
-	PMD2 = 0xFFFF;
-	PMD4bits.UPWMMD = 1;
-	PMD4bits.U4MD = 1;
-	PMD4bits.REFOMD = 1;
-	PMD4bits.CTMUMD = 1;
-	PMD4bits.HLVDMD = 1;
-	PMD5 = 0xFFFF;
-	PMD6 = 0xFFFF;
-	PMD7 = 0xFFFF;
-#endif
-
 	/****************************************************************************
 	 * GPIO Init
 	 ***************************************************************************/
@@ -187,40 +150,17 @@ void initBoard(void)
 
 	//	IEC1bits.CNIE = 1;
 
-	// SSR are outputs and open-drain
-	ODCBbits.ODB13 = 1;
-	ODCBbits.ODB12 = 1;
-	ODCBbits.ODB4 = 1;
-	ODCBbits.ODB3 = 1;
-
 	// LEDs are outputs and off
-	RELAY1 = 1;
-	RELAY2 = 1;
-	RELAY3 = 1;
-	RELAY4 = 1;
+
 	LED5 = 0;
 	LED6 = 0;
 	LED7 = 0;
 	LED_TRIS1 = 0;
-	LED_TRIS2 = 0;
+
 	LED_TRIS3 = 0;
 	LED_TRIS4 = 0;
 	SLED = 0;
 	SLED_TRIS = 0;
-
-	//RN4020 module - UART1
-	BT_WAKE_HW = 1; //Dormant line is set high
-	BT_WAKE_HW_TRIS = 0; //Dormant line is output
-
-	BT_WAKE_SW = 0; //keep low until after UART is initialized
-	BT_WAKE_SW_TRIS = 0;
-
-	BT_CMD = 0; //Command mode on
-	BT_CMD_TRIS = 0;
-
-	BT_WS_TRIS = 1;
-	BT_MLDP_EV_TRIS = 1;
-	BT_CONNECTED_TRIS = 1;
 
 	U1CTS_TRIS = 1;
 	U1RX_TRIS = 1;
@@ -228,12 +168,8 @@ void initBoard(void)
 	U1RTS_TRIS = 0;
 	U1TX_TRIS = 0;
 
-	// SPI Master Devices
-	SPI_CS0_TRIS = 0;
-	SPI_CS1_TRIS = 0;
-
 	/* SPI2 HW setup */
-	SSP2CON1bits.SSPM = 2; // SPI MASTER SCK speed
+	SSP2CON1bits.SSPM = 4; // SPI slave
 	SSP2CON1bits.CKP = 0; // SCK polarity mode 0,0
 	SSP2STATbits.CKE = 0; // SCK select 
 	SSP2STATbits.SMP = 0; // sample mid

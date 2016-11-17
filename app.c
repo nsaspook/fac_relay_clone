@@ -165,7 +165,6 @@ void APP_Tasks(void)
 		//Process any new messages received from RN module
 		appData.got_packet = BT_ReceivePacket(appData.receive_packet); //Get new message if one has been received from the RN4020
 		if (appData.got_packet == true) { //true if new packet received
-			SPI_CS1 = 1;
 			if (strstr(appData.receive_packet, "WV,001E,")) { //Check for LED update message 1.23
 				GetNewLEDs(); //Latch new LED values
 			}
@@ -183,7 +182,6 @@ void APP_Tasks(void)
 			if (strstr(appData.receive_packet, "WV,0027,")) {
 
 			}
-			SPI_CS1 = 0;
 		}
 		break;
 

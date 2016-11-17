@@ -70,7 +70,6 @@ void ADC_Init()
 	adcData.mcp3208_cmd.map.single_diff = 1;
 	adcData.mcp3208_cmd.map.index = 0; // channel
 	appData.ADCcalFlag = true;
-	SPI_CS0 = 1;
 }
 
 //State machine for restarting ADC and taking new readings from pot
@@ -92,7 +91,7 @@ bool ADC_Tasks(void)
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[2]);
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[1]);
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[0]);
-			SPI_CS0 = 0; // select the ADC
+//			SPI_CS0 = 0; // select the ADC
 			SPI_TxStart();
 		}
 		return false;

@@ -32,9 +32,9 @@ static SPI_TX_BUFFER_T txBuf;
 void SPI_Init(void)
 {
 	SPI_SDO = 0;
-	SPI_SCK = 0;
+	SPI_SCK = 1; // input
 	SPI_SDI = 1;
-	SPI_CS0 = 1;
+	SPI_SS2 = 1; // input
 	rxBuf.tail = &rxBuf.buffer[0]; //Initialize the pointers
 	rxBuf.head = &rxBuf.buffer[0];
 	txBuf.tail = &txBuf.buffer[0];
@@ -188,8 +188,6 @@ void __attribute__((interrupt, no_auto_psv)) _MSSP2Interrupt(void)
 			rxBuf.byteCount++;
 		}
 		SPI_X_IE = 0; //No more data to transmit, so stop interrupts
-		SPI_CS0 = 1; // deselect all devices here
-		SPI_CS1 = 1;
 	}
 }
 
