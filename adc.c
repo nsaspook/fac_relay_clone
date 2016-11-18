@@ -85,7 +85,7 @@ bool ADC_Tasks(void)
 		adcData.mcp3208_cmd.map.in_progress = true;
 		adcData.mcp3208_cmd.map.finish = false;
 		count = 0;
-		if (SPI_GetTXBufferFreeSpace() > 8) {
+		if (!SPI_IsTxData()) {
 			adcData.mcp3208_cmd.map.single_diff = 1;
 			adcData.mcp3208_cmd.map.index = adcData.chan;
 			SPI_ClearBufs(); // dump the spi buffers
@@ -93,6 +93,7 @@ bool ADC_Tasks(void)
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[1]);
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[0]);
 			SPI_CS0 = 0; // select the ADC
+			SPI_Speed(0);
 			SPI_TxStart();
 		}
 		return false;

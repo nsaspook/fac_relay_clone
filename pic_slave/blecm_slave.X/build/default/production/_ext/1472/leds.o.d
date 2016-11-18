@@ -3,4 +3,5 @@ build/default/production/_ext/1472/leds.o:  \
 ../timers.h  \
  ../config.h  \
 ../leds.h  \
-../app.h 
+../app.h  \
+../spi.h 

@@ -43,7 +43,7 @@ void SPI_Init(void)
 	rxBuf.byteCount = 0;
 	SPI_X_IF = 0; //Clear SPI interrupt flags
 	SPI_E_IF = 0;
-	SPI_X_IE = 0; //Setup SPI Receive and Error interrupt
+	SPI_X_IE = 1; //Setup SPI Receive and Error interrupt
 	SPI_E_IE = 1;
 }
 
@@ -59,18 +59,16 @@ void SPI_ClearBufs(void)
 	__builtin_disi(0); //enable interrupts
 }
 
-void SPI_TxStart(void)
+void SPI_TxStart(void) // load data for the master to read
 {
 	__builtin_disi(0x3FFF); //disable interrupts
 	if (txBuf.byteCount) { // prime the transmit interrupt
 		/* write data here */
-		SPI_X_IF = 0; //Clear interrupt flag
 		SPI_BUF = *txBuf.tail++; //Load next byte into the TX buffer
 		if (txBuf.tail > &txBuf.buffer[SIZE_SPI_Buffer - 1]) { //Check if end of buffer
 			txBuf.tail = &txBuf.buffer[0]; //Wrap pointer to beginning
 		}
 		txBuf.byteCount--; //Decrement byte count
-		SPI_X_IE = 1; //Enable transmit interrupts
 		__builtin_disi(0); //enable interrupts
 		return;
 	}
@@ -187,7 +185,7 @@ void __attribute__((interrupt, no_auto_psv)) _MSSP2Interrupt(void)
 		if (rxBuf.byteCount < SIZE_SPI_Buffer) { //Increment byte count
 			rxBuf.byteCount++;
 		}
-		SPI_X_IE = 0; //No more data to transmit, so stop interrupts
+		SPI_BUF = 0xff; // dummy stuff
 	}
 }
 

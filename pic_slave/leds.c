@@ -38,6 +38,7 @@
 #include "config.h"
 #include "leds.h"
 #include "app.h"
+#include "spi.h"
 
 extern APP_DATA appData;
 extern ADC_DATA adcData;
@@ -54,7 +55,11 @@ void LED_Tasks()
 	case SLAVE_RUNNING:
 		if (TimerDone(TMR_LEDS)) {
 			SLED ^= 1;
-			StartTimer(TMR_LEDS, LED_BLINK_MS);
+			if (SPI_IsNewRxData()) {
+				StartTimer(TMR_LEDS, LED_BLINK_MS_FAST);
+			} else {
+				StartTimer(TMR_LEDS, LED_BLINK_MS);
+			}
 		}
 		break;
 

@@ -35,6 +35,7 @@ void SPI_Init(void)
 	SPI_SCK = 0;
 	SPI_SDI = 1;
 	SPI_CS0 = 1;
+	SPI_CS1 = 1;
 	rxBuf.tail = &rxBuf.buffer[0]; //Initialize the pointers
 	rxBuf.head = &rxBuf.buffer[0];
 	txBuf.tail = &txBuf.buffer[0];
@@ -45,6 +46,18 @@ void SPI_Init(void)
 	SPI_E_IF = 0;
 	SPI_X_IE = 0; //Setup SPI Receive and Error interrupt
 	SPI_E_IE = 1;
+}
+
+void SPI_Speed(const uint8_t speed)
+{
+	switch (speed) {
+	case 1:
+		SSP2CON1bits.SSPM = 0; // SPI MASTER SCK speed 16MHz
+		break;
+	default:
+		SSP2CON1bits.SSPM = 2; // SPI MASTER SCK speed 1MHz
+		break;
+	}
 }
 
 void SPI_ClearBufs(void)

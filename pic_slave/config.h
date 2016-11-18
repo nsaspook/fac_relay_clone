@@ -114,6 +114,7 @@
 #define ADC_REFRESH_MS      50          //delay between ADC reads
 #define POT_TX_MS           500         //delay between transmitting new pot values
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
+#define LED_BLINK_MS_FAST   300         //LED blink rate for advertise mode
 #define BT_TX_MS            150         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
 #define BAT_CHK_WAIT_MS     10          //CVref & CMP stabilization time
