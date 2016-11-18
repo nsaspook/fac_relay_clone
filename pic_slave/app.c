@@ -75,7 +75,7 @@ void APP_Tasks(void)
 		//Initial state
 	case APP_INITIALIZE:
 		if (APP_Initialize()) {
-			appData.state = APP_BLUETOOTH_ADVERTISE;
+			appData.state = APP_RUNNING;
 		} else {
 			appData.state = APP_INITIALIZATION_ERROR;
 		}
@@ -86,11 +86,14 @@ void APP_Tasks(void)
 		LED_SET_LightShow(LED_ERROR);
 		break;
 
+	case APP_RUNNING:
+		LED_SET_LightShow(SLAVE_RUNNING);
 		//Check if switches have changed and debounce timers are expired
 		Switch_Tasks();
 		if (appData.sendSwitches) { //New switch status to send?
-				appData.sendSwitches = false;
+			appData.sendSwitches = false;
 		}
+		break;
 
 	default:
 		break;
