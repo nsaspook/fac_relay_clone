@@ -13164,7 +13164,7 @@ Source: &lt;a href="http://www.farnell.com/datasheets/391100.pdf"&gt; Data sheet
 <text x="-15.24" y="22.86" size="1.778" layer="91">cs1</text>
 <text x="78.74" y="73.66" size="1.778" layer="91">mclr</text>
 <text x="86.36" y="73.66" size="1.778" layer="91">ota</text>
-<text x="134.62" y="-5.08" size="1.778" layer="91">status led</text>
+<text x="109.22" y="-15.24" size="1.778" layer="91">status led</text>
 <text x="213.36" y="76.2" size="1.778" layer="91">conn</text>
 <text x="233.68" y="76.2" size="1.778" layer="91">wake</text>
 </plain>
