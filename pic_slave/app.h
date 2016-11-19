@@ -57,13 +57,13 @@ typedef enum {
 
 typedef struct {
 	APP_STATE_T state; //APP_Tasks state
-	char receive_packet[BT_RX_PKT_SZ]; //message buffers
-	char transmit_packet[BT_TX_PKT_SZ];
+	uint8_t receive_packet[BT_RX_PKT_SZ]; //message buffers
+	uint8_t transmit_packet[BT_TX_PKT_SZ];
 	bool got_packet, //new packet flag
 	sendSwitches, //new switch states ready to send
 	ADCcalFlag, //ADC is calibrated if true
 	led1, led2, led3, led4, led5, led6; //LED states
-	int8_t error_code;
+	int8_t error_code, packet_size;
 	volatile bool sw1, sw2, sw3, sw4, //switch states
 	sw1Changed, sw2Changed, sw3Changed, sw4Changed, //switch state has changed
 	RTCCalarm, //RTCC alarm has tripped
@@ -72,7 +72,7 @@ typedef struct {
 	timer1Flag, //Timer1 has tripped
 	CNint, //CN interrupt has tripped (flag to exit sleep)
 	sleepFlag; //sleep mode triggered
-	uint16_t potValue, potValueOld, potValueLastTX, version_code; //potentiometer values - current, previous, and last transmitted, firmware version
+	uint16_t potValue, potValueOld, potValueLastTX, version_code, blink_rate; //potentiometer values - current, previous, and last transmitted, firmware version
 } APP_DATA;
 
 /* for 24-bit transmit and extra status data */

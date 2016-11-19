@@ -28,10 +28,10 @@ void DAC_Init(void)
 	AMP2CONbits.PINSEL = 5; // connect to DAC
 }
 
-void UART_WriteDacBuffer(const uint8_t data, const uint8_t device) // device 0 is DAC1
+void SPI_WriteDacBuffer(const uint8_t data, const uint8_t device) // device 2 is DAC2
 {
 	switch (device) {
-	case 1:
+	case 2:
 		DAC2DAT = data;
 		break;
 	default:

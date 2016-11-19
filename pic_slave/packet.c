@@ -37,19 +37,52 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "bluetooth.h"
+#include "packet.h"
 #include "config.h"
 #include "app.h"
-#include "uart.h"
+#include "spi.h"
 #include "timers.h"
+
+extern APP_DATA appData;
 
 uint16_t BT_CheckFwVer(void);
 
 //**********************************************************************************************************************
-// Receive a message over the Bluetooth link
+// Receive a message over the SPI link
 
-bool BT_ReceivePacket(char * Message)
+bool SPI_ReceivePacket(uint8_t * Message)
 {
+	static enum SPIDecodeState spiDecodeState = WaitForEOF; //Static so maintains state on reentry   //Byte read from the SPI buffer
+	static uint16_t i = 0;
+
+	if (SPI_IsNewRxData()) //Check if new data byte from spi and return if nothing new
+	{
+		Message[i++] = SPI_ReadRxBuffer();
+		if (i == BT_RX_PKT_SZ) {
+			i = 0;
+		}
+
+		switch (spiDecodeState) {
+		case WaitForEOF:
+			if (i == appData.packet_size) { //See if this is the correct length
+				spiDecodeState = WaitForCHK;
+			}
+			break;
+
+		case WaitForCHK:
+			spiDecodeState = WaitForEOF; //Will be looking for a new packet next
+			if (Message[i - 1] == SPI_CHECKMARK) 
+			{
+				//Got a complete message!
+				i = 0;
+				return true;
+			}
+			break;
+
+		default: //Invalid state so start looking for a new start of frame
+			spiDecodeState = WaitForEOF;
+		}
+	}
 	return false;
 }
 

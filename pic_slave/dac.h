@@ -16,7 +16,7 @@ extern "C" {
 #include <stdbool.h>
 
 	void DAC_Init(void);
-	void UART_WriteDacBuffer(const uint8_t, const uint8_t);
+	void SPI_WriteDacBuffer(const uint8_t, const uint8_t);
 
 #ifdef	__cplusplus
 }

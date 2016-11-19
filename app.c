@@ -167,8 +167,9 @@ void APP_Tasks(void)
 		if (appData.got_packet == true) { //true if new packet received
 
 			if (!SPI_IsTxData()) {
-				SPI_WriteTxBuffer(0x66);
-				SPI_WriteTxBuffer(0x66);
+				SPI_WriteTxBuffer(appData.potValue&0xff);
+				SPI_WriteTxBuffer(appData.potValue>>8);
+				SPI_WriteTxBuffer(0x57); //checkmark
 				SPI_CS1 = 0; // select the PIC slave
 				SPI_Speed(1); // high speed
 				SPI_TxStart();

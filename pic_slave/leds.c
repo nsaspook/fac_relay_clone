@@ -41,7 +41,7 @@
 #include "spi.h"
 
 extern APP_DATA appData;
-extern ADC_DATA adcData;
+
 static LED_LIGHTSHOW_T lightShow = SLAVE_IDLE;
 
 void LED_Tasks()
@@ -55,11 +55,7 @@ void LED_Tasks()
 	case SLAVE_RUNNING:
 		if (TimerDone(TMR_LEDS)) {
 			SLED ^= 1;
-			if (SPI_IsNewRxData()) {
-				StartTimer(TMR_LEDS, LED_BLINK_MS_FAST);
-			} else {
-				StartTimer(TMR_LEDS, LED_BLINK_MS);
-			}
+			StartTimer(TMR_LEDS, appData.blink_rate);
 		}
 		break;
 

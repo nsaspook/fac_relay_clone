@@ -46,7 +46,7 @@
 #include "config.h"
 #include "timers.h"
 #include "uart.h"
-#include "bluetooth.h"
+#include "packet.h"
 #include "adc.h"
 #include "leds.h"
 #include "switches.h"
@@ -57,7 +57,6 @@
 #include "dac.h"
 
 APP_DATA appData;
-ADC_DATA adcData;
 
 //Primary application state machine
 
@@ -92,6 +91,13 @@ void APP_Tasks(void)
 		Switch_Tasks();
 		if (appData.sendSwitches) { //New switch status to send?
 			appData.sendSwitches = false;
+		}
+
+		appData.got_packet = SPI_ReceivePacket(appData.receive_packet);
+		if (appData.got_packet == true) { //true if new packet received
+			SPI_WriteDacBuffer(128, 1);
+			SPI_WriteDacBuffer(64, 2);
+			appData.blink_rate = LED_BLINK_MS_FAST;
 		}
 		break;
 
@@ -134,6 +140,8 @@ bool APP_Initialize(void)
 	appData.accumReady = false;
 	appData.ADCinUse = false;
 	appData.timer1Flag = false;
+	appData.blink_rate = LED_BLINK_MS;
+	appData.packet_size = 2; // set to data structure size
 
 	/****************************************************************************
 	 * Peripherals Init

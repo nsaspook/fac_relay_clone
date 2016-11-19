@@ -4,7 +4,7 @@ build/default/production/_ext/1472/app.o:  \
 ../config.h  \
  ../timers.h  \
 ../uart.h  \
-../bluetooth.h  \
+../packet.h  \
 ../adc.h  \
 ../leds.h  \
 ../switches.h  \

@@ -52,7 +52,7 @@ void SPI_Speed(const uint8_t speed)
 {
 	switch (speed) {
 	case 1:
-		SSP2CON1bits.SSPM = 0; // SPI MASTER SCK speed 16MHz
+		SSP2CON1bits.SSPM = 1; // SPI MASTER SCK speed 16MHz
 		break;
 	default:
 		SSP2CON1bits.SSPM = 2; // SPI MASTER SCK speed 1MHz

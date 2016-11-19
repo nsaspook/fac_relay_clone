@@ -45,12 +45,12 @@
 #define ERR "ERR\r\n"
 #define CMD "CMD\r\n"
 
-enum BluetoothDecodeState {
-	WaitForCR, WaitForLF
+enum SPIDecodeState {
+	WaitForEOF, WaitForCHK
 };
 
 
-bool BT_ReceivePacket(char *message);
+bool SPI_ReceivePacket(uint8_t *message);
 bool BT_SendCommand(const char *data, bool wait);
 void BT_SendByte(char data);
 bool BT_GetResponse(char *data);

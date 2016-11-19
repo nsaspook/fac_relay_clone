@@ -114,7 +114,7 @@
 #define ADC_REFRESH_MS      50          //delay between ADC reads
 #define POT_TX_MS           500         //delay between transmitting new pot values
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
-#define LED_BLINK_MS_FAST   300         //LED blink rate for advertise mode
+#define LED_BLINK_MS_FAST   200         //LED blink rate for advertise mode
 #define BT_TX_MS            150         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
 #define BAT_CHK_WAIT_MS     10          //CVref & CMP stabilization time
@@ -126,6 +126,7 @@
 #define SIZE_RxBuffer   256               //UART RX software buffer size in bytes
 #define SIZE_TxBuffer   256               //UART TX software buffer size in bytes
 #define SIZE_SPI_Buffer 64
+#define SPI_CHECKMARK	0x57
 
 #define BT_RX_PKT_SZ    100               //Max receive packet length
 #define BT_TX_PKT_SZ    100               //Max transmit packet length
