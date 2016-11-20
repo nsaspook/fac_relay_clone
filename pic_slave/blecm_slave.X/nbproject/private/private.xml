@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="MBMC"/>
+        <group name="MBMC">
+            <file>file:/sdd/work/fac_relay_clone/pic_slave/main.c</file>
+            <file>file:/sdd/work/fac_relay_clone/pic_slave/leds.c</file>
+            <file>file:/sdd/work/fac_relay_clone/pic_slave/packet.c</file>
+            <file>file:/sdd/work/fac_relay_clone/pic_slave/dac.c</file>
+            <file>file:/sdd/work/fac_relay_clone/pic_slave/app.c</file>
+            <file>file:/sdd/work/fac_relay_clone/pic_slave/spi.c</file>
+            <file>file:/sdd/work/fac_relay_clone/pic_slave/app.h</file>
+            <file>file:/sdd/work/fac_relay_clone/pic_slave/config.h</file>
+        </group>
     </open-files>
 </project-private>

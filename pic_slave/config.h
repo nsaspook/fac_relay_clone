@@ -199,10 +199,6 @@
 #define SLED LATBbits.LATB14
 #define SLED_TRIS TRISBbits.TRISB14
 
-#define LED_TRIS1 TRISBbits.TRISB13
-#define LED_TRIS3 TRISBbits.TRISB4
-#define LED_TRIS4 TRISBbits.TRISB3
-
 // SPI
 #define SPI_SS2	TRISBbits.TRISB12
 #define SPI_SDO	TRISBbits.TRISB6

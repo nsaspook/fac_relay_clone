@@ -95,8 +95,10 @@ void APP_Tasks(void)
 
 		appData.got_packet = SPI_ReceivePacket(appData.receive_packet);
 		if (appData.got_packet == true) { //true if new packet received
-			SPI_WriteDacBuffer(128, 1);
-			SPI_WriteDacBuffer(64, 2);
+			SPI_WriteDacBuffer(appData.receive_packet[0], 1);
+			SPI_WriteDacBuffer(appData.receive_packet[0], 2);
+			//SPI_WriteDacBuffer(255, 1);
+			//SPI_WriteDacBuffer(255, 2);
 			appData.blink_rate = LED_BLINK_MS_FAST;
 		}
 		break;

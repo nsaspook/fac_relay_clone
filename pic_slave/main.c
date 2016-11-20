@@ -136,6 +136,8 @@ void initBoard(void)
 	 ***************************************************************************/
 	ANSA = 0x00;
 	ANSB = 0x00;
+	ANSBbits.ANSB3 = 1;
+	ANSBbits.ANSB15 = 1;
 
 	CNPU1 = 0;
 	CNPU2 = 0;
@@ -151,14 +153,6 @@ void initBoard(void)
 	//	IEC1bits.CNIE = 1;
 
 	// LEDs are outputs and off
-
-	LED5 = 0;
-	LED6 = 0;
-	LED7 = 0;
-	LED_TRIS1 = 0;
-
-	LED_TRIS3 = 0;
-	LED_TRIS4 = 0;
 	SLED = 0;
 	SLED_TRIS = 0;
 
