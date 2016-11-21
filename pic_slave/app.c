@@ -55,6 +55,7 @@
 #include "sleep.h"
 #include "spi.h"
 #include "dac.h"
+#include "../link.h"
 
 APP_DATA appData;
 
@@ -95,10 +96,9 @@ void APP_Tasks(void)
 
 		appData.got_packet = SPI_ReceivePacket(appData.receive_packet);
 		if (appData.got_packet == true) { //true if new packet received
-			SPI_WriteDacBuffer(appData.receive_packet[0], 1);
-			SPI_WriteDacBuffer(appData.receive_packet[0], 2);
-			//SPI_WriteDacBuffer(255, 1);
-			//SPI_WriteDacBuffer(255, 2);
+			appData.packet_data = Read_Link_Packet(appData.receive_packet);
+			SPI_WriteDacBuffer(appData.packet_data->dac1, 1);
+			SPI_WriteDacBuffer(appData.packet_data->dac2, 2);
 			appData.blink_rate = LED_BLINK_MS_FAST;
 		}
 		break;
@@ -143,7 +143,7 @@ bool APP_Initialize(void)
 	appData.ADCinUse = false;
 	appData.timer1Flag = false;
 	appData.blink_rate = LED_BLINK_MS;
-	appData.packet_size = 2; // set to data structure size
+	appData.packet_size = LINK_BYTES; // set to data structure size
 
 	/****************************************************************************
 	 * Peripherals Init

@@ -47,6 +47,18 @@ void SPI_Init(void)
 	SPI_E_IE = 1;
 }
 
+void SPI_Speed(const uint8_t speed)
+{
+	switch (speed) {
+	case 1:
+		SSP2CON1bits.SSPM = 1; // SPI MASTER SCK speed 16MHz
+		break;
+	default:
+		SSP2CON1bits.SSPM = 2; // SPI MASTER SCK speed 1MHz
+		break;
+	}
+}
+
 void SPI_ClearBufs(void)
 {
 	__builtin_disi(0x3FFF); //disable interrupts

@@ -4,4 +4,6 @@ build/default/production/_ext/1472/leds.o:  \
  ../config.h  \
 ../leds.h  \
 ../app.h  \
+../../link.h  \
+../../config.h  \
 ../spi.h 

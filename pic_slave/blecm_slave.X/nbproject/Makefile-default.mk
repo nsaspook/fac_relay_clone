@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../app.c ../comparator.c ../leds.c ../main.c ../rtcc.c ../sleep.c ../spi.c ../switches.c ../timers.c ../uart.c ../dac.c ../packet.c
+SOURCEFILES_QUOTED_IF_SPACED=../app.c ../comparator.c ../leds.c ../main.c ../rtcc.c ../sleep.c ../spi.c ../switches.c ../timers.c ../uart.c ../dac.c ../packet.c ../../link.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1472/app.o ${OBJECTDIR}/_ext/1472/comparator.o ${OBJECTDIR}/_ext/1472/leds.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/rtcc.o ${OBJECTDIR}/_ext/1472/sleep.o ${OBJECTDIR}/_ext/1472/spi.o ${OBJECTDIR}/_ext/1472/switches.o ${OBJECTDIR}/_ext/1472/timers.o ${OBJECTDIR}/_ext/1472/uart.o ${OBJECTDIR}/_ext/1472/dac.o ${OBJECTDIR}/_ext/1472/packet.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1472/app.o.d ${OBJECTDIR}/_ext/1472/comparator.o.d ${OBJECTDIR}/_ext/1472/leds.o.d ${OBJECTDIR}/_ext/1472/main.o.d ${OBJECTDIR}/_ext/1472/rtcc.o.d ${OBJECTDIR}/_ext/1472/sleep.o.d ${OBJECTDIR}/_ext/1472/spi.o.d ${OBJECTDIR}/_ext/1472/switches.o.d ${OBJECTDIR}/_ext/1472/timers.o.d ${OBJECTDIR}/_ext/1472/uart.o.d ${OBJECTDIR}/_ext/1472/dac.o.d ${OBJECTDIR}/_ext/1472/packet.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1472/app.o ${OBJECTDIR}/_ext/1472/comparator.o ${OBJECTDIR}/_ext/1472/leds.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/rtcc.o ${OBJECTDIR}/_ext/1472/sleep.o ${OBJECTDIR}/_ext/1472/spi.o ${OBJECTDIR}/_ext/1472/switches.o ${OBJECTDIR}/_ext/1472/timers.o ${OBJECTDIR}/_ext/1472/uart.o ${OBJECTDIR}/_ext/1472/dac.o ${OBJECTDIR}/_ext/1472/packet.o ${OBJECTDIR}/_ext/43898991/link.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1472/app.o.d ${OBJECTDIR}/_ext/1472/comparator.o.d ${OBJECTDIR}/_ext/1472/leds.o.d ${OBJECTDIR}/_ext/1472/main.o.d ${OBJECTDIR}/_ext/1472/rtcc.o.d ${OBJECTDIR}/_ext/1472/sleep.o.d ${OBJECTDIR}/_ext/1472/spi.o.d ${OBJECTDIR}/_ext/1472/switches.o.d ${OBJECTDIR}/_ext/1472/timers.o.d ${OBJECTDIR}/_ext/1472/uart.o.d ${OBJECTDIR}/_ext/1472/dac.o.d ${OBJECTDIR}/_ext/1472/packet.o.d ${OBJECTDIR}/_ext/43898991/link.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/1472/app.o ${OBJECTDIR}/_ext/1472/comparator.o ${OBJECTDIR}/_ext/1472/leds.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/rtcc.o ${OBJECTDIR}/_ext/1472/sleep.o ${OBJECTDIR}/_ext/1472/spi.o ${OBJECTDIR}/_ext/1472/switches.o ${OBJECTDIR}/_ext/1472/timers.o ${OBJECTDIR}/_ext/1472/uart.o ${OBJECTDIR}/_ext/1472/dac.o ${OBJECTDIR}/_ext/1472/packet.o
+OBJECTFILES=${OBJECTDIR}/_ext/1472/app.o ${OBJECTDIR}/_ext/1472/comparator.o ${OBJECTDIR}/_ext/1472/leds.o ${OBJECTDIR}/_ext/1472/main.o ${OBJECTDIR}/_ext/1472/rtcc.o ${OBJECTDIR}/_ext/1472/sleep.o ${OBJECTDIR}/_ext/1472/spi.o ${OBJECTDIR}/_ext/1472/switches.o ${OBJECTDIR}/_ext/1472/timers.o ${OBJECTDIR}/_ext/1472/uart.o ${OBJECTDIR}/_ext/1472/dac.o ${OBJECTDIR}/_ext/1472/packet.o ${OBJECTDIR}/_ext/43898991/link.o
 
 # Source Files
-SOURCEFILES=../app.c ../comparator.c ../leds.c ../main.c ../rtcc.c ../sleep.c ../spi.c ../switches.c ../timers.c ../uart.c ../dac.c ../packet.c
+SOURCEFILES=../app.c ../comparator.c ../leds.c ../main.c ../rtcc.c ../sleep.c ../spi.c ../switches.c ../timers.c ../uart.c ../dac.c ../packet.c ../../link.c
 
 
 CFLAGS=
@@ -172,6 +172,13 @@ ${OBJECTDIR}/_ext/1472/packet.o: ../packet.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../packet.c  -o ${OBJECTDIR}/_ext/1472/packet.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/packet.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O1 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/packet.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/_ext/43898991/link.o: ../../link.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/43898991" 
+	@${RM} ${OBJECTDIR}/_ext/43898991/link.o.d 
+	@${RM} ${OBJECTDIR}/_ext/43898991/link.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../link.c  -o ${OBJECTDIR}/_ext/43898991/link.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/43898991/link.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O1 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/_ext/43898991/link.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/_ext/1472/app.o: ../app.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/1472" 
@@ -256,6 +263,13 @@ ${OBJECTDIR}/_ext/1472/packet.o: ../packet.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/_ext/1472/packet.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../packet.c  -o ${OBJECTDIR}/_ext/1472/packet.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1472/packet.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O1 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1472/packet.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/43898991/link.o: ../../link.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/43898991" 
+	@${RM} ${OBJECTDIR}/_ext/43898991/link.o.d 
+	@${RM} ${OBJECTDIR}/_ext/43898991/link.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../../link.c  -o ${OBJECTDIR}/_ext/43898991/link.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/43898991/link.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD)  -O1 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/_ext/43898991/link.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

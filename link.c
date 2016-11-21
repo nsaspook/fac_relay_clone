@@ -1,4 +1,5 @@
 #include <xc.h>
+#include <string.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -7,7 +8,7 @@
 #include "spi.h"
 #include "link.h"
 
-struct LINK_DATA	l_data;
+static struct LINK_DATA l_data;
 
 bool Write_Link_Packet(const uint8_t *data, uint16_t count)
 {
@@ -15,6 +16,8 @@ bool Write_Link_Packet(const uint8_t *data, uint16_t count)
 
 	if (!SPI_IsTxData()) {
 		for (i = 0; i < count; i++) {
+			if (SPI_GetTXBufferFreeSpace() < 2)
+				return false;
 			SPI_WriteTxBuffer(*data++); //Load byte into the transmit buffer
 		}
 		SPI_WriteTxBuffer(0x57); //checkmark
@@ -25,4 +28,9 @@ bool Write_Link_Packet(const uint8_t *data, uint16_t count)
 		return true;
 	} else
 		return false;
+}
+
+struct LINK_DATA* Read_Link_Packet(const uint8_t *data)
+{
+	return memcpy(&l_data, data, LINK_BYTES);
 }

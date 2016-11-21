@@ -42,6 +42,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "config.h"
+#include "../link.h"
 
 #define ERROR_NONE              1
 #define ERROR_INITIALIZATION    -2
@@ -73,6 +74,7 @@ typedef struct {
 	CNint, //CN interrupt has tripped (flag to exit sleep)
 	sleepFlag; //sleep mode triggered
 	uint16_t potValue, potValueOld, potValueLastTX, version_code, blink_rate; //potentiometer values - current, previous, and last transmitted, firmware version
+	struct LINK_DATA *packet_data;
 } APP_DATA;
 
 /* for 24-bit transmit and extra status data */

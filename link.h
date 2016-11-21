@@ -41,12 +41,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
-    typedef struct LINK_DATA {
-        uint8_t dac1;
-        uint8_t dac2;
-    } LINK_DATA;
+	typedef struct LINK_DATA {
+		uint8_t dac1;
+		uint8_t dac2;
+	} LINK_DATA;
 
-    bool Write_Link_Packet(const uint8_t *, uint16_t);
+	bool Write_Link_Packet(const uint8_t *, uint16_t);
+	struct LINK_DATA* Read_Link_Packet(const uint8_t *);
 
 #define LINK_BYTES  2
 
