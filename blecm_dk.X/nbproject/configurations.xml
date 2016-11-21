@@ -7,7 +7,6 @@
       <itemPath>../adc.h</itemPath>
       <itemPath>../app.h</itemPath>
       <itemPath>../bluetooth.h</itemPath>
-      <itemPath>../comparator.h</itemPath>
       <itemPath>../leds.h</itemPath>
       <itemPath>../rtcc.h</itemPath>
       <itemPath>../switches.h</itemPath>
@@ -16,6 +15,7 @@
       <itemPath>../sleep.h</itemPath>
       <itemPath>../config.h</itemPath>
       <itemPath>../spi.h</itemPath>
+      <itemPath>../link.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -27,7 +27,6 @@
       <itemPath>../adc.c</itemPath>
       <itemPath>../app.c</itemPath>
       <itemPath>../bluetooth.c</itemPath>
-      <itemPath>../comparator.c</itemPath>
       <itemPath>../leds.c</itemPath>
       <itemPath>../main.c</itemPath>
       <itemPath>../rtcc.c</itemPath>
@@ -36,6 +35,7 @@
       <itemPath>../uart.c</itemPath>
       <itemPath>../sleep.c</itemPath>
       <itemPath>../spi.c</itemPath>
+      <itemPath>../link.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

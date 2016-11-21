@@ -50,13 +50,14 @@
 #include "adc.h"
 #include "leds.h"
 #include "switches.h"
-#include "comparator.h"
 #include "rtcc.h"
 #include "sleep.h"
 #include "spi.h"
+#include "link.h"
 
 APP_DATA appData;
 ADC_DATA adcData;
+extern LINK_DATA l_data;
 
 //Primary application state machine
 
@@ -75,11 +76,6 @@ void APP_Tasks(void)
 
 	//Update LED outputs
 	LED_Tasks();
-
-	//Time to check battery/input voltage?
-	if (TimerDone(TMR_BAT_CHECK) && appData.state != APP_INITIALIZE) {
-		StartTimer(TMR_BAT_CHECK, CMP_Tasks()); //Run tasks and restart timer
-	}
 
 	switch (appData.state) {
 		//Initial state
@@ -166,15 +162,10 @@ void APP_Tasks(void)
 		appData.got_packet = BT_ReceivePacket(appData.receive_packet); //Get new message if one has been received from the RN4020
 		if (appData.got_packet == true) { //true if new packet received
 
-			if (!SPI_IsTxData()) {
-				SPI_WriteTxBuffer(appData.potValue&0xff);
-				SPI_WriteTxBuffer(appData.potValue>>8);
-				SPI_WriteTxBuffer(0x57); //checkmark
-				SPI_CS1 = 0; // select the PIC slave
-				SPI_Speed(1); // high speed
-				SPI_TxStart();
-			}
-			
+			l_data.dac1 = appData.potValue & 0xff;
+			l_data.dac2 = appData.potValue >> 8;
+			Write_Link_Packet((uint8_t *) &l_data.dac1, LINK_BYTES);
+
 			if (strstr(appData.receive_packet, "WV,001E,")) { //Check for LED update message 1.23
 				GetNewLEDs(); //Latch new LED values
 			}
@@ -250,7 +241,6 @@ bool APP_Initialize(void)
 	ADC_Init(); //Initialize the pADC
 	UART_Init(); //Initialize the UART
 	Timers_Init(); //Initialize the timers
-	CMP_Init(); //Initialize CVref and CMP2
 	SPI_Init();
 
 #ifdef USE_SLEEP            //see config.h, Application settings section
