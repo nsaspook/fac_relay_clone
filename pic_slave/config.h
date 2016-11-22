@@ -39,7 +39,7 @@
 
 #include <xc.h>
 
-#define APP_VERSION_STR "0.1"       //This firmware version
+#define APP_VERSION_STR "0.2"       //This firmware version
 
 /*******************************************************************************
  * Application settings - these will change application behavior

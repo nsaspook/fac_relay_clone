@@ -1,20 +1,20 @@
 Microchip Technology Inc, v1.26 (A)
 
 Tool Name:
-  /sdd/opt/microchip/xc16/v1.26/bin/bin/../bin/elf-ld
+  /opt/microchip/xc16/v1.26/bin/bin/../bin/elf-ld
 
 Command:
   -p24FV16KM202 \
   -o \
   dist/default/production/blecm_slave.X.production.elf \
-  -L/sdd/opt/microchip/xc16/v1.26/bin/bin/.. \
-  -L/sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib \
-  -L/sdd/opt/microchip/xc16/v1.26/bin/bin/../../support/PIC24E/gld \
-  -L/sdd/opt/microchip/xc16/v1.26/bin/bin/../../support/PIC24F/gld \
-  -L/sdd/opt/microchip/xc16/v1.26/bin/bin/../../support/PIC24H/gld \
-  -L/sdd/opt/microchip/xc16/v1.26/bin/bin/../../support/dsPIC30F/gld \
-  -L/sdd/opt/microchip/xc16/v1.26/bin/bin/../../support/dsPIC33E/gld \
-  -L/sdd/opt/microchip/xc16/v1.26/bin/bin/../../support/dsPIC33F/gld \
+  -L/opt/microchip/xc16/v1.26/bin/bin/.. \
+  -L/opt/microchip/xc16/v1.26/bin/bin/../../lib \
+  -L/opt/microchip/xc16/v1.26/bin/bin/../../support/PIC24E/gld \
+  -L/opt/microchip/xc16/v1.26/bin/bin/../../support/PIC24F/gld \
+  -L/opt/microchip/xc16/v1.26/bin/bin/../../support/PIC24H/gld \
+  -L/opt/microchip/xc16/v1.26/bin/bin/../../support/dsPIC30F/gld \
+  -L/opt/microchip/xc16/v1.26/bin/bin/../../support/dsPIC33E/gld \
+  -L/opt/microchip/xc16/v1.26/bin/bin/../../support/dsPIC33F/gld \
   build/default/production/_ext/1472/app.o \
   build/default/production/_ext/1472/comparator.o \
   build/default/production/_ext/1472/leds.o \
@@ -55,10 +55,10 @@ Command:
 Optional library libpPIC24Fxxx.a not found
 Archive member included because of file (symbol)
 
-/sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
+/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
                               (__resetPRI)
-/sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
-                              /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o) (__data_init_standard)
+/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
+                              /opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o) (__data_init_standard)
 
 
 Selected CodeGuard Options:
@@ -90,12 +90,12 @@ Program Memory  [Origin = 0x200, Length = 0x2a00]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200                0xac           0x102  (258)
-.text                        0x2ac               0x670           0x9a8  (2472)
-.dinit                       0x91c                0x2c            0x42  (66)
-.text                        0x948                 0xa             0xf  (15)
-.shared.dinit                0x952                 0x2             0x3  (3)
+.text                        0x2ac               0x676           0x9b1  (2481)
+.dinit                       0x922                0x30            0x48  (72)
+.text                        0x952                 0xa             0xf  (15)
+.shared.dinit                0x95c                 0x2             0x3  (3)
 
-                 Total program memory used (bytes):          0xafe  (2814) 17%
+                 Total program memory used (bytes):          0xb0d  (2829) 17%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0xfc]
@@ -116,9 +116,11 @@ Data Memory  [Origin = 0x800, Length = 0x800]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0           0x3a8  (936)
+.nbss                        0x800                   0           0x3a4  (932)
+.ndata                       0xba4                   0             0x4  (4)
+.nbss                        0xba8                   0             0x2  (2)
 
-                 Total data memory used (bytes):          0x3a8  (936) 45%
+                 Total data memory used (bytes):          0x3aa  (938) 45%
 
 
 Dynamic Memory Usage
@@ -126,18 +128,20 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0xba8                               0x458  (1112)
+stack                        0xbaa                               0x456  (1110)
 
-                 Maximum dynamic memory (bytes):          0x458  (1112)
+                 Maximum dynamic memory (bytes):          0x456  (1110)
 
 
 External Symbols in Data Memory (by address):
 
                     0x0a0c                  _appData
+                    0x0ba4                  _l_data
 
 External Symbols in Data Memory (by name):
 
                     0x0a0c                  _appData
+                    0x0ba4                  _l_data
 
 External Symbols in Program Memory (by address):
 
@@ -191,14 +195,14 @@ External Symbols in Program Memory (by address):
                   0x000832                  _SPI_WriteDacBuffer
                   0x000842                  _Write_Link_Packet
                   0x000882                  _Read_Link_Packet
-                  0x000892                  _Switch_Tasks
-                  0x0008dc                  __CNInterrupt
-                  0x0008e0                  _LED_Tasks
-                  0x000916                  _LED_SET_LightShow
-                  0x00091a                  _GetNewLEDs
-                  0x000948                  _CMP_Tasks
-                  0x00094c                  _CMP_Init
-                  0x00094e                  __CompInterrupt
+                  0x000898                  _Switch_Tasks
+                  0x0008e2                  __CNInterrupt
+                  0x0008e6                  _LED_Tasks
+                  0x00091c                  _LED_SET_LightShow
+                  0x000920                  _GetNewLEDs
+                  0x000952                  _CMP_Tasks
+                  0x000956                  _CMP_Init
+                  0x000958                  __CompInterrupt
                   0xf80000                  __FBS.sec
                   0xf80004                  __FGS.sec
 
@@ -215,12 +219,12 @@ External Symbols in Program Memory (by name):
                   0x00074c                  _BT_SendByte
                   0x000748                  _BT_SendCommand
                   0x00075e                  _BT_SetupModule
-                  0x00094c                  _CMP_Init
-                  0x000948                  _CMP_Tasks
+                  0x000956                  _CMP_Init
+                  0x000952                  _CMP_Tasks
                   0x0007e0                  _DAC_Init
-                  0x00091a                  _GetNewLEDs
-                  0x000916                  _LED_SET_LightShow
-                  0x0008e0                  _LED_Tasks
+                  0x000920                  _GetNewLEDs
+                  0x00091c                  _LED_SET_LightShow
+                  0x0008e6                  _LED_Tasks
                   0x000882                  _Read_Link_Packet
                   0x0002ee                  _SPI_ClearBufs
                   0x00038a                  _SPI_GetTXBufferFreeSpace
@@ -235,7 +239,7 @@ External Symbols in Program Memory (by name):
                   0x000832                  _SPI_WriteDacBuffer
                   0x00036c                  _SPI_WriteTxBuffer
                   0x000780                  _StartTimer
-                  0x000892                  _Switch_Tasks
+                  0x000898                  _Switch_Tasks
                   0x00078c                  _TimerDone
                   0x00076a                  _Timers_Init
                   0x0004b0                  _UART_GetTXBufferFreeSpace
@@ -247,8 +251,8 @@ External Symbols in Program Memory (by name):
                   0x000492                  _UART_WriteTxBuffer
                   0x00079e                  _WaitMs
                   0x000842                  _Write_Link_Packet
-                  0x0008dc                  __CNInterrupt
-                  0x00094e                  __CompInterrupt
+                  0x0008e2                  __CNInterrupt
+                  0x000958                  __CompInterrupt
                   0x0002a8                  __DefaultInterrupt
                   0xf80000                  __FBS.sec
                   0xf80004                  __FGS.sec
@@ -301,7 +305,7 @@ LOAD build/default/production/_ext/1472/packet.o
 LOAD build/default/production/_ext/43898991/link.o
                     0x0001                  __MPLAB_BUILD = 0x1
 LOAD pPIC24Fxxx
-LOAD /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libfx-elf.a
+LOAD /opt/microchip/xc16/v1.26/bin/bin/../../lib/libfx-elf.a
                     0xf80000                  __FBS = 0xf80000
                     0xf80004                  __FGS = 0xf80004
                     0xf80006                  __FOSCSEL = 0xf80006
@@ -325,11 +329,11 @@ LOAD /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libfx-elf.a
 
 .text             0x000200         0xac
  *(.init)
- .init            0x000200         0x3c /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
+ .init            0x000200         0x3c /opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
                   0x000200                  __reset
                   0x000200                  __resetPRI
                   0x00022c                  __psv_init
- .init            0x00023c         0x6c /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
+ .init            0x00023c         0x6c /opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
                   0x00023c                  __data_init
                   0x00023c                  __data_init_standard
  *(.user_init)
@@ -373,24 +377,24 @@ __FICD
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x6385
+.debug_info       0x000000       0x6437
  *(.debug_info)
- .debug_info      0x000000        0x813 build/default/production/_ext/1472/app.o
- .debug_info      0x000813        0x2b6 build/default/production/_ext/1472/comparator.o
- .debug_info      0x000ac9        0x841 build/default/production/_ext/1472/leds.o
- .debug_info      0x00130a       0x19ee build/default/production/_ext/1472/main.o
- .debug_info      0x002cf8        0x122 build/default/production/_ext/1472/rtcc.o
- .debug_info      0x002e1a         0xa7 build/default/production/_ext/1472/sleep.o
- .debug_info      0x002ec1        0x901 build/default/production/_ext/1472/spi.o
- .debug_info      0x0037c2        0x732 build/default/production/_ext/1472/switches.o
- .debug_info      0x003ef4        0x604 build/default/production/_ext/1472/timers.o
- .debug_info      0x0044f8        0xa8c build/default/production/_ext/1472/uart.o
- .debug_info      0x004f84        0x86c build/default/production/_ext/1472/dac.o
- .debug_info      0x0057f0        0x7b9 build/default/production/_ext/1472/packet.o
- .debug_info      0x005fa9        0x3dc build/default/production/_ext/43898991/link.o
+ .debug_info      0x000000        0x828 build/default/production/_ext/1472/app.o
+ .debug_info      0x000828        0x2bd build/default/production/_ext/1472/comparator.o
+ .debug_info      0x000ae5        0x856 build/default/production/_ext/1472/leds.o
+ .debug_info      0x00133b       0x19f5 build/default/production/_ext/1472/main.o
+ .debug_info      0x002d30        0x129 build/default/production/_ext/1472/rtcc.o
+ .debug_info      0x002e59         0xae build/default/production/_ext/1472/sleep.o
+ .debug_info      0x002f07        0x908 build/default/production/_ext/1472/spi.o
+ .debug_info      0x00380f        0x747 build/default/production/_ext/1472/switches.o
+ .debug_info      0x003f56        0x60b build/default/production/_ext/1472/timers.o
+ .debug_info      0x004561        0xa93 build/default/production/_ext/1472/uart.o
+ .debug_info      0x004ff4        0x873 build/default/production/_ext/1472/dac.o
+ .debug_info      0x005867        0x7ce build/default/production/_ext/1472/packet.o
+ .debug_info      0x006035        0x402 build/default/production/_ext/43898991/link.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0xc52
+.debug_abbrev     0x000000        0xc74
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x12e build/default/production/_ext/1472/app.o
  .debug_abbrev    0x00012e         0xa1 build/default/production/_ext/1472/comparator.o
@@ -404,23 +408,23 @@ __FICD
  .debug_abbrev    0x0007d2        0x184 build/default/production/_ext/1472/uart.o
  .debug_abbrev    0x000956        0x107 build/default/production/_ext/1472/dac.o
  .debug_abbrev    0x000a5d        0x11b build/default/production/_ext/1472/packet.o
- .debug_abbrev    0x000b78         0xda build/default/production/_ext/43898991/link.o
+ .debug_abbrev    0x000b78         0xfc build/default/production/_ext/43898991/link.o
 
-.debug_line       0x000000        0xac8
+.debug_line       0x000000        0xa79
  *(.debug_line)
- .debug_line      0x000000        0x12f build/default/production/_ext/1472/app.o
- .debug_line      0x00012f         0xce build/default/production/_ext/1472/comparator.o
- .debug_line      0x0001fd         0xff build/default/production/_ext/1472/leds.o
- .debug_line      0x0002fc         0xbe build/default/production/_ext/1472/main.o
- .debug_line      0x0003ba         0x1a build/default/production/_ext/1472/rtcc.o
- .debug_line      0x0003d4         0x1a build/default/production/_ext/1472/sleep.o
- .debug_line      0x0003ee        0x137 build/default/production/_ext/1472/spi.o
- .debug_line      0x000525         0xfe build/default/production/_ext/1472/switches.o
- .debug_line      0x000623         0xee build/default/production/_ext/1472/timers.o
- .debug_line      0x000711        0x11c build/default/production/_ext/1472/uart.o
- .debug_line      0x00082d         0xdb build/default/production/_ext/1472/dac.o
- .debug_line      0x000908         0xd6 build/default/production/_ext/1472/packet.o
- .debug_line      0x0009de         0xea build/default/production/_ext/43898991/link.o
+ .debug_line      0x000000        0x127 build/default/production/_ext/1472/app.o
+ .debug_line      0x000127         0xc6 build/default/production/_ext/1472/comparator.o
+ .debug_line      0x0001ed         0xf7 build/default/production/_ext/1472/leds.o
+ .debug_line      0x0002e4         0xba build/default/production/_ext/1472/main.o
+ .debug_line      0x00039e         0x1a build/default/production/_ext/1472/rtcc.o
+ .debug_line      0x0003b8         0x1a build/default/production/_ext/1472/sleep.o
+ .debug_line      0x0003d2        0x12f build/default/production/_ext/1472/spi.o
+ .debug_line      0x000501         0xf6 build/default/production/_ext/1472/switches.o
+ .debug_line      0x0005f7         0xe6 build/default/production/_ext/1472/timers.o
+ .debug_line      0x0006dd        0x114 build/default/production/_ext/1472/uart.o
+ .debug_line      0x0007f1         0xd3 build/default/production/_ext/1472/dac.o
+ .debug_line      0x0008c4         0xd2 build/default/production/_ext/1472/packet.o
+ .debug_line      0x000996         0xe3 build/default/production/_ext/43898991/link.o
 
 .debug_frame      0x000000        0x4a0
  *(.debug_frame)
@@ -456,7 +460,7 @@ __FICD
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x4af
+                  0x000000        0x4ba
  *(.debug_pubnames)
  .debug_pubnames
                   0x000000         0x3f build/default/production/_ext/1472/app.o
@@ -479,7 +483,7 @@ __FICD
  .debug_pubnames
                   0x00038e         0xe4 build/default/production/_ext/1472/packet.o
  .debug_pubnames
-                  0x000472         0x3d build/default/production/_ext/43898991/link.o
+                  0x000472         0x48 build/default/production/_ext/43898991/link.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -1263,9 +1267,9 @@ __FICD
                     0x0230                  UART2 = 0x230
                     0x0230                  _UART2 = 0x230
 START GROUP
-LOAD /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a
-LOAD /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libm-elf.a
-LOAD /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libc-elf.a
+LOAD /opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a
+LOAD /opt/microchip/xc16/v1.26/bin/bin/../../lib/libm-elf.a
+LOAD /opt/microchip/xc16/v1.26/bin/bin/../../lib/libc-elf.a
 END GROUP
 OUTPUT(dist/default/production/blecm_slave.X.production.elf elf32-pic30)
 LOAD FGS
@@ -1332,19 +1336,24 @@ __c30_signature
  __c30_signature
                   0x000933          0x6 build/default/production/_ext/43898991/link.o
  __c30_signature
-                  0x000939          0x6 /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
+                  0x000939          0x6 /opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x00093f          0x6 /sdd/opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
+                  0x00093f          0x6 /opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
 
-.nbss               0x0800        0x3a8
+.nbss               0x0800        0x3a4
  .nbss              0x0800        0x20c build/default/production/_ext/1472/uart.o
  .nbss              0x0a0c         0xf0 build/default/production/_ext/1472/app.o
                     0x0a0c                  _appData
  .nbss              0x0afc         0x8c build/default/production/_ext/1472/spi.o
  .nbss              0x0b88         0x18 build/default/production/_ext/1472/timers.o
  .nbss              0x0ba0          0x4 build/default/production/_ext/1472/packet.o
- .nbss              0x0ba4          0x2 build/default/production/_ext/1472/leds.o
- .nbss              0x0ba6          0x2 build/default/production/_ext/43898991/link.o
+
+.ndata              0x0ba4          0x4
+ .ndata             0x0ba4          0x4 build/default/production/_ext/43898991/link.o
+                    0x0ba4                  _l_data
+
+.nbss               0x0ba8          0x2
+ .nbss              0x0ba8          0x2 build/default/production/_ext/1472/leds.o
 
 .ivt._CompInterrupt
                   0x000038          0x2
@@ -1402,7 +1411,7 @@ __c30_signature
  .ivt._U1ErrInterrupt
                   0x000096          0x2 build/default/production/_ext/1472/uart.o
 
-.text             0x0002ac        0x670
+.text             0x0002ac        0x676
  .text            0x0002ac        0x186 build/default/production/_ext/1472/spi.o
                   0x0002ac                  _SPI_Init
                   0x0002ce                  _SPI_Speed
@@ -1453,25 +1462,25 @@ __c30_signature
  .text            0x0007e0         0x62 build/default/production/_ext/1472/dac.o
                   0x0007e0                  _DAC_Init
                   0x000832                  _SPI_WriteDacBuffer
- .text            0x000842         0x50 build/default/production/_ext/43898991/link.o
+ .text            0x000842         0x56 build/default/production/_ext/43898991/link.o
                   0x000842                  _Write_Link_Packet
                   0x000882                  _Read_Link_Packet
- .text            0x000892         0x4e build/default/production/_ext/1472/switches.o
-                  0x000892                  _Switch_Tasks
-                  0x0008dc                  __CNInterrupt
- .text            0x0008e0         0x3c build/default/production/_ext/1472/leds.o
-                  0x0008e0                  _LED_Tasks
-                  0x000916                  _LED_SET_LightShow
-                  0x00091a                  _GetNewLEDs
+ .text            0x000898         0x4e build/default/production/_ext/1472/switches.o
+                  0x000898                  _Switch_Tasks
+                  0x0008e2                  __CNInterrupt
+ .text            0x0008e6         0x3c build/default/production/_ext/1472/leds.o
+                  0x0008e6                  _LED_Tasks
+                  0x00091c                  _LED_SET_LightShow
+                  0x000920                  _GetNewLEDs
 
-.dinit            0x00091c         0x2c
- .dinit           0x00091c         0x2c data_init
+.dinit            0x000922         0x30
+ .dinit           0x000922         0x30 data_init
 
-.text             0x000948          0xa
- .text            0x000948          0xa build/default/production/_ext/1472/comparator.o
-                  0x000948                  _CMP_Tasks
-                  0x00094c                  _CMP_Init
-                  0x00094e                  __CompInterrupt
+.text             0x000952          0xa
+ .text            0x000952          0xa build/default/production/_ext/1472/comparator.o
+                  0x000952                  _CMP_Tasks
+                  0x000956                  _CMP_Init
+                  0x000958                  __CompInterrupt
 
-.shared.dinit     0x000952          0x2
- .shared.dinit    0x000952          0x2 shared_data_init
+.shared.dinit     0x00095c          0x2
+ .shared.dinit    0x00095c          0x2 shared_data_init

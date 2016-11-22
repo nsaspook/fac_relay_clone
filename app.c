@@ -164,7 +164,7 @@ void APP_Tasks(void)
 
 			l_data.dac1 = appData.potValue & 0xff;
 			l_data.dac2 = appData.potValue >> 8;
-			Write_Link_Packet((uint8_t *) &l_data.dac1, LINK_BYTES);
+			Write_Link_Packet((uint8_t *) & l_data, LINK_BYTES);
 
 			if (strstr(appData.receive_packet, "WV,001E,")) { //Check for LED update message 1.23
 				GetNewLEDs(); //Latch new LED values
