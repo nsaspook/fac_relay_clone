@@ -90,12 +90,12 @@ Program Memory  [Origin = 0x200, Length = 0x2a00]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200                0xac           0x102  (258)
-.text                        0x2ac               0x676           0x9b1  (2481)
-.dinit                       0x922                0x30            0x48  (72)
-.text                        0x952                 0xa             0xf  (15)
-.shared.dinit                0x95c                 0x2             0x3  (3)
+.text                        0x2ac               0x68a           0x9cf  (2511)
+.dinit                       0x936                0x30            0x48  (72)
+.text                        0x966                 0xa             0xf  (15)
+.shared.dinit                0x970                 0x2             0x3  (3)
 
-                 Total program memory used (bytes):          0xb0d  (2829) 17%
+                 Total program memory used (bytes):          0xb2b  (2859) 17%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0xfc]
@@ -116,11 +116,11 @@ Data Memory  [Origin = 0x800, Length = 0x800]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0           0x3a4  (932)
-.ndata                       0xba4                   0             0x4  (4)
-.nbss                        0xba8                   0             0x2  (2)
+.nbss                        0x800                   0           0x3a0  (928)
+.ndata                       0xba0                   0             0x6  (6)
+.nbss                        0xba6                   0             0x6  (6)
 
-                 Total data memory used (bytes):          0x3aa  (938) 45%
+                 Total data memory used (bytes):          0x3ac  (940) 45%
 
 
 Dynamic Memory Usage
@@ -128,20 +128,18 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0xbaa                               0x456  (1110)
+stack                        0xbac                               0x454  (1108)
 
-                 Maximum dynamic memory (bytes):          0x456  (1110)
+                 Maximum dynamic memory (bytes):          0x454  (1108)
 
 
 External Symbols in Data Memory (by address):
 
                     0x0a0c                  _appData
-                    0x0ba4                  _l_data
 
 External Symbols in Data Memory (by name):
 
                     0x0a0c                  _appData
-                    0x0ba4                  _l_data
 
 External Symbols in Program Memory (by address):
 
@@ -176,33 +174,34 @@ External Symbols in Program Memory (by address):
                   0x00061a                  _main
                   0x000626                  _APP_Initialize
                   0x00067c                  _APP_Tasks
-                  0x0006e8                  _SPI_ReceivePacket
-                  0x000748                  _BT_SendCommand
-                  0x00074c                  _BT_SendByte
-                  0x00074e                  _BT_GetResponse
-                  0x000752                  _BT_CompareResponse
-                  0x000756                  _BT_CheckResponse
-                  0x00075a                  _BT_CheckResponseWithWildcard
-                  0x00075e                  _BT_SetupModule
-                  0x000762                  _BT_RebootEnFlow
-                  0x000766                  _BT_CheckFwVer
-                  0x00076a                  _Timers_Init
-                  0x000780                  _StartTimer
-                  0x00078c                  _TimerDone
-                  0x00079e                  _WaitMs
-                  0x0007b8                  __T1Interrupt
-                  0x0007e0                  _DAC_Init
-                  0x000832                  _SPI_WriteDacBuffer
-                  0x000842                  _Write_Link_Packet
-                  0x000882                  _Read_Link_Packet
-                  0x000898                  _Switch_Tasks
-                  0x0008e2                  __CNInterrupt
-                  0x0008e6                  _LED_Tasks
-                  0x00091c                  _LED_SET_LightShow
-                  0x000920                  _GetNewLEDs
-                  0x000952                  _CMP_Tasks
-                  0x000956                  _CMP_Init
-                  0x000958                  __CompInterrupt
+                  0x000704                  _SPI_ReceivePacket
+                  0x000764                  _BT_SendCommand
+                  0x000768                  _BT_SendByte
+                  0x00076a                  _BT_GetResponse
+                  0x00076e                  _BT_CompareResponse
+                  0x000772                  _BT_CheckResponse
+                  0x000776                  _BT_CheckResponseWithWildcard
+                  0x00077a                  _BT_SetupModule
+                  0x00077e                  _BT_RebootEnFlow
+                  0x000782                  _BT_CheckFwVer
+                  0x000786                  _Timers_Init
+                  0x00079c                  _StartTimer
+                  0x0007a8                  _TimerDone
+                  0x0007ba                  _WaitMs
+                  0x0007d4                  __T1Interrupt
+                  0x0007fc                  _DAC_Init
+                  0x00084e                  _SPI_WriteDacBuffer
+                  0x00085e                  _Switch_Tasks
+                  0x0008a8                  __CNInterrupt
+                  0x0008ac                  _Write_Link_Packet
+                  0x0008ea                  _Read_Link_Packet
+                  0x0008f6                  _Get_Link_Packet
+                  0x0008fa                  _LED_Tasks
+                  0x000930                  _LED_SET_LightShow
+                  0x000934                  _GetNewLEDs
+                  0x000966                  _CMP_Tasks
+                  0x00096a                  _CMP_Init
+                  0x00096c                  __CompInterrupt
                   0xf80000                  __FBS.sec
                   0xf80004                  __FGS.sec
 
@@ -210,22 +209,23 @@ External Symbols in Program Memory (by name):
 
                   0x000626                  _APP_Initialize
                   0x00067c                  _APP_Tasks
-                  0x000766                  _BT_CheckFwVer
-                  0x000756                  _BT_CheckResponse
-                  0x00075a                  _BT_CheckResponseWithWildcard
-                  0x000752                  _BT_CompareResponse
-                  0x00074e                  _BT_GetResponse
-                  0x000762                  _BT_RebootEnFlow
-                  0x00074c                  _BT_SendByte
-                  0x000748                  _BT_SendCommand
-                  0x00075e                  _BT_SetupModule
-                  0x000956                  _CMP_Init
-                  0x000952                  _CMP_Tasks
-                  0x0007e0                  _DAC_Init
-                  0x000920                  _GetNewLEDs
-                  0x00091c                  _LED_SET_LightShow
-                  0x0008e6                  _LED_Tasks
-                  0x000882                  _Read_Link_Packet
+                  0x000782                  _BT_CheckFwVer
+                  0x000772                  _BT_CheckResponse
+                  0x000776                  _BT_CheckResponseWithWildcard
+                  0x00076e                  _BT_CompareResponse
+                  0x00076a                  _BT_GetResponse
+                  0x00077e                  _BT_RebootEnFlow
+                  0x000768                  _BT_SendByte
+                  0x000764                  _BT_SendCommand
+                  0x00077a                  _BT_SetupModule
+                  0x00096a                  _CMP_Init
+                  0x000966                  _CMP_Tasks
+                  0x0007fc                  _DAC_Init
+                  0x000934                  _GetNewLEDs
+                  0x0008f6                  _Get_Link_Packet
+                  0x000930                  _LED_SET_LightShow
+                  0x0008fa                  _LED_Tasks
+                  0x0008ea                  _Read_Link_Packet
                   0x0002ee                  _SPI_ClearBufs
                   0x00038a                  _SPI_GetTXBufferFreeSpace
                   0x0002ac                  _SPI_Init
@@ -233,15 +233,15 @@ External Symbols in Program Memory (by name):
                   0x00035a                  _SPI_IsTxData
                   0x000396                  _SPI_PeekRxBuffer
                   0x000338                  _SPI_ReadRxBuffer
-                  0x0006e8                  _SPI_ReceivePacket
+                  0x000704                  _SPI_ReceivePacket
                   0x0002ce                  _SPI_Speed
                   0x000304                  _SPI_TxStart
-                  0x000832                  _SPI_WriteDacBuffer
+                  0x00084e                  _SPI_WriteDacBuffer
                   0x00036c                  _SPI_WriteTxBuffer
-                  0x000780                  _StartTimer
-                  0x000898                  _Switch_Tasks
-                  0x00078c                  _TimerDone
-                  0x00076a                  _Timers_Init
+                  0x00079c                  _StartTimer
+                  0x00085e                  _Switch_Tasks
+                  0x0007a8                  _TimerDone
+                  0x000786                  _Timers_Init
                   0x0004b0                  _UART_GetTXBufferFreeSpace
                   0x000432                  _UART_Init
                   0x00045e                  _UART_IsNewRxData
@@ -249,16 +249,16 @@ External Symbols in Program Memory (by name):
                   0x000470                  _UART_ReadRxBuffer
                   0x00045a                  _UART_TxStart
                   0x000492                  _UART_WriteTxBuffer
-                  0x00079e                  _WaitMs
-                  0x000842                  _Write_Link_Packet
-                  0x0008e2                  __CNInterrupt
-                  0x000958                  __CompInterrupt
+                  0x0007ba                  _WaitMs
+                  0x0008ac                  _Write_Link_Packet
+                  0x0008a8                  __CNInterrupt
+                  0x00096c                  __CompInterrupt
                   0x0002a8                  __DefaultInterrupt
                   0xf80000                  __FBS.sec
                   0xf80004                  __FGS.sec
                   0x000404                  __MSSP2BCInterrupt
                   0x0003aa                  __MSSP2Interrupt
-                  0x0007b8                  __T1Interrupt
+                  0x0007d4                  __T1Interrupt
                   0x00051a                  __U1ErrInterrupt
                   0x0004d0                  __U1RXInterrupt
                   0x0004f2                  __U1TXInterrupt
@@ -377,24 +377,24 @@ __FICD
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x6437
+.debug_info       0x000000       0x6519
  *(.debug_info)
- .debug_info      0x000000        0x828 build/default/production/_ext/1472/app.o
- .debug_info      0x000828        0x2bd build/default/production/_ext/1472/comparator.o
- .debug_info      0x000ae5        0x856 build/default/production/_ext/1472/leds.o
- .debug_info      0x00133b       0x19f5 build/default/production/_ext/1472/main.o
- .debug_info      0x002d30        0x129 build/default/production/_ext/1472/rtcc.o
- .debug_info      0x002e59         0xae build/default/production/_ext/1472/sleep.o
- .debug_info      0x002f07        0x908 build/default/production/_ext/1472/spi.o
- .debug_info      0x00380f        0x747 build/default/production/_ext/1472/switches.o
- .debug_info      0x003f56        0x60b build/default/production/_ext/1472/timers.o
- .debug_info      0x004561        0xa93 build/default/production/_ext/1472/uart.o
- .debug_info      0x004ff4        0x873 build/default/production/_ext/1472/dac.o
- .debug_info      0x005867        0x7ce build/default/production/_ext/1472/packet.o
- .debug_info      0x006035        0x402 build/default/production/_ext/43898991/link.o
+ .debug_info      0x000000        0x852 build/default/production/_ext/1472/app.o
+ .debug_info      0x000852        0x2bd build/default/production/_ext/1472/comparator.o
+ .debug_info      0x000b0f        0x880 build/default/production/_ext/1472/leds.o
+ .debug_info      0x00138f       0x19f5 build/default/production/_ext/1472/main.o
+ .debug_info      0x002d84        0x129 build/default/production/_ext/1472/rtcc.o
+ .debug_info      0x002ead         0xae build/default/production/_ext/1472/sleep.o
+ .debug_info      0x002f5b        0x908 build/default/production/_ext/1472/spi.o
+ .debug_info      0x003863        0x771 build/default/production/_ext/1472/switches.o
+ .debug_info      0x003fd4        0x60b build/default/production/_ext/1472/timers.o
+ .debug_info      0x0045df        0xa93 build/default/production/_ext/1472/uart.o
+ .debug_info      0x005072        0x873 build/default/production/_ext/1472/dac.o
+ .debug_info      0x0058e5        0x7f8 build/default/production/_ext/1472/packet.o
+ .debug_info      0x0060dd        0x43c build/default/production/_ext/43898991/link.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0xc74
+.debug_abbrev     0x000000        0xc76
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x12e build/default/production/_ext/1472/app.o
  .debug_abbrev    0x00012e         0xa1 build/default/production/_ext/1472/comparator.o
@@ -408,25 +408,25 @@ __FICD
  .debug_abbrev    0x0007d2        0x184 build/default/production/_ext/1472/uart.o
  .debug_abbrev    0x000956        0x107 build/default/production/_ext/1472/dac.o
  .debug_abbrev    0x000a5d        0x11b build/default/production/_ext/1472/packet.o
- .debug_abbrev    0x000b78         0xfc build/default/production/_ext/43898991/link.o
+ .debug_abbrev    0x000b78         0xfe build/default/production/_ext/43898991/link.o
 
-.debug_line       0x000000        0xa79
+.debug_line       0x000000        0xa80
  *(.debug_line)
- .debug_line      0x000000        0x127 build/default/production/_ext/1472/app.o
- .debug_line      0x000127         0xc6 build/default/production/_ext/1472/comparator.o
- .debug_line      0x0001ed         0xf7 build/default/production/_ext/1472/leds.o
- .debug_line      0x0002e4         0xba build/default/production/_ext/1472/main.o
- .debug_line      0x00039e         0x1a build/default/production/_ext/1472/rtcc.o
- .debug_line      0x0003b8         0x1a build/default/production/_ext/1472/sleep.o
- .debug_line      0x0003d2        0x12f build/default/production/_ext/1472/spi.o
- .debug_line      0x000501         0xf6 build/default/production/_ext/1472/switches.o
- .debug_line      0x0005f7         0xe6 build/default/production/_ext/1472/timers.o
- .debug_line      0x0006dd        0x114 build/default/production/_ext/1472/uart.o
- .debug_line      0x0007f1         0xd3 build/default/production/_ext/1472/dac.o
- .debug_line      0x0008c4         0xd2 build/default/production/_ext/1472/packet.o
- .debug_line      0x000996         0xe3 build/default/production/_ext/43898991/link.o
+ .debug_line      0x000000        0x12c build/default/production/_ext/1472/app.o
+ .debug_line      0x00012c         0xc6 build/default/production/_ext/1472/comparator.o
+ .debug_line      0x0001f2         0xf7 build/default/production/_ext/1472/leds.o
+ .debug_line      0x0002e9         0xba build/default/production/_ext/1472/main.o
+ .debug_line      0x0003a3         0x1a build/default/production/_ext/1472/rtcc.o
+ .debug_line      0x0003bd         0x1a build/default/production/_ext/1472/sleep.o
+ .debug_line      0x0003d7        0x12f build/default/production/_ext/1472/spi.o
+ .debug_line      0x000506         0xf6 build/default/production/_ext/1472/switches.o
+ .debug_line      0x0005fc         0xe6 build/default/production/_ext/1472/timers.o
+ .debug_line      0x0006e2        0x114 build/default/production/_ext/1472/uart.o
+ .debug_line      0x0007f6         0xd3 build/default/production/_ext/1472/dac.o
+ .debug_line      0x0008c9         0xd2 build/default/production/_ext/1472/packet.o
+ .debug_line      0x00099b         0xe5 build/default/production/_ext/43898991/link.o
 
-.debug_frame      0x000000        0x4a0
+.debug_frame      0x000000        0x4b0
  *(.debug_frame)
  .debug_frame     0x000000         0x3e build/default/production/_ext/1472/app.o
  .debug_frame     0x00003e         0x44 build/default/production/_ext/1472/comparator.o
@@ -438,7 +438,7 @@ __FICD
  .debug_frame     0x000296         0xd2 build/default/production/_ext/1472/uart.o
  .debug_frame     0x000368         0x34 build/default/production/_ext/1472/dac.o
  .debug_frame     0x00039c         0xbe build/default/production/_ext/1472/packet.o
- .debug_frame     0x00045a         0x46 build/default/production/_ext/43898991/link.o
+ .debug_frame     0x00045a         0x56 build/default/production/_ext/43898991/link.o
 
 .debug_str        0x000000        0x1b4
  *(.debug_str)
@@ -460,7 +460,7 @@ __FICD
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x4ba
+                  0x000000        0x4c3
  *(.debug_pubnames)
  .debug_pubnames
                   0x000000         0x3f build/default/production/_ext/1472/app.o
@@ -483,7 +483,7 @@ __FICD
  .debug_pubnames
                   0x00038e         0xe4 build/default/production/_ext/1472/packet.o
  .debug_pubnames
-                  0x000472         0x48 build/default/production/_ext/43898991/link.o
+                  0x000472         0x51 build/default/production/_ext/43898991/link.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -1340,20 +1340,19 @@ __c30_signature
  __c30_signature
                   0x00093f          0x6 /opt/microchip/xc16/v1.26/bin/bin/../../lib/libpic30-elf.a(data_init_standard.o)
 
-.nbss               0x0800        0x3a4
+.nbss               0x0800        0x3a0
  .nbss              0x0800        0x20c build/default/production/_ext/1472/uart.o
  .nbss              0x0a0c         0xf0 build/default/production/_ext/1472/app.o
                     0x0a0c                  _appData
  .nbss              0x0afc         0x8c build/default/production/_ext/1472/spi.o
  .nbss              0x0b88         0x18 build/default/production/_ext/1472/timers.o
- .nbss              0x0ba0          0x4 build/default/production/_ext/1472/packet.o
 
-.ndata              0x0ba4          0x4
- .ndata             0x0ba4          0x4 build/default/production/_ext/43898991/link.o
-                    0x0ba4                  _l_data
+.ndata              0x0ba0          0x6
+ .ndata             0x0ba0          0x6 build/default/production/_ext/43898991/link.o
 
-.nbss               0x0ba8          0x2
- .nbss              0x0ba8          0x2 build/default/production/_ext/1472/leds.o
+.nbss               0x0ba6          0x6
+ .nbss              0x0ba6          0x4 build/default/production/_ext/1472/packet.o
+ .nbss              0x0baa          0x2 build/default/production/_ext/1472/leds.o
 
 .ivt._CompInterrupt
                   0x000038          0x2
@@ -1411,7 +1410,7 @@ __c30_signature
  .ivt._U1ErrInterrupt
                   0x000096          0x2 build/default/production/_ext/1472/uart.o
 
-.text             0x0002ac        0x676
+.text             0x0002ac        0x68a
  .text            0x0002ac        0x186 build/default/production/_ext/1472/spi.o
                   0x0002ac                  _SPI_Init
                   0x0002ce                  _SPI_Speed
@@ -1439,48 +1438,49 @@ __c30_signature
  .text            0x000546         0xe0 build/default/production/_ext/1472/main.o
                   0x000546                  _initBoard
                   0x00061a                  _main
- .text            0x000626         0xc2 build/default/production/_ext/1472/app.o
+ .text            0x000626         0xde build/default/production/_ext/1472/app.o
                   0x000626                  _APP_Initialize
                   0x00067c                  _APP_Tasks
- .text            0x0006e8         0x82 build/default/production/_ext/1472/packet.o
-                  0x0006e8                  _SPI_ReceivePacket
-                  0x000748                  _BT_SendCommand
-                  0x00074c                  _BT_SendByte
-                  0x00074e                  _BT_GetResponse
-                  0x000752                  _BT_CompareResponse
-                  0x000756                  _BT_CheckResponse
-                  0x00075a                  _BT_CheckResponseWithWildcard
-                  0x00075e                  _BT_SetupModule
-                  0x000762                  _BT_RebootEnFlow
-                  0x000766                  _BT_CheckFwVer
- .text            0x00076a         0x76 build/default/production/_ext/1472/timers.o
-                  0x00076a                  _Timers_Init
-                  0x000780                  _StartTimer
-                  0x00078c                  _TimerDone
-                  0x00079e                  _WaitMs
-                  0x0007b8                  __T1Interrupt
- .text            0x0007e0         0x62 build/default/production/_ext/1472/dac.o
-                  0x0007e0                  _DAC_Init
-                  0x000832                  _SPI_WriteDacBuffer
- .text            0x000842         0x56 build/default/production/_ext/43898991/link.o
-                  0x000842                  _Write_Link_Packet
-                  0x000882                  _Read_Link_Packet
- .text            0x000898         0x4e build/default/production/_ext/1472/switches.o
-                  0x000898                  _Switch_Tasks
-                  0x0008e2                  __CNInterrupt
- .text            0x0008e6         0x3c build/default/production/_ext/1472/leds.o
-                  0x0008e6                  _LED_Tasks
-                  0x00091c                  _LED_SET_LightShow
-                  0x000920                  _GetNewLEDs
+ .text            0x000704         0x82 build/default/production/_ext/1472/packet.o
+                  0x000704                  _SPI_ReceivePacket
+                  0x000764                  _BT_SendCommand
+                  0x000768                  _BT_SendByte
+                  0x00076a                  _BT_GetResponse
+                  0x00076e                  _BT_CompareResponse
+                  0x000772                  _BT_CheckResponse
+                  0x000776                  _BT_CheckResponseWithWildcard
+                  0x00077a                  _BT_SetupModule
+                  0x00077e                  _BT_RebootEnFlow
+                  0x000782                  _BT_CheckFwVer
+ .text            0x000786         0x76 build/default/production/_ext/1472/timers.o
+                  0x000786                  _Timers_Init
+                  0x00079c                  _StartTimer
+                  0x0007a8                  _TimerDone
+                  0x0007ba                  _WaitMs
+                  0x0007d4                  __T1Interrupt
+ .text            0x0007fc         0x62 build/default/production/_ext/1472/dac.o
+                  0x0007fc                  _DAC_Init
+                  0x00084e                  _SPI_WriteDacBuffer
+ .text            0x00085e         0x4e build/default/production/_ext/1472/switches.o
+                  0x00085e                  _Switch_Tasks
+                  0x0008a8                  __CNInterrupt
+ .text            0x0008ac         0x4e build/default/production/_ext/43898991/link.o
+                  0x0008ac                  _Write_Link_Packet
+                  0x0008ea                  _Read_Link_Packet
+                  0x0008f6                  _Get_Link_Packet
+ .text            0x0008fa         0x3c build/default/production/_ext/1472/leds.o
+                  0x0008fa                  _LED_Tasks
+                  0x000930                  _LED_SET_LightShow
+                  0x000934                  _GetNewLEDs
 
-.dinit            0x000922         0x30
- .dinit           0x000922         0x30 data_init
+.dinit            0x000936         0x30
+ .dinit           0x000936         0x30 data_init
 
-.text             0x000952          0xa
- .text            0x000952          0xa build/default/production/_ext/1472/comparator.o
-                  0x000952                  _CMP_Tasks
-                  0x000956                  _CMP_Init
-                  0x000958                  __CompInterrupt
+.text             0x000966          0xa
+ .text            0x000966          0xa build/default/production/_ext/1472/comparator.o
+                  0x000966                  _CMP_Tasks
+                  0x00096a                  _CMP_Init
+                  0x00096c                  __CompInterrupt
 
-.shared.dinit     0x00095c          0x2
- .shared.dinit    0x00095c          0x2 shared_data_init
+.shared.dinit     0x000970          0x2
+ .shared.dinit    0x000970          0x2 shared_data_init

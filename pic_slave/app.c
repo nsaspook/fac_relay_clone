@@ -97,9 +97,14 @@ void APP_Tasks(void)
 		appData.got_packet = SPI_ReceivePacket(appData.receive_packet);
 		if (appData.got_packet == true) { //true if new packet received
 			appData.packet_data = Read_Link_Packet(appData.receive_packet);
+			SPI_ClearBufs();
 			SPI_WriteDacBuffer(appData.packet_data->dac1, 1);
 			SPI_WriteDacBuffer(appData.packet_data->dac2, 2);
 			appData.blink_rate = LED_BLINK_MS_FAST;
+			appData.packet_data->io1 = 0xde;
+			appData.packet_data->io2 = 0xad;
+			appData.packet_data->eof = SPI_CHECKMARK;
+			Write_Link_Packet((const uint8_t *) appData.packet_data + 1, false);
 		}
 		break;
 

@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include "spi.h"
 #include "config.h"
+#include "../link.h"
 
 //SPI receive buffer type
 
@@ -197,7 +198,7 @@ void __attribute__((interrupt, no_auto_psv)) _MSSP2Interrupt(void)
 		if (rxBuf.byteCount < SIZE_SPI_Buffer) { //Increment byte count
 			rxBuf.byteCount++;
 		}
-		SPI_BUF = SPI_CHECKMARK; // dummy stuff
+		SPI_BUF = LINK_BYTES; // dummy stuff
 	}
 }
 

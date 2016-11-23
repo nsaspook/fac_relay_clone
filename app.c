@@ -57,7 +57,6 @@
 
 APP_DATA appData;
 ADC_DATA adcData;
-extern LINK_DATA l_data;
 
 //Primary application state machine
 
@@ -162,9 +161,10 @@ void APP_Tasks(void)
 		appData.got_packet = BT_ReceivePacket(appData.receive_packet); //Get new message if one has been received from the RN4020
 		if (appData.got_packet == true) { //true if new packet received
 
-			l_data.dac1 = appData.potValue & 0xff;
-			l_data.dac2 = appData.potValue >> 8;
-			Write_Link_Packet((uint8_t *) & l_data, LINK_BYTES);
+			appData.packet_data = Get_Link_Packet();
+			appData.packet_data->dac1 = appData.potValue & 0xff;
+			appData.packet_data->dac2 = appData.potValue >> 8;
+			Write_Link_Packet((uint8_t *) appData.packet_data, true);
 
 			if (strstr(appData.receive_packet, "WV,001E,")) { //Check for LED update message 1.23
 				GetNewLEDs(); //Latch new LED values
