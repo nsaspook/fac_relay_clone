@@ -126,7 +126,6 @@
 #define SIZE_RxBuffer   256               //UART RX software buffer size in bytes
 #define SIZE_TxBuffer   256               //UART TX software buffer size in bytes
 #define SIZE_SPI_Buffer 64
-#define SPI_CHECKMARK	0x57
 
 #define BT_RX_PKT_SZ    100               //Max receive packet length
 #define BT_TX_PKT_SZ    100               //Max transmit packet length

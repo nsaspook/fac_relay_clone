@@ -20,7 +20,7 @@ bool Write_Link_Packet(const uint8_t *data, bool start)
 				return false;
 			SPI_WriteTxBuffer(*data++); //Load byte into the transmit buffer
 		}
-		SPI_WriteTxBuffer(0x57); //checkmark for EOF
+		SPI_WriteTxBuffer(SPI_CHECKMARK); //checkmark for EOF
 
 		if (start) {
 			SPI_Speed(1); // high speed

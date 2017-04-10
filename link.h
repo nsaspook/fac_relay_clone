@@ -41,22 +41,24 @@
 extern "C" {
 #endif /* __cplusplus */
 
-	typedef struct LINK_DATA {
+    typedef struct LINK_DATA {
         uint8_t sof;
-	uint8_t dac1;
-	uint8_t dac2;
+        uint8_t dac1;
+        uint8_t dac2;
         uint8_t io1;
         uint8_t io2;
-	uint8_t seq0;
-	uint8_t seq1;
+        uint8_t seq0;
+        uint8_t seq1;
         uint8_t eof;
-	} LINK_DATA;
+    } LINK_DATA;
 
-	bool Write_Link_Packet(const uint8_t *, bool);
-	struct LINK_DATA* Read_Link_Packet(const uint8_t *);
+    bool Write_Link_Packet(const uint8_t *, bool);
+    struct LINK_DATA* Read_Link_Packet(const uint8_t *);
     struct LINK_DATA* Get_Link_Packet(void);
 
 #define LINK_BYTES  7
+#define SPI_SOF         0x19
+#define SPI_CHECKMARK	0x57
 
 #ifdef	__cplusplus
 }
