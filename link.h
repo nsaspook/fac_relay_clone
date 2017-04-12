@@ -56,7 +56,7 @@ extern "C" {
     struct LINK_DATA* Read_Link_Packet(const uint8_t *);
     struct LINK_DATA* Get_Link_Packet(void);
 
-#define LINK_BYTES  7
+#define LINK_BYTES  8-1 // length of LINK_DATA in bytes - 1 byte
 #define SPI_SOF         0x19
 #define SPI_CHECKMARK	0x57
 

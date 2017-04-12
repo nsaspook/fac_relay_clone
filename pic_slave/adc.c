@@ -91,7 +91,7 @@ bool ADC_Tasks(void)
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[2]);
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[1]);
 			SPI_WriteTxBuffer(adcData.mcp3208_cmd.bd[0]);
-//			SPI_CS0 = 0; // select the ADC
+			//			SPI_CS0 = 0; // select the ADC
 			SPI_TxStart();
 		}
 		return false;

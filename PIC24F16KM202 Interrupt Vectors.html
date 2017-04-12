@@ -1,193 +1,193 @@
 
 <!-- saved from url=(0068)file:///opt/microchip/xc16/v1.23/docs/vector_docs/PIC24F16KM202.html -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-		<title>PIC24F16KM202 Interrupt Vectors</title>
-		<style type="text/css">
-			h2 { font-family:sans-serif;
-				 color:#CC0000 }
-			p  { font-family:sans-serif;
-				 font-size:10pt }
-			p.code  { font-family:monospace;
-					  font-size:10pt }
-			th { font-family:sans-serif;
-				 font-size:10pt;
-				 color:#FFFFFF }
-			td { font-family:sans-serif;
-				 font-size:10pt }
-		</style>
-	</head>
-	<body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF"><h2>PIC24F16KM202 Interrupt Vectors</h2><p>
-			The table below specifies the interrupt vectors for these 16-bit devices.
-		</p>
+        <title>PIC24F16KM202 Interrupt Vectors</title>
+        <style type="text/css">
+            h2 { font-family:sans-serif;
+                 color:#CC0000 }
+            p  { font-family:sans-serif;
+                 font-size:10pt }
+            p.code  { font-family:monospace;
+                      font-size:10pt }
+            th { font-family:sans-serif;
+                 font-size:10pt;
+                 color:#FFFFFF }
+            td { font-family:sans-serif;
+                 font-size:10pt }
+        </style>
+    </head>
+    <body text="#000000" bgcolor="#FFFFFF" link="#3300FF" vlink="#3399FF" alink="#3399FF"><h2>PIC24F16KM202 Interrupt Vectors</h2><p>
+            The table below specifies the interrupt vectors for these 16-bit devices.
+        </p>
 
-		<table border="1" cols="3" cellpadding="4">
+        <table border="1" cols="3" cellpadding="4">
 
-			<tbody><tr bgcolor="#808080">
-					<th>IRQ#</th>
-					<th>Primary Name</th>
-					<th>Alternate Name</th>
-					<th>Vector Function</th>
-				</tr>
-				<tr><td>N/A</td>
-					<td>_OscillatorFail</td>
-					<td>_AltOscillatorFail</td>
-					<td>Oscillator Fail Trap vector</td>
-				</tr><tr><td>N/A</td>
-					<td>_AddressError</td>
-					<td>_AltAddressError</td>
-					<td>Address Error Trap Vector</td>
-				</tr><tr><td>N/A</td>
-					<td>_StackError</td>
-					<td>_AltStackError</td>
-					<td>Stack Error Trap Vector</td>
-				</tr><tr><td>N/A</td>
-					<td>_MathError</td>
-					<td>_AltMathError</td>
-					<td>Math Error Trap Vector</td>
-				</tr><tr><td>0</td>
-					<td>_INT0Interrupt</td>
-					<td>_AltINT0Interrupt</td>
-					<td>INT0 - External Interrupt 0</td>
-				</tr><tr><td>1</td>
-					<td>_CCP1Interrupt</td>
-					<td>_AltCCP1Interrupt</td>
-					<td>CCP1 - Capture/Compare 1</td>
-				</tr><tr><td>2</td>
-					<td>_CCP2Interrupt</td>
-					<td>_AltCCP2Interrupt</td>
-					<td>CCP2 - Capture/Compare 2</td>
-				</tr><tr><td>3</td>
-					<td>_T1Interrupt</td>
-					<td>_AltT1Interrupt</td>
-					<td>T1 - Timer1</td>
-				</tr><tr><td>5</td>
-					<td>_CCP3Interrupt</td>
-					<td>_AltCCP3Interrupt</td>
-					<td>CCP3 - Capture/Compare 3</td>
-				</tr><tr><td>6</td>
-					<td>_CCP4Interrupt</td>
-					<td>_AltCCP4Interrupt</td>
-					<td>CCP4 - Capture/Compare 4</td>
-				</tr><tr><td>7</td>
-					<td>_CCT1Interrupt</td>
-					<td>_AltCCT1Interrupt</td>
-					<td>CCT1 - CCP1 Timebase</td>
-				</tr><tr><td>8</td>
-					<td>_CCT2Interrupt</td>
-					<td>_AltCCT2Interrupt</td>
-					<td>CCT2 - CCP2 Timebase</td>
-				</tr><tr><td>11</td>
-					<td>_U1RXInterrupt</td>
-					<td>_AltU1RXInterrupt</td>
-					<td>U1RX - UART1 Receiver</td>
-				</tr><tr><td>12</td>
-					<td>_U1TXInterrupt</td>
-					<td>_AltU1TXInterrupt</td>
-					<td>U1TX - UART1 Transmitter</td>
-				</tr><tr><td>13</td>
-					<td>_ADC1Interrupt</td>
-					<td>_AltADC1Interrupt</td>
-					<td>ADC1 - A/D Converter 1</td>
-				</tr><tr><td>15</td>
-					<td>_NVMInterrupt</td>
-					<td>_AltNVMInterrupt</td>
-					<td>NVM - NVM Write Complete</td>
-				</tr><tr><td>16</td>
-					<td>_MSSP1Interrupt</td>
-					<td>_AltMSSP1Interrupt</td>
-					<td>MSSP1 - I2C/SPI Interrupt</td>
-				</tr><tr><td>17</td>
-					<td>_MSSP1BCInterrupt</td>
-					<td>_AltMSSP1BCInterrupt</td>
-					<td>MSSP1BC - MSSP1 Bus Collision</td>
-				</tr><tr><td>18</td>
-					<td>_CompInterrupt</td>
-					<td>_AltCompInterrupt</td>
-					<td>Comp - Comparator</td>
-				</tr><tr><td>19</td>
-					<td>_CNInterrupt</td>
-					<td>_AltCNInterrupt</td>
-					<td>CN -  Change Notification Interrupt</td>
-				</tr><tr><td>20</td>
-					<td>_INT1Interrupt</td>
-					<td>_AltINT1Interrupt</td>
-					<td>INT1 - External Interrupt 1</td>
-				</tr><tr><td>22</td>
-					<td>_CCP5Interrupt</td>
-					<td>_AltCCP5Interrupt</td>
-					<td>CCP5 - Capture/Compare 5</td>
-				</tr><tr><td>27</td>
-					<td>_CCT3Interrupt</td>
-					<td>_AltCCT3Interrupt</td>
-					<td>CCT3 - CCP3 Timebase</td>
-				</tr><tr><td>28</td>
-					<td>_CCT4Interrupt</td>
-					<td>_AltCCT4Interrupt</td>
-					<td>CCT4 - CCP4 Timebase</td>
-				</tr><tr><td>29</td>
-					<td>_INT2Interrupt</td>
-					<td>_AltINT2Interrupt</td>
-					<td>INT2 - External Interrupt 2</td>
-				</tr><tr><td>30</td>
-					<td>_U2RXInterrupt</td>
-					<td>_AltU2RXInterrupt</td>
-					<td>U2RX - UART2 Receiver</td>
-				</tr><tr><td>31</td>
-					<td>_U2TXInterrupt</td>
-					<td>_AltU2TXInterrupt</td>
-					<td>U2TX - UART2 Transmitter</td>
-				</tr><tr><td>41</td>
-					<td>_CCT5Interrupt</td>
-					<td>_AltCCT5Interrupt</td>
-					<td>CCT5 - CCP5 Timebase</td>
-				</tr><tr><td>49</td>
-					<td>_MSSP2Interrupt</td>
-					<td>_AltMSSP2Interrupt</td>
-					<td>MSSP2 - I2C/SPI Interrupt</td>
-				</tr><tr><td>50</td>
-					<td>_MSSP2BCInterrupt</td>
-					<td>_AltMSSP2BCInterrupt</td>
-					<td>MSSP2BC - MSSP2 Bus Collision</td>
-				</tr><tr><td>62</td>
-					<td>_RTCCInterrupt</td>
-					<td>_AltRTCCInterrupt</td>
-					<td>RTCC - Real-Time Clock and Calendar</td>
-				</tr><tr><td>65</td>
-					<td>_U1ErrInterrupt</td>
-					<td>_AltU1ErrInterrupt</td>
-					<td>U1E - UART1 Error</td>
-				</tr><tr><td>66</td>
-					<td>_U2ErrInterrupt</td>
-					<td>_AltU2ErrInterrupt</td>
-					<td>U2E - UART2 Error</td>
-				</tr><tr><td>72</td>
-					<td>_HLVDInterrupt</td>
-					<td>_AltHLVDInterrupt</td>
-					<td>HLVD - Low Voltage Detect</td>
-				</tr><tr><td>77</td>
-					<td>_CTMUInterrupt</td>
-					<td>_AltCTMUInterrupt</td>
-					<td>CTMU - Interrupt</td>
-				</tr><tr><td>78</td>
-					<td>_DAC1Interrupt</td>
-					<td>_AltDAC1Interrupt</td>
-					<td>DAC1 - Digital to Analog Converter Interrupt</td>
-				</tr><tr><td>79</td>
-					<td>_DAC2Interrupt</td>
-					<td>_AltDAC2Interrupt</td>
-					<td>DAC2 - Digital to Analog Converter Interrupt</td>
-				</tr><tr><td>80</td>
-					<td>_ULPWUInterrupt</td>
-					<td>_AltULPWUInterrupt</td>
-					<td>ULPWU - Ultra-Low Pwr Wake-up</td>
-				</tr><tr><td>96</td>
-					<td>_CLC1Interrupt</td>
-					<td>_AltCLC1Interrupt</td>
-					<td>CLC1 - Configurable Logic Cell Interrupt</td>
-				</tr><tr><td>97</td>
-					<td>_CLC2Interrupt</td>
-					<td>_AltCLC2Interrupt</td>
-					<td>CLC2 - Configurable Logic Cell Interrupt</td>
-				</tr></tbody></table>
+            <tbody><tr bgcolor="#808080">
+                    <th>IRQ#</th>
+                    <th>Primary Name</th>
+                    <th>Alternate Name</th>
+                    <th>Vector Function</th>
+                </tr>
+                <tr><td>N/A</td>
+                    <td>_OscillatorFail</td>
+                    <td>_AltOscillatorFail</td>
+                    <td>Oscillator Fail Trap vector</td>
+                </tr><tr><td>N/A</td>
+                    <td>_AddressError</td>
+                    <td>_AltAddressError</td>
+                    <td>Address Error Trap Vector</td>
+                </tr><tr><td>N/A</td>
+                    <td>_StackError</td>
+                    <td>_AltStackError</td>
+                    <td>Stack Error Trap Vector</td>
+                </tr><tr><td>N/A</td>
+                    <td>_MathError</td>
+                    <td>_AltMathError</td>
+                    <td>Math Error Trap Vector</td>
+                </tr><tr><td>0</td>
+                    <td>_INT0Interrupt</td>
+                    <td>_AltINT0Interrupt</td>
+                    <td>INT0 - External Interrupt 0</td>
+                </tr><tr><td>1</td>
+                    <td>_CCP1Interrupt</td>
+                    <td>_AltCCP1Interrupt</td>
+                    <td>CCP1 - Capture/Compare 1</td>
+                </tr><tr><td>2</td>
+                    <td>_CCP2Interrupt</td>
+                    <td>_AltCCP2Interrupt</td>
+                    <td>CCP2 - Capture/Compare 2</td>
+                </tr><tr><td>3</td>
+                    <td>_T1Interrupt</td>
+                    <td>_AltT1Interrupt</td>
+                    <td>T1 - Timer1</td>
+                </tr><tr><td>5</td>
+                    <td>_CCP3Interrupt</td>
+                    <td>_AltCCP3Interrupt</td>
+                    <td>CCP3 - Capture/Compare 3</td>
+                </tr><tr><td>6</td>
+                    <td>_CCP4Interrupt</td>
+                    <td>_AltCCP4Interrupt</td>
+                    <td>CCP4 - Capture/Compare 4</td>
+                </tr><tr><td>7</td>
+                    <td>_CCT1Interrupt</td>
+                    <td>_AltCCT1Interrupt</td>
+                    <td>CCT1 - CCP1 Timebase</td>
+                </tr><tr><td>8</td>
+                    <td>_CCT2Interrupt</td>
+                    <td>_AltCCT2Interrupt</td>
+                    <td>CCT2 - CCP2 Timebase</td>
+                </tr><tr><td>11</td>
+                    <td>_U1RXInterrupt</td>
+                    <td>_AltU1RXInterrupt</td>
+                    <td>U1RX - UART1 Receiver</td>
+                </tr><tr><td>12</td>
+                    <td>_U1TXInterrupt</td>
+                    <td>_AltU1TXInterrupt</td>
+                    <td>U1TX - UART1 Transmitter</td>
+                </tr><tr><td>13</td>
+                    <td>_ADC1Interrupt</td>
+                    <td>_AltADC1Interrupt</td>
+                    <td>ADC1 - A/D Converter 1</td>
+                </tr><tr><td>15</td>
+                    <td>_NVMInterrupt</td>
+                    <td>_AltNVMInterrupt</td>
+                    <td>NVM - NVM Write Complete</td>
+                </tr><tr><td>16</td>
+                    <td>_MSSP1Interrupt</td>
+                    <td>_AltMSSP1Interrupt</td>
+                    <td>MSSP1 - I2C/SPI Interrupt</td>
+                </tr><tr><td>17</td>
+                    <td>_MSSP1BCInterrupt</td>
+                    <td>_AltMSSP1BCInterrupt</td>
+                    <td>MSSP1BC - MSSP1 Bus Collision</td>
+                </tr><tr><td>18</td>
+                    <td>_CompInterrupt</td>
+                    <td>_AltCompInterrupt</td>
+                    <td>Comp - Comparator</td>
+                </tr><tr><td>19</td>
+                    <td>_CNInterrupt</td>
+                    <td>_AltCNInterrupt</td>
+                    <td>CN -  Change Notification Interrupt</td>
+                </tr><tr><td>20</td>
+                    <td>_INT1Interrupt</td>
+                    <td>_AltINT1Interrupt</td>
+                    <td>INT1 - External Interrupt 1</td>
+                </tr><tr><td>22</td>
+                    <td>_CCP5Interrupt</td>
+                    <td>_AltCCP5Interrupt</td>
+                    <td>CCP5 - Capture/Compare 5</td>
+                </tr><tr><td>27</td>
+                    <td>_CCT3Interrupt</td>
+                    <td>_AltCCT3Interrupt</td>
+                    <td>CCT3 - CCP3 Timebase</td>
+                </tr><tr><td>28</td>
+                    <td>_CCT4Interrupt</td>
+                    <td>_AltCCT4Interrupt</td>
+                    <td>CCT4 - CCP4 Timebase</td>
+                </tr><tr><td>29</td>
+                    <td>_INT2Interrupt</td>
+                    <td>_AltINT2Interrupt</td>
+                    <td>INT2 - External Interrupt 2</td>
+                </tr><tr><td>30</td>
+                    <td>_U2RXInterrupt</td>
+                    <td>_AltU2RXInterrupt</td>
+                    <td>U2RX - UART2 Receiver</td>
+                </tr><tr><td>31</td>
+                    <td>_U2TXInterrupt</td>
+                    <td>_AltU2TXInterrupt</td>
+                    <td>U2TX - UART2 Transmitter</td>
+                </tr><tr><td>41</td>
+                    <td>_CCT5Interrupt</td>
+                    <td>_AltCCT5Interrupt</td>
+                    <td>CCT5 - CCP5 Timebase</td>
+                </tr><tr><td>49</td>
+                    <td>_MSSP2Interrupt</td>
+                    <td>_AltMSSP2Interrupt</td>
+                    <td>MSSP2 - I2C/SPI Interrupt</td>
+                </tr><tr><td>50</td>
+                    <td>_MSSP2BCInterrupt</td>
+                    <td>_AltMSSP2BCInterrupt</td>
+                    <td>MSSP2BC - MSSP2 Bus Collision</td>
+                </tr><tr><td>62</td>
+                    <td>_RTCCInterrupt</td>
+                    <td>_AltRTCCInterrupt</td>
+                    <td>RTCC - Real-Time Clock and Calendar</td>
+                </tr><tr><td>65</td>
+                    <td>_U1ErrInterrupt</td>
+                    <td>_AltU1ErrInterrupt</td>
+                    <td>U1E - UART1 Error</td>
+                </tr><tr><td>66</td>
+                    <td>_U2ErrInterrupt</td>
+                    <td>_AltU2ErrInterrupt</td>
+                    <td>U2E - UART2 Error</td>
+                </tr><tr><td>72</td>
+                    <td>_HLVDInterrupt</td>
+                    <td>_AltHLVDInterrupt</td>
+                    <td>HLVD - Low Voltage Detect</td>
+                </tr><tr><td>77</td>
+                    <td>_CTMUInterrupt</td>
+                    <td>_AltCTMUInterrupt</td>
+                    <td>CTMU - Interrupt</td>
+                </tr><tr><td>78</td>
+                    <td>_DAC1Interrupt</td>
+                    <td>_AltDAC1Interrupt</td>
+                    <td>DAC1 - Digital to Analog Converter Interrupt</td>
+                </tr><tr><td>79</td>
+                    <td>_DAC2Interrupt</td>
+                    <td>_AltDAC2Interrupt</td>
+                    <td>DAC2 - Digital to Analog Converter Interrupt</td>
+                </tr><tr><td>80</td>
+                    <td>_ULPWUInterrupt</td>
+                    <td>_AltULPWUInterrupt</td>
+                    <td>ULPWU - Ultra-Low Pwr Wake-up</td>
+                </tr><tr><td>96</td>
+                    <td>_CLC1Interrupt</td>
+                    <td>_AltCLC1Interrupt</td>
+                    <td>CLC1 - Configurable Logic Cell Interrupt</td>
+                </tr><tr><td>97</td>
+                    <td>_CLC2Interrupt</td>
+                    <td>_AltCLC2Interrupt</td>
+                    <td>CLC2 - Configurable Logic Cell Interrupt</td>
+                </tr></tbody></table>
 
-	</body></html>
+    </body></html>

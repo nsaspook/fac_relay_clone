@@ -103,8 +103,19 @@ inline void LED_SET_LightShow(LED_LIGHTSHOW_T setting)
 
 void GetNewLEDs(void)
 {
-	appData.led1 = appData.receive_packet[9] == '1' ? 1 : 0;
-	appData.led2 = appData.receive_packet[11] == '1' ? 1 : 0;
-	appData.led3 = appData.receive_packet[13] == '1' ? 1 : 0;
-	appData.led4 = appData.receive_packet[15] == '1' ? 1 : 0;
+	if (!appData.update_packet) {
+		appData.led1 = appData.oled1;
+		appData.led2 = appData.oled2;
+		appData.led3 = appData.oled3;
+		appData.led4 = appData.oled4;
+	} else {
+		appData.led1 = appData.receive_packet[9] == '1' ? 1 : 0;
+		appData.led2 = appData.receive_packet[11] == '1' ? 1 : 0;
+		appData.led3 = appData.receive_packet[13] == '1' ? 1 : 0;
+		appData.led4 = appData.receive_packet[15] == '1' ? 1 : 0;
+		appData.oled1 = appData.led1;
+		appData.oled2 = appData.led2;
+		appData.oled3 = appData.led3;
+		appData.oled4 = appData.led4;
+	}
 }

@@ -71,8 +71,7 @@ bool SPI_ReceivePacket(uint8_t * Message)
 
 		case WaitForCHK:
 			spiDecodeState = WaitForEOF; //Will be looking for a new packet next
-			if (Message[i - 1] == SPI_CHECKMARK) 
-			{
+			if (Message[i - 1] == SPI_CHECKMARK) {
 				//Got a complete message!
 				i = 0;
 				return true;

@@ -112,7 +112,6 @@ int main(void)
 // Initialize the pins and peripherals
 
 void initBoard(void)
-
 { /****************************************************************************
 	 * Oscillator Init
 	 * Clocking is setup at 32MHz sys clock and to allow USB functionality

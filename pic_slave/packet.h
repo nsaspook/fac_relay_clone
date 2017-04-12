@@ -46,7 +46,7 @@
 #define CMD "CMD\r\n"
 
 enum SPIDecodeState {
-	WaitForEOF, WaitForCHK
+    WaitForEOF, WaitForCHK
 };
 
 

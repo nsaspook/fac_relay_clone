@@ -105,6 +105,7 @@ void APP_Tasks(void)
 		LED_SET_LightShow(LED_BTLE_PAIRED);
 		//Check to see if we are still connected; return to advertise state if not
 		if (!BT_CONNECTED) {
+			appData.update_packet = false;
 			LED_SET_LightShow(LED_BTLE_ADVERTISING);
 			appData.state = APP_BLUETOOTH_ADVERTISE;
 			break;
@@ -168,9 +169,11 @@ void APP_Tasks(void)
 
 			if (strstr(appData.receive_packet, "WV,001E,")) { //Check for LED update message 1.23
 				GetNewLEDs(); //Latch new LED values
+				appData.update_packet = true;
 			}
 			if (strstr(appData.receive_packet, "WV,0021,")) { //Check for LED update message 1.33
 				GetNewLEDs(); //Latch new LED values
+				appData.update_packet = true;
 			}
 			//
 			//Other message handling can be added here
@@ -223,6 +226,7 @@ bool APP_Initialize(void)
 	appData.led4 = 0;
 	appData.led5 = 0;
 	appData.led6 = 0;
+	appData.update_packet = true;
 	appData.sw1Changed = false;
 	appData.sw2Changed = false;
 	appData.sw3Changed = false;
