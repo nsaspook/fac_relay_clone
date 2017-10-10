@@ -173,6 +173,7 @@
 
 //UART
 #define U1CTS_TRIS      TRISBbits.TRISB8
+#define U1CTS_PORT	PORTBbits.RB8
 #define U1CTS_RP_NUM    23
 
 #define U1RTS_TRIS      TRISBbits.TRISB9
