@@ -89,6 +89,10 @@ void LED_Tasks()
 		LED6 = 1;
 		break;
 
+	case LED_UPDATE:
+		// send current led/relay status to Android APP
+		break;
+		
 	default:
 		break;
 	}

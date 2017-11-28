@@ -43,7 +43,8 @@ typedef enum {
     LED_BTLE_ADVERTISING,
     LED_BTLE_PAIRED,
     LED_ERROR,
-    LED_SLEEP
+    LED_SLEEP,
+    LED_UPDATE
 } LED_LIGHTSHOW_T;
 
 void LED_Tasks(void);
