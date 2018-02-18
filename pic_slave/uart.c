@@ -44,7 +44,7 @@
 
 typedef struct {
 	volatile uint8_t buffer[SIZE_RxBuffer];
-	volatile uint8_t volatile *head;
+	volatile uint8_t *head;
 	volatile uint8_t *tail;
 	volatile uint16_t byteCount;
 } UART_RX_BUFFER_T;
@@ -54,7 +54,7 @@ typedef struct {
 typedef struct {
 	volatile uint8_t buffer[SIZE_TxBuffer];
 	volatile uint8_t *head;
-	volatile uint8_t volatile *tail;
+	volatile uint8_t *tail;
 	volatile uint16_t byteCount;
 } UART_TX_BUFFER_T;
 

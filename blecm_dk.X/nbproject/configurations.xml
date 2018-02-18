@@ -54,7 +54,7 @@
         <targetDevice>PIC24FV16KM202</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>ICD3PlatformTool</platformTool>
+        <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC16</languageToolchain>
         <languageToolchainVersion>1.33</languageToolchainVersion>
         <platform>2</platform>
@@ -101,10 +101,10 @@
         <property key="extra-include-directories" value=""/>
         <property key="isolate-each-function" value="false"/>
         <property key="keep-inline" value="true"/>
-        <property key="oXC16gcc-align-arr" value="false"/>
+        <property key="oXC16gcc-align-arr" value="true"/>
         <property key="oXC16gcc-cnsts-mauxflash" value="false"/>
         <property key="oXC16gcc-data-sects" value="false"/>
-        <property key="oXC16gcc-errata" value=""/>
+        <property key="oXC16gcc-errata" value="all"/>
         <property key="oXC16gcc-fillupper" value=""/>
         <property key="oXC16gcc-large-aggregate" value="false"/>
         <property key="oXC16gcc-mauxflash" value="false"/>

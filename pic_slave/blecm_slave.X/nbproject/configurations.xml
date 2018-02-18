@@ -56,7 +56,7 @@
         <targetDevice>PIC24FV16KM202</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>ICD3PlatformTool</platformTool>
+        <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC16</languageToolchain>
         <languageToolchainVersion>1.33</languageToolchainVersion>
         <platform>2</platform>
@@ -95,15 +95,15 @@
         <property key="enable-ansi-warnings" value="false"/>
         <property key="enable-fatal-warnings" value="false"/>
         <property key="enable-large-arrays" value="false"/>
-        <property key="enable-omit-frame-pointer" value="false"/>
-        <property key="enable-procedural-abstraction" value="false"/>
+        <property key="enable-omit-frame-pointer" value="true"/>
+        <property key="enable-procedural-abstraction" value="true"/>
         <property key="enable-short-double" value="false"/>
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
         <property key="extra-include-directories" value=""/>
         <property key="isolate-each-function" value="false"/>
-        <property key="keep-inline" value="false"/>
-        <property key="oXC16gcc-align-arr" value="false"/>
+        <property key="keep-inline" value="true"/>
+        <property key="oXC16gcc-align-arr" value="true"/>
         <property key="oXC16gcc-cnsts-mauxflash" value="false"/>
         <property key="oXC16gcc-data-sects" value="false"/>
         <property key="oXC16gcc-errata" value=""/>
