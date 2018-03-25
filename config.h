@@ -38,7 +38,9 @@
 
 #include <xc.h>
 
-#define APP_VERSION_STR "2.7"       /* This firmware version */
+
+#define APP_VERSION_STR "2.8"       //This firmware version
+//	2.8	increase ADC sampling and message transmission rates
 
 /*******************************************************************************
  * Application settings - these will change application behavior
@@ -110,10 +112,10 @@
 //Application timers
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
-#define ADC_REFRESH_MS      50          //delay between ADC reads
-#define POT_TX_MS           500         //delay between transmitting new pot values
+#define ADC_REFRESH_MS      10          //delay between ADC reads
+#define POT_TX_MS           50         //delay between transmitting new pot values
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
-#define BT_TX_MS            150         //minimum time between consecutive BTLE message transmissions
+#define BT_TX_MS            10         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
 #define BAT_CHK_WAIT_MS     10          //CVref & CMP stabilization time
 //Periods for timer 1 sleep mode (for periodic sleep wakeup); 31KHz LPRC; 1:256 prescale
