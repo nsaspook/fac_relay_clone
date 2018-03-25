@@ -37,7 +37,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <p24FV16KM202.h>
 #include "uart.h"
 #include "config.h"
 
