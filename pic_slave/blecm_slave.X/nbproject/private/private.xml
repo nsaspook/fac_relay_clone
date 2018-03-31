@@ -5,6 +5,13 @@
         <group name="new group"/>
         <group>
             <file>file:/root/ble/fac_relay_clone/gplv2.h</file>
+            <file>file:/root/ble/fac_relay_clone/uart.c</file>
+            <file>file:/root/ble/fac_relay_clone/app.h</file>
+            <file>file:/root/ble/fac_relay_clone/uart.h</file>
+            <file>file:/root/ble/fac_relay_clone/main.c</file>
+            <file>file:/root/ble/fac_relay_clone/app.c</file>
+            <file>file:/root/ble/fac_relay_clone/bluetooth.c</file>
+            <file>file:/root/ble/fac_relay_clone/config.h</file>
         </group>
     </open-files>
 </project-private>
