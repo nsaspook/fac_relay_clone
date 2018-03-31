@@ -40,6 +40,7 @@
 
 #define APP_VERSION_STR "2.9"       //This firmware version
 //	2.8	increase ADC sampling and message transmission rates
+//	2.9	minor spelling fixes
 
 /*******************************************************************************
  * Application settings - these will change application behavior
