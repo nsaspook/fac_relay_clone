@@ -459,7 +459,7 @@ bool BT_RebootEnFlow(void)
 		BT_SendCommand("I\r", false); // MLDP mode
 		BT_SendCommand("A\r", false); // start advertising
 
-		/* wait controller for power cycle/reset */
+		/* wait loop controller for power cycle/reset */
 		while (true) {
 			while (true) { // fast flash waiting for OTA
 				ClrWdt();
@@ -502,7 +502,7 @@ uint16_t BT_CheckFwVer(void)
 	}
 
 	StartTimer(TMR_RN_COMMS, 2000);
-	BT_SendCommand("v\r", false); // Get firmware ver
+	BT_SendCommand("v\r", false); // Get firmware version
 	while (!BT_ReceivePacket(strVer)) {
 		if (TimerDone(TMR_RN_COMMS)) {
 			return false;
