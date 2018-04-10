@@ -149,7 +149,7 @@
  ******************************************************************************/
 
 // Clock frequency
-#define FCY (16000000)                              //8MHz FRC
+#define FCY (16000000)                              //8MHz FRC, 4XPLL, /2 for Fcy
 
 //RN4020 BTLE
 #define BT_OTA_UPD	PORTBbits.RB3
