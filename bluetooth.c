@@ -254,7 +254,7 @@ bool BT_SetupModule(void)
 
 	//Send "GR" to get feature settings
 	BT_SendCommand("gr\r", false); //Get RN4020 module feature settings
-	if (!BT_CheckResponse("22000000\r\n")) //Check if features are set for auto advertize and flow control
+	if (!BT_CheckResponse("22000000\r\n")) //Check if features are set for auto advertise and flow control
 	{ //auto enable MLDP, suppress messages during MLDP
 		BT_SendCommand("sr,22000000\r", false); //Features not correct so set features
 		if (!BT_CheckResponse(AOK)) {
@@ -275,6 +275,13 @@ bool BT_SetupModule(void)
 		return false;
 	}
 
+	// Clear all settings of private service and private characteristic
+	BT_SendCommand("pz\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+
 	BT_SendCommand("gs\r", false);
 	if (!BT_CheckResponse("80000001\r\n")) {
 		//Send "SS" to set user defined private profiles
@@ -282,12 +289,6 @@ bool BT_SetupModule(void)
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
-	}
-
-	// Clear all settings of private service and private characteristic
-	BT_SendCommand("pz\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
 	}
 
 	//Send "ps" to set user defined service UUID
