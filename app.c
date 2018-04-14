@@ -153,12 +153,12 @@ void APP_Tasks(void)
 					appData.potValueLastTX = appData.potValue;
 					StartTimer(TMR_POT, POT_TX_MS);
 				}
-				
+
 				//Form message
 				sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_ATTR_H",%d\r", 60);
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
-				
+
 			} else {
 				StartTimer(TMR_POT, POT_TX_MS);
 			} //value not changed - skip this transmission
@@ -191,6 +191,13 @@ void APP_Tasks(void)
 			//receive new SPI SLAVE request
 			if (strstr(appData.receive_packet, "WV,0027,")) {
 
+			}
+			//receive new BATTERY request
+			if (strstr(appData.receive_packet, "RV,002A.")) {
+				//Form message
+				sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_ATTR_H",%d\r", 63);
+				//Try to transmit the message; reset timer if successful
+				BT_SendCommand(appData.transmit_packet, false);
 			}
 		}
 		break;

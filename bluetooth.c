@@ -276,12 +276,18 @@ bool BT_SetupModule(void)
 	}
 
 	BT_SendCommand("gs\r", false);
-	if (!BT_CheckResponse("f0000001\r\n")) {
+	if (!BT_CheckResponse("c0000001\r\n")) {
 		//Send "SS" to set user defined private profiles
-		BT_SendCommand("ss,f0000001\r", false);
+		BT_SendCommand("ss,c0000001\r", false);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
+	}
+
+	// set power to max
+	BT_SendCommand("sp,7\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
 	}
 
 	// Clear all settings of private service and private characteristic
