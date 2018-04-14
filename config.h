@@ -38,9 +38,10 @@
 
 #include <xc.h>
 
-#define APP_VERSION_STR "2.9"       //This firmware version
+#define APP_VERSION_STR "3.0"       //This firmware version
 //	2.8	increase ADC sampling and message transmission rates
 //	2.9	minor spelling fixes
+//	3.0	Add some public service support
 
 /*******************************************************************************
  * Application settings - these will change application behavior
