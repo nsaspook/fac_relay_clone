@@ -230,7 +230,7 @@ bool BT_CheckResponseWithWildcard(const char *data, char Wildcard)
 		else if (*data == Wildcard) //else see if expected response byte is a wildcard
 		{
 			data++; //Increment past wildcard byte
-			BufPtr++; //Increment to ignore byte correspinding to wildcard
+			BufPtr++; //Increment to ignore byte corresponding to wildcard
 		} else if (*data++ != *BufPtr++) //else see if the bytes are different
 			return false; //Bytes differ so return failure
 	}
@@ -275,20 +275,19 @@ bool BT_SetupModule(void)
 		return false;
 	}
 
+	BT_SendCommand("gs\r", false);
+	if (!BT_CheckResponse("f0000001\r\n")) {
+		//Send "SS" to set user defined private profiles
+		BT_SendCommand("ss,f0000001\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+	}
+
 	// Clear all settings of private service and private characteristic
 	BT_SendCommand("pz\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
-	}
-
-
-	BT_SendCommand("gs\r", false);
-	if (!BT_CheckResponse("80000001\r\n")) {
-		//Send "SS" to set user defined private profiles
-		BT_SendCommand("ss,80000001\r", false);
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
 	}
 
 	//Send "ps" to set user defined service UUID
@@ -347,6 +346,7 @@ bool BT_SetupModule(void)
 
 bool BT_RebootEnFlow(void)
 {
+	bool do_ls = false; // causes a control lockup if enabled
 	//Send "R,1" to save changes and reboot
 	BT_SendCommand("r,1\r", false); //Force reboot
 	if (!BT_CheckResponse("Reboot\r\n")) {
@@ -379,6 +379,11 @@ bool BT_RebootEnFlow(void)
 				return false; //If timed out then return failure
 			}
 		}
+	}
+
+	if (do_ls) {
+		BT_SendCommand("LS\r", false); // list services
+		WaitMs(1000);
 	}
 
 	/* Jumper on DFU OTA UPDATE */
@@ -478,6 +483,20 @@ bool BT_RebootEnFlow(void)
 
 	}
 	BT_OTA_UPD_TRIS = 0;
+
+	if (do_ls) {
+		//flush UART RX buffer as a precaution before starting app state machine
+		while (UART_IsNewRxData()) { //While buffer contains old data
+			UART_ReadRxBuffer(); //Keep reading until empty
+			if (!UART_IsNewRxData()) {
+				WaitMs(100);
+			}
+		}
+		//Clear any other error bits
+		U1STAbits.FERR = 0;
+		U1STAbits.PERR = 0;
+		return true;
+	}
 
 	return BT_CheckResponse("MD\r\n"); //Check that we received CMD indicating reboot is done	
 }

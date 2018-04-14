@@ -112,8 +112,8 @@
 //Application timers
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
-#define ADC_REFRESH_MS      10          //delay between ADC reads
-#define POT_TX_MS           50         //delay between transmitting new pot values
+#define ADC_REFRESH_MS      50          //delay between ADC reads
+#define POT_TX_MS           100         //delay between transmitting new pot values
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
 #define BT_TX_MS            10         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
@@ -139,6 +139,12 @@
 #define PRIVATE_CHAR_RELAYS "cd83060a3afa4a9da58b8224cd2ded70"
 #define PRIVATE_CHAR_ADC_CHAN "cd83060b3afa4a9da58b8224cd2ded70"
 #define PRIVATE_CHAR_PIC_SLAVE "cd83060c3afa4a9da58b8224cd2ded70"
+
+#define PUBLIC_HR_SERVICE "0000180D-00001-0008-00000805F9B34FB"
+#define PUBLIC_HR_ATTR    "2A37"
+#define PUBLIC_BATT_ATTR  "2A19"
+#define PUBLIC_BATT_ATTR_H  "002a"
+#define PUBLIC_BATT_ATTR_C  "002b"
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))

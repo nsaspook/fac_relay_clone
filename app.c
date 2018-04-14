@@ -147,12 +147,18 @@ void APP_Tasks(void)
 			//Send message only if pot value has changed
 			if (appData.potValue != appData.potValueLastTX) {
 				//Form message
-				sprintf(appData.transmit_packet, "suw,"PRIVATE_CHAR_POTENTIOMETER",%04d\r", appData.potValue);
+				sprintf(appData.transmit_packet, "suw,"PRIVATE_CHAR_POTENTIOMETER",%04d\r\n", appData.potValue);
 				//Try to transmit the message; reset timer if successful
 				if (BT_SendCommand(appData.transmit_packet, true)) {
 					appData.potValueLastTX = appData.potValue;
 					StartTimer(TMR_POT, POT_TX_MS);
 				}
+				
+				//Form message
+				sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_ATTR_H",%d\r", 60);
+				//Try to transmit the message; reset timer if successful
+				BT_SendCommand(appData.transmit_packet, false);
+				
 			} else {
 				StartTimer(TMR_POT, POT_TX_MS);
 			} //value not changed - skip this transmission
