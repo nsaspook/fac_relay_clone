@@ -303,13 +303,13 @@ bool BT_SetupModule(void)
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
-	
+
 	// heart body sensor location characteristic
 	BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",0A,0F\r", false); //Write w/ACK, Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
-	
+
 	// heart rate control point characteristic
 	BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",0A,0F\r", false); //Write w/ACK, Read
 	if (!BT_CheckResponse(AOK)) {
@@ -380,7 +380,7 @@ bool BT_SetupModule(void)
 
 bool BT_RebootEnFlow(void)
 {
-	bool do_ls = false; // causes a control lockup if enabled
+	bool do_ls = true, good_boot; // causes a control lockup if enabled
 	//Send "R,1" to save changes and reboot
 	BT_SendCommand("r,1\r", false); //Force reboot
 	if (!BT_CheckResponse("Reboot\r\n")) {
@@ -415,9 +415,16 @@ bool BT_RebootEnFlow(void)
 		}
 	}
 
+	good_boot = BT_CheckResponse("MD\r\n"); //Check that we received CMD indicating reboot is done
+
 	if (do_ls) {
 		BT_SendCommand("LS\r", false); // list services
+		WaitMs(10);
+		U1MODE &= 0x7FFF;
 		WaitMs(1000);
+		UART_RX_IF = 0; //Clear UART Receive interrupt flag
+		U1MODE |= 0x8200; //Enable UART, use RTC/CTS flow control
+		U1STA |= 0x0400; //Enable transmit
 	}
 
 	/* Jumper on DFU OTA UPDATE */
@@ -526,13 +533,12 @@ bool BT_RebootEnFlow(void)
 				WaitMs(100);
 			}
 		}
-		//Clear any other error bits
+		//Clear any UART error bits
 		U1STAbits.FERR = 0;
 		U1STAbits.PERR = 0;
-		return true;
 	}
 
-	return BT_CheckResponse("MD\r\n"); //Check that we received CMD indicating reboot is done	
+	return good_boot; //Check that we received CMD indicating reboot is done	
 }
 
 #ifdef VERIFY_RN_FW_VER
