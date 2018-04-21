@@ -38,10 +38,11 @@
 
 #include <xc.h>
 
-#define APP_VERSION_STR "3.0"       //This firmware version
+#define APP_VERSION_STR "3.1"       //This firmware version
 //	2.8	increase ADC sampling and message transmission rates
 //	2.9	minor spelling fixes
 //	3.0	Add some public service support
+//	3.1	heart rate service added (demo data) makes software version 1.33.4 firmware dependant
 
 /*******************************************************************************
  * Application settings - these will change application behavior
@@ -141,10 +142,21 @@
 #define PRIVATE_CHAR_ADC_CHAN "cd83060b3afa4a9da58b8224cd2ded70"
 #define PRIVATE_CHAR_PIC_SLAVE "cd83060c3afa4a9da58b8224cd2ded70"
 
-#define PUBLIC_HR_ATTR    "2A37"
-#define PUBLIC_BATT_ATTR  "2A19"
-#define PUBLIC_BATT_ATTR_H  "002a"
-#define PUBLIC_BATT_ATTR_C  "002b"
+// Battery
+#define PUBLIC_BATT_UUID       "180F" // Battery level service
+#define PUBLIC_BATT_CHAR_BL    "2A19"
+
+// Heartbeat
+#define PUBLIC_HR_UUID         "180D" // Heart Rate service
+#define PUBLIC_HR_CHAR_HRM     "2A37" // Heart Rate Measurement
+#define PUBLIC_HR_CHAR_BSL     "2A38" // Heart body sensor location
+#define PUBLIC_HR_CHAR_RCP     "2A39" // Heart rate control point
+
+// handles that change with added services and characteristics
+#define PUBLIC_BATT_CHAR_H  "0032"
+#define PUBLIC_BATT_CHAR_C  "0033"
+#define PUBLIC_HR_CHAR_HRM_H    "001B"
+#define PUBLIC_HR_CHAR_HRM_C    "001C"
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))

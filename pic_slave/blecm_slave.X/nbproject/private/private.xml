@@ -10,6 +10,7 @@
             <file>file:/root/ble/fac_relay_clone/uart.h</file>
             <file>file:/root/ble/fac_relay_clone/main.c</file>
             <file>file:/root/ble/fac_relay_clone/app.c</file>
+            <file>file:/root/ble/fac_relay_clone/leds.c</file>
             <file>file:/root/ble/fac_relay_clone/bluetooth.c</file>
             <file>file:/root/ble/fac_relay_clone/config.h</file>
         </group>

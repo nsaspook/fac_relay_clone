@@ -155,7 +155,7 @@ void APP_Tasks(void)
 				}
 
 				//Form message
-				sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_ATTR_H",%d\r", 60);
+				sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", 61);
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
 
@@ -177,7 +177,7 @@ void APP_Tasks(void)
 				GetNewLEDs(); //Latch new LED values
 				appData.update_packet = true;
 			}
-			if (strstr(appData.receive_packet, "WV,0021,")) { //Check for LED update message 1.33
+			if (strstr(appData.receive_packet, "WV,0029,")) { //Check for LED update message 1.33
 				GetNewLEDs(); //Latch new LED values
 				appData.update_packet = true;
 			}
@@ -185,17 +185,17 @@ void APP_Tasks(void)
 			//Other message handling can be added here
 			//
 			//receive new SPI ADC channel
-			if (strstr(appData.receive_packet, "WV,0025,")) {
+			if (strstr(appData.receive_packet, "WV,002D,")) {
 				GetNewADC_Chan(); // new ADC config data
 			}
 			//receive new SPI SLAVE request
-			if (strstr(appData.receive_packet, "WV,0027,")) {
+			if (strstr(appData.receive_packet, "WV,002F,")) {
 
 			}
 			//receive new BATTERY request
-			if (strstr(appData.receive_packet, "RV,002A.")) {
+			if (strstr(appData.receive_packet, "RV,0032.")) {
 				//Form message
-				sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_ATTR_H",%d\r", 63);
+				sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", 63);
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
 			}
