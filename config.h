@@ -153,10 +153,14 @@
 #define PUBLIC_HR_CHAR_RCP     "2A39" // Heart rate control point
 
 // handles that change with added services and characteristics
-#define PUBLIC_BATT_CHAR_H  "0032"
-#define PUBLIC_BATT_CHAR_C  "0033"
-#define PUBLIC_HR_CHAR_HRM_H    "001B"
-#define PUBLIC_HR_CHAR_HRM_C    "001C"
+// manually parse the LS command for UUID handles
+#define PUBLIC_BATT_CHAR_H		"0032"
+#define PUBLIC_BATT_CHAR_C		"0033"
+#define PUBLIC_HR_CHAR_HRM_H		"001B"
+#define PUBLIC_HR_CHAR_HRM_C		"001C"
+#define PRIVATE_CHAR_LEDS_H		"0029"
+#define PRIVATE_CHAR_ADC_CHAN_H		"002D"
+#define PRIVATE_CHAR_PIC_SLAVE_H	"002F"
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))

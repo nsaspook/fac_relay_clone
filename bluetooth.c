@@ -276,44 +276,46 @@ bool BT_SetupModule(void)
 	}
 
 	BT_SendCommand("gs\r", false);
-	if (!BT_CheckResponse("C0000001\r\n")) {
+	if (!BT_CheckResponse("F0000001\r\n")) {
 		//Send "SS" to set user defined private profiles and ID/Battery in 1.33 firmware
-		BT_SendCommand("ss,C0000001\r", false);
+		BT_SendCommand("ss,F0000001\r", false);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 	}
 
-	// Clear all settings of defined services and characteristics
-	BT_SendCommand("pz\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	if (version_code >= 33) { // V1.33.4 public services
+		// Clear all settings of defined services and characteristics
+		BT_SendCommand("pz\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
 
-	// Public BTLE services and characteristics
+		// Public BTLE services and characteristics
 
-	// heart rate service with standard 16-bit UUID
-	BT_SendCommand("ps,"PUBLIC_HR_UUID",\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+		// heart rate service with standard 16-bit UUID
+		BT_SendCommand("ps,"PUBLIC_HR_UUID",\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
 
-	// heart rate measurement characteristic
-	BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",22,02\r", false); //Indicate, Read
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+		// heart rate measurement characteristic
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",22,02\r", false); //Indicate, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
 
-	// heart body sensor location characteristic
-	BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",0A,0F\r", false); //Write w/ACK, Read
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+		// heart body sensor location characteristic
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",0A,0F\r", false); //Write w/ACK, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
 
-	// heart rate control point characteristic
-	BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",0A,0F\r", false); //Write w/ACK, Read
-	if (!BT_CheckResponse(AOK)) {
-		return false;
+		// heart rate control point characteristic
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",0A,0F\r", false); //Write w/ACK, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
 	}
 
 	// set power to max
