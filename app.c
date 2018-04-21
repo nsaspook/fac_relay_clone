@@ -158,6 +158,9 @@ void APP_Tasks(void)
 				sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", 61);
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
+				sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_HRM",007f%d\r");
+				//Try to transmit the message; reset timer if successful
+				BT_SendCommand(appData.transmit_packet, false);
 
 			} else {
 				StartTimer(TMR_POT, POT_TX_MS);
