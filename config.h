@@ -37,6 +37,8 @@
 #define CONFIG_H
 
 #include <xc.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #define APP_VERSION_STR "3.1"       //This firmware version
 //	2.8	increase ADC sampling and message transmission rates
@@ -132,6 +134,27 @@
 #define BT_RX_PKT_SZ    100               //Max receive packet length
 #define BT_TX_PKT_SZ    100               //Max transmit packet length
 
+#define    ESP_GATT_PERM_READ                  (1 << 0)   /* bit 0 -  0x0001 */    /* relate to BTA_GATT_PERM_READ in bta_gatt_api.h */
+#define    ESP_GATT_PERM_READ_ENCRYPTED        (1 << 1)   /* bit 1 -  0x0002 */    /* relate to BTA_GATT_PERM_READ_ENCRYPTED in bta_gatt_api.h */
+#define    ESP_GATT_PERM_READ_ENC_MITM         (1 << 2)   /* bit 2 -  0x0004 */    /* relate to BTA_GATT_PERM_READ_ENC_MITM in bta_gatt_api.h */
+#define    ESP_GATT_PERM_WRITE                 (1 << 4)   /* bit 4 -  0x0010 */    /* relate to BTA_GATT_PERM_WRITE in bta_gatt_api.h */
+#define    ESP_GATT_PERM_WRITE_ENCRYPTED       (1 << 5)   /* bit 5 -  0x0020 */    /* relate to BTA_GATT_PERM_WRITE_ENCRYPTED in bta_gatt_api.h */
+#define    ESP_GATT_PERM_WRITE_ENC_MITM        (1 << 6)   /* bit 6 -  0x0040 */    /* relate to BTA_GATT_PERM_WRITE_ENC_MITM in bta_gatt_api.h */
+#define    ESP_GATT_PERM_WRITE_SIGNED          (1 << 7)   /* bit 7 -  0x0080 */    /* relate to BTA_GATT_PERM_WRITE_SIGNED in bta_gatt_api.h */
+#define    ESP_GATT_PERM_WRITE_SIGNED_MITM     (1 << 8)   /* bit 8 -  0x0100 */    /* relate to BTA_GATT_PERM_WRITE_SIGNED_MITM in bta_gatt_api.h */
+
+/* relate to BTA_GATT_CHAR_PROP_BIT_xxx in bta_gatt_api.h */
+/* definition of characteristic properties */
+#define    ESP_GATT_CHAR_PROP_BIT_BROADCAST    (1 << 0)       /* 0x01 */    /* relate to BTA_GATT_CHAR_PROP_BIT_BROADCAST in bta_gatt_api.h */
+#define    ESP_GATT_CHAR_PROP_BIT_READ         (1 << 1)       /* 0x02 */    /* relate to BTA_GATT_CHAR_PROP_BIT_READ in bta_gatt_api.h */
+#define    ESP_GATT_CHAR_PROP_BIT_WRITE_NR     (1 << 2)       /* 0x04 */    /* relate to BTA_GATT_CHAR_PROP_BIT_WRITE_NR in bta_gatt_api.h */
+#define    ESP_GATT_CHAR_PROP_BIT_WRITE        (1 << 3)       /* 0x08 */    /* relate to BTA_GATT_CHAR_PROP_BIT_WRITE in bta_gatt_api.h */
+#define    ESP_GATT_CHAR_PROP_BIT_NOTIFY       (1 << 4)       /* 0x10 */    /* relate to BTA_GATT_CHAR_PROP_BIT_NOTIFY in bta_gatt_api.h */
+#define    ESP_GATT_CHAR_PROP_BIT_INDICATE     (1 << 5)       /* 0x20 */    /* relate to BTA_GATT_CHAR_PROP_BIT_INDICATE in bta_gatt_api.h */
+#define    ESP_GATT_CHAR_PROP_BIT_AUTH         (1 << 6)       /* 0x40 */    /* relate to BTA_GATT_CHAR_PROP_BIT_AUTH in bta_gatt_api.h */
+#define    ESP_GATT_CHAR_PROP_BIT_EXT_PROP     (1 << 7)       /* 0x80 */    /* relate to BTA_GATT_CHAR_PROP_BIT_EXT_PROP in bta_gatt_api.h */
+
+
 //BTLE services
 #define PRIVATE_SERVICE			"28238791ec55413086e0002cd96aec9d"
 #define PRIVATE_SERVICE_SPI		"8ee15902ee6f49dc9cfb5c4c2eff6057"
@@ -164,6 +187,81 @@
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))
+
+// code copied from the ESP device lib
+
+// Copyright 2015-2016 Espressif Systems (Shanghai) PTE LTD
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+
+typedef struct {
+#define ESP_UUID_LEN_16     2
+#define ESP_UUID_LEN_32     4
+#define ESP_UUID_LEN_128    16
+    uint16_t len;							/*!< UUID length, 16bit, 32bit or 128bit */
+    union {
+        uint16_t    uuid16;
+        uint32_t    uuid32;
+        uint8_t     uuid128[ESP_UUID_LEN_128];
+    } uuid;									/*!< UUID */
+} __attribute__((packed)) esp_bt_uuid_t;
+
+
+typedef struct {
+    esp_bt_uuid_t   uuid;                   /*!< UUID */
+    uint8_t         inst_id;                /*!< Instance id */
+} __attribute__((packed)) esp_gatt_id_t;
+
+/**
+ * @brief Gatt service id, include id
+ *        (uuid and instance id) and primary flag
+ */
+typedef struct {
+    esp_gatt_id_t   id;                     /*!< Gatt id, include uuid and instance */
+    bool            is_primary;             /*!< This service is primary or not */
+} __attribute__((packed)) esp_gatt_srvc_id_t;
+
+typedef uint16_t esp_gatt_perm_t;
+typedef uint8_t esp_gatt_char_prop_t;
+
+/**
+  * @brief set the attribute value type
+  */
+typedef struct
+{
+    uint16_t attr_max_len;                                  /*!<  attribute max value length */
+    uint16_t attr_len;                                      /*!<  attribute current value length */
+    uint8_t  *attr_value;                                   /*!<  the pointer to attribute value */
+} esp_attr_value_t;
+
+struct gatts_service_inst {
+	uint16_t gatts_if;
+	uint16_t app_id;
+	uint16_t conn_id;
+	uint16_t service_handle;
+	esp_gatt_srvc_id_t service_id;
+	uint16_t num_handles;
+};
+
+struct gatts_char_inst {
+	uint32_t service_pos;
+	esp_gatt_perm_t char_perm;
+	char char_property[8];
+	esp_attr_value_t *char_val;
+	char char_handle[16];
+	char char_nvs[16];
+};
 
 /*******************************************************************************
  * End application configuration settings

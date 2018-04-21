@@ -45,6 +45,35 @@
 
 uint16_t BT_CheckFwVer(void);
 
+struct gatts_service_inst gatts_service[] = {
+	{
+		.gatts_if = 0, /* gatts_if not known yet, so initial is ESP_GATT_IF_NONE */
+	},
+	{
+		.gatts_if = 0, /* gatts_if not known yet, so initial is ESP_GATT_IF_NONE */
+	}
+};
+
+struct gatts_char_inst gatts_char[] = {
+	{
+		/* Battery Service -> Battery Level */
+		.service_pos = 0, // Battery service
+		.char_perm = ESP_GATT_PERM_READ,
+		.char_property = "",
+		.char_val = NULL,
+		.char_handle = "0032",
+		.char_nvs = "2A19"
+	},
+	{
+		.service_pos = 1, // heart rate service
+		.char_perm = ESP_GATT_PERM_READ,
+		.char_property = "22,02",
+		.char_val = NULL,
+		.char_handle = "001B",
+		.char_nvs = "2A37"
+	}
+};
+
 //**********************************************************************************************************************
 // Receive a message over the Bluetooth link
 
@@ -320,6 +349,12 @@ bool BT_SetupModule(void)
 
 	// set power to max
 	BT_SendCommand("sp,7\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// set software version
+	BT_SendCommand("sdr,"APP_VERSION_STR"\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
