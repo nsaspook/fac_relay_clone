@@ -155,10 +155,10 @@ void APP_Tasks(void)
 				}
 
 				//Form message
-				sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", 61);
+				sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", (appData.potValue >> 6)&0b00111111);
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
-				sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_HRM",007f\r");
+				sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_HRM",%02x%02x\r", 0, (appData.potValue >> 4)&0xff); // format mask and ADC data
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
 
