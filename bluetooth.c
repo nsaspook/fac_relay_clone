@@ -284,13 +284,13 @@ bool BT_SetupModule(void)
 		}
 	}
 
-	if (version_code >= 33) { // V1.33.4 public services
-		// Clear all settings of defined services and characteristics
-		BT_SendCommand("pz\r", false);
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	// Clear all settings of defined services and characteristics
+	BT_SendCommand("pz\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
 
+	if (version_code >= 33) { // V1.33.4 public services
 		// Public BTLE services and characteristics
 
 		// heart rate service with standard 16-bit UUID
