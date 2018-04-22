@@ -43,6 +43,7 @@
 #include "uart.h"
 #include "timers.h"
 #include <stdlib.h>
+#include <string.h>
 
 uint16_t BT_CheckFwVer(void);
 
@@ -75,7 +76,7 @@ struct gatts_char_inst gatts_char[] = {
 	}
 };
 
-uint16_t get_handle(gatts_char_inst *bt, char *rxbuf)
+uint16_t get_char_handle(struct gatts_char_inst *bt, char *rxbuf)
 {
 	char* pch;
 	uint8_t state = 0;
@@ -123,6 +124,7 @@ uint16_t get_handle(gatts_char_inst *bt, char *rxbuf)
 		pch = strtok(NULL, "\r\n");
 	} while (pch != NULL);
 	free(tempBuf);
+	return 0;
 }
 
 
