@@ -115,7 +115,7 @@ void APP_Tasks(void)
 		Switch_Tasks();
 		if (appData.sendSwitches) { //New switch status to send?
 			//Form message
-			sprintf(appData.transmit_packet, "suw,"PRIVATE_CHAR_SWITCHES",%d%d%d%d\r", appData.sw1, appData.sw2, appData.sw3, appData.sw4);
+			sprintf(appData.transmit_packet, "shw,"PRIVATE_CHAR_SWITCHES_H",%d%d%d%d\r", appData.sw1, appData.sw2, appData.sw3, appData.sw4);
 			//Try to transmit the message; reset flag if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
 				appData.sendSwitches = false;
@@ -147,7 +147,7 @@ void APP_Tasks(void)
 			//Send message only if pot value has changed
 			if (appData.potValue != appData.potValueLastTX) {
 				//Form message
-				sprintf(appData.transmit_packet, "suw,"PRIVATE_CHAR_POTENTIOMETER",%04d\r\n", appData.potValue);
+				sprintf(appData.transmit_packet, "shw,"PRIVATE_CHAR_POTENTIOMETER_H",%04d\r\n", appData.potValue);
 				//Try to transmit the message; reset timer if successful
 				if (BT_SendCommand(appData.transmit_packet, true)) {
 					appData.potValueLastTX = appData.potValue;

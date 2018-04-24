@@ -116,8 +116,8 @@
 //Application timers
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
-#define ADC_REFRESH_MS      50          //delay between ADC reads
-#define POT_TX_MS           100         //delay between transmitting new pot values
+#define ADC_REFRESH_MS      1           //delay between ADC reads
+#define POT_TX_MS           50         //delay between transmitting new pot values, 10 min value
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
 #define BT_TX_MS            10         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
@@ -174,6 +174,10 @@
 #define PUBLIC_HR_CHAR_HRM     "2A37" // Heart Rate Measurement
 #define PUBLIC_HR_CHAR_BSL     "2A38" // Heart body sensor location
 #define PUBLIC_HR_CHAR_RCP     "2A39" // Heart rate control point
+#define PUBLIC_AIO_UUID		"1815" // Automation IO service 
+#define PUBLIC_AIO_CHAR_DIG     "2A56" // Automation IO digital
+#define PUBLIC_AIO_CHAR_ANA     "2A58" // Automation IO analog
+#define PUBLIC_AIO_CHAR_AGG     "2A5A" // Automation IO Aggregate
 
 // handles that change with added services and characteristics
 // manually parse the LS command for UUID handles
@@ -181,6 +185,8 @@
 #define PUBLIC_BATT_CHAR_C		"0033"
 #define PUBLIC_HR_CHAR_HRM_H		"001B"
 #define PUBLIC_HR_CHAR_HRM_C		"001C"
+#define PRIVATE_CHAR_SWITCHES_H		"0023"
+#define PRIVATE_CHAR_POTENTIOMETER_H	"0026"
 #define PRIVATE_CHAR_LEDS_H		"0029"
 #define PRIVATE_CHAR_ADC_CHAN_H		"002D"
 #define PRIVATE_CHAR_PIC_SLAVE_H	"002F"

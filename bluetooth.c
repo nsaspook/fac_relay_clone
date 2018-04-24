@@ -399,6 +399,30 @@ bool BT_SetupModule(void)
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
+
+		//  Automation IO service with standard 16-bit UUID
+		BT_SendCommand("ps,"PUBLIC_AIO_UUID",\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// Automation IO digital characteristic
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",0A,0F\r", false); //Write w/ACK, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// Automation IO analog characteristic
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",0A,0F\r", false); //Write w/ACK, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// Automation IO agg characteristic
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",0A,0F\r", false); //Write w/ACK, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
 	}
 
 	// set power to max
