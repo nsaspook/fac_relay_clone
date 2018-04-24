@@ -389,13 +389,13 @@ bool BT_SetupModule(void)
 		}
 
 		// heart body sensor location characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",0A,0F\r", false); //Write w/ACK, Read
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",0A,01\r", false); //Write w/ACK, Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
 		// heart rate control point characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",0A,0F\r", false); //Write w/ACK, Read
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",0A,01\r", false); //Write w/ACK, Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -413,13 +413,13 @@ bool BT_SetupModule(void)
 		}
 
 		// Automation IO analog characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",0A,0F\r", false); //Write w/ACK, Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",0A,02\r", false); //Write w/ACK, Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
 		// Automation IO agg characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",0A,0F\r", false); //Write w/ACK, Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",22,0F\r", false); //Indicate, Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -470,7 +470,7 @@ bool BT_SetupModule(void)
 	}
 
 	// Custom analog input characteristic with generated UUID //Write w/ACK, Read
-	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",0A,04\r", false);
+	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",0A,06\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}

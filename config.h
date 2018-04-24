@@ -116,10 +116,10 @@
 //Application timers
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
-#define ADC_REFRESH_MS      1           //delay between ADC reads
-#define POT_TX_MS           50         //delay between transmitting new pot values, 10 min value
+#define ADC_REFRESH_MS      10           //delay between ADC reads
+#define POT_TX_MS           100         //delay between transmitting new pot values, 10 min value
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
-#define BT_TX_MS            10         //minimum time between consecutive BTLE message transmissions
+#define BT_TX_MS            20         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
 #define BAT_CHK_WAIT_MS     10          //CVref & CMP stabilization time
 //Periods for timer 1 sleep mode (for periodic sleep wakeup); 31KHz LPRC; 1:256 prescale
@@ -181,15 +181,25 @@
 
 // handles that change with added services and characteristics
 // manually parse the LS command for UUID handles
-#define PUBLIC_BATT_CHAR_H		"0032"
-#define PUBLIC_BATT_CHAR_C		"0033"
+
 #define PUBLIC_HR_CHAR_HRM_H		"001B"
 #define PUBLIC_HR_CHAR_HRM_C		"001C"
-#define PRIVATE_CHAR_SWITCHES_H		"0023"
-#define PRIVATE_CHAR_POTENTIOMETER_H	"0026"
-#define PRIVATE_CHAR_LEDS_H		"0029"
-#define PRIVATE_CHAR_ADC_CHAN_H		"002D"
-#define PRIVATE_CHAR_PIC_SLAVE_H	"002F"
+#define PUBLIC_HR_CHAR_BSL_H		"001E"
+#define PUBLIC_HR_CHAR_RCP_H		"0020"
+#define PUBLIC_AIO_CHAR_DIG_H		"0023" 
+#define PUBLIC_AIO_CHAR_ANA_H		"0025"
+#define PUBLIC_AIO_CHAR_AGG_H		"0027"
+#define PUBLIC_AIO_CHAR_AGG_C		"0028"
+#define PUBLIC_BATT_CHAR_H		"003A"
+#define PUBLIC_BATT_CHAR_C		"003B"
+#define PRIVATE_CHAR_SWITCHES_H		"002B"
+#define PRIVATE_CHAR_SWITCHES_C		"002C"
+#define PRIVATE_CHAR_POTENTIOMETER_H	"002E"
+#define PRIVATE_CHAR_POTENTIOMETER_C	"002F"
+#define PRIVATE_CHAR_LEDS_H		"0031"
+#define PRIVATE_CHAR_RELAYS_H		"0033"
+#define PRIVATE_CHAR_ADC_CHAN_H		"0035"
+#define PRIVATE_CHAR_PIC_SLAVE_H	"0037"
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))
@@ -210,23 +220,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 typedef struct {
 #define ESP_UUID_LEN_16     2
 #define ESP_UUID_LEN_32     4
 #define ESP_UUID_LEN_128    16
-    uint16_t len;							/*!< UUID length, 16bit, 32bit or 128bit */
-    union {
-        uint16_t    uuid16;
-        uint32_t    uuid32;
-        uint8_t     uuid128[ESP_UUID_LEN_128];
-    } uuid;									/*!< UUID */
+	uint16_t len; /*!< UUID length, 16bit, 32bit or 128bit */
+
+	union {
+		uint16_t uuid16;
+		uint32_t uuid32;
+		uint8_t uuid128[ESP_UUID_LEN_128];
+	} uuid; /*!< UUID */
 } __attribute__((packed)) esp_bt_uuid_t;
 
-
 typedef struct {
-    esp_bt_uuid_t   uuid;                   /*!< UUID */
-    uint8_t         inst_id;                /*!< Instance id */
+	esp_bt_uuid_t uuid; /*!< UUID */
+	uint8_t inst_id; /*!< Instance id */
 } __attribute__((packed)) esp_gatt_id_t;
 
 /**
@@ -234,21 +243,20 @@ typedef struct {
  *        (uuid and instance id) and primary flag
  */
 typedef struct {
-    esp_gatt_id_t   id;                     /*!< Gatt id, include uuid and instance */
-    bool            is_primary;             /*!< This service is primary or not */
+	esp_gatt_id_t id; /*!< Gatt id, include uuid and instance */
+	bool is_primary; /*!< This service is primary or not */
 } __attribute__((packed)) esp_gatt_srvc_id_t;
 
 typedef uint16_t esp_gatt_perm_t;
 typedef uint8_t esp_gatt_char_prop_t;
 
 /**
-  * @brief set the attribute value type
-  */
-typedef struct
-{
-    uint16_t attr_max_len;                                  /*!<  attribute max value length */
-    uint16_t attr_len;                                      /*!<  attribute current value length */
-    uint8_t  *attr_value;                                   /*!<  the pointer to attribute value */
+ * @brief set the attribute value type
+ */
+typedef struct {
+	uint16_t attr_max_len; /*!<  attribute max value length */
+	uint16_t attr_len; /*!<  attribute current value length */
+	uint8_t *attr_value; /*!<  the pointer to attribute value */
 } esp_attr_value_t;
 
 struct gatts_service_inst {
