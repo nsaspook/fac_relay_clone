@@ -117,9 +117,9 @@
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
 #define ADC_REFRESH_MS      10           //delay between ADC reads, 10 nom value
-#define POT_TX_MS           50         //delay between transmitting new pot values, 10 min value
+#define POT_TX_MS           100         //delay between transmitting new pot values, 10 min value
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
-#define BT_TX_MS            30         //minimum time between consecutive BTLE message transmissions
+#define BT_TX_MS            20         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
 #define BAT_CHK_WAIT_MS     10          //CVref & CMP stabilization time
 //Periods for timer 1 sleep mode (for periodic sleep wakeup); 31KHz LPRC; 1:256 prescale
@@ -187,19 +187,19 @@
 #define PUBLIC_HR_CHAR_BSL_H		"001E"
 #define PUBLIC_HR_CHAR_RCP_H		"0020"
 #define PUBLIC_AIO_CHAR_DIG_H		"0023" 
-#define PUBLIC_AIO_CHAR_ANA_H		"0025"
-#define PUBLIC_AIO_CHAR_AGG_H		"0027"
-#define PUBLIC_AIO_CHAR_AGG_C		"0028"
-#define PUBLIC_BATT_CHAR_H		"003A"
-#define PUBLIC_BATT_CHAR_C		"003B"
-#define PRIVATE_CHAR_SWITCHES_H		"002B"
-#define PRIVATE_CHAR_SWITCHES_C		"002C"
-#define PRIVATE_CHAR_POTENTIOMETER_H	"002E"
-#define PRIVATE_CHAR_POTENTIOMETER_C	"002F"
-#define PRIVATE_CHAR_LEDS_H		"0031"
-#define PRIVATE_CHAR_RELAYS_H		"0033"
-#define PRIVATE_CHAR_ADC_CHAN_H		"0035"
-#define PRIVATE_CHAR_PIC_SLAVE_H	"0037"
+#define PUBLIC_AIO_CHAR_ANA_H		"0026"
+#define PUBLIC_AIO_CHAR_AGG_H		"0029"
+#define PUBLIC_AIO_CHAR_AGG_C		"002A"
+#define PUBLIC_BATT_CHAR_H		"003C"
+#define PUBLIC_BATT_CHAR_C		"003D"
+#define PRIVATE_CHAR_SWITCHES_H		"002D"
+#define PRIVATE_CHAR_SWITCHES_C		"002E"
+#define PRIVATE_CHAR_POTENTIOMETER_H	"0030"
+#define PRIVATE_CHAR_POTENTIOMETER_C	"0031"
+#define PRIVATE_CHAR_LEDS_H		"0033"
+#define PRIVATE_CHAR_RELAYS_H		"0035"
+#define PRIVATE_CHAR_ADC_CHAN_H		"0037"
+#define PRIVATE_CHAR_PIC_SLAVE_H	"0039"
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))

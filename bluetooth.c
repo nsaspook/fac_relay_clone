@@ -446,37 +446,37 @@ bool BT_SetupModule(void)
 	}
 
 	// Custom button characteristic with generated UUID
-	BT_SendCommand("pc,"PRIVATE_CHAR_SWITCHES",12,02\r", false); //Notify, Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_SWITCHES",22,02\r", false); //Notify, Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
 	// Custom potentiometer characteristic with generated UUID
-	BT_SendCommand("pc,"PRIVATE_CHAR_POTENTIOMETER",12,02\r", false); //Notify, Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_POTENTIOMETER",22,02\r", false); //Notify, Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
 	// Custom LED characteristic with generated UUID
-	BT_SendCommand("pc,"PRIVATE_CHAR_LEDS",06,04\r", false); //Write , Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_LEDS",0A,04\r", false); //Write , Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
 	// Custom RELAY characteristic with generated UUID
-	BT_SendCommand("pc,"PRIVATE_CHAR_RELAYS",06,04\r", false); //Write , Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_RELAYS",0A,04\r", false); //Write , Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
 	// Custom analog input characteristic with generated UUID //Write , Read
-	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",06,06\r", false);
+	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",0A,04\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
 	// Custom digital device characteristic with generated UUID //Write , Read
-	BT_SendCommand("pc,"PRIVATE_CHAR_PIC_SLAVE",06,0F\r", false);
+	BT_SendCommand("pc,"PRIVATE_CHAR_PIC_SLAVE",0A,0F\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
