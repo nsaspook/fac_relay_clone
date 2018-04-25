@@ -383,19 +383,19 @@ bool BT_SetupModule(void)
 		}
 
 		// heart rate measurement characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",22,02\r", false); //Indicate, Read
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",12,02\r", false); //Notify, Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
 		// heart body sensor location characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",0A,01\r", false); //Write w/ACK, Read
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",06,01\r", false); //Write , Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
 		// heart rate control point characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",0A,01\r", false); //Write w/ACK, Read
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",06,01\r", false); //Write , Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -407,19 +407,19 @@ bool BT_SetupModule(void)
 		}
 
 		// Automation IO digital characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",0A,0F\r", false); //Write w/ACK, Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",16,0F\r", false); //Notify, Write , Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
 		// Automation IO analog characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",0A,02\r", false); //Write w/ACK, Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",16,02\r", false); //Notify, Write , Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
 		// Automation IO agg characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",22,0F\r", false); //Indicate, Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",12,0F\r", false); //Notify, Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -446,37 +446,37 @@ bool BT_SetupModule(void)
 	}
 
 	// Custom button characteristic with generated UUID
-	BT_SendCommand("pc,"PRIVATE_CHAR_SWITCHES",22,02\r", false); //Indicate, Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_SWITCHES",12,02\r", false); //Notify, Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
 	// Custom potentiometer characteristic with generated UUID
-	BT_SendCommand("pc,"PRIVATE_CHAR_POTENTIOMETER",22,02\r", false); //Indicate, Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_POTENTIOMETER",12,02\r", false); //Notify, Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
 	// Custom LED characteristic with generated UUID
-	BT_SendCommand("pc,"PRIVATE_CHAR_LEDS",0A,04\r", false); //Write w/ACK, Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_LEDS",06,04\r", false); //Write , Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
 	// Custom RELAY characteristic with generated UUID
-	BT_SendCommand("pc,"PRIVATE_CHAR_RELAYS",0A,04\r", false); //Write w/ACK, Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_RELAYS",06,04\r", false); //Write , Read
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
-	// Custom analog input characteristic with generated UUID //Write w/ACK, Read
-	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",0A,06\r", false);
+	// Custom analog input characteristic with generated UUID //Write , Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",06,06\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
 
-	// Custom digital device characteristic with generated UUID //Write w/ACK, Read
-	BT_SendCommand("pc,"PRIVATE_CHAR_PIC_SLAVE",0A,0F\r", false);
+	// Custom digital device characteristic with generated UUID //Write , Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_PIC_SLAVE",06,0F\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
