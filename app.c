@@ -134,6 +134,8 @@ void APP_Tasks(void)
 			appData.accumReady = false; //Clear app flags
 			appData.ADCinUse = false;
 		}
+		
+		// packet transmission queue, TimerDone puts packet in the transmission stream
 
 		//Start new ADC read if timer expired, not currently sampling, and not waiting to process accumulator
 		if (TimerDone(TMR_ADC) && appData.ADCinUse == false) {
