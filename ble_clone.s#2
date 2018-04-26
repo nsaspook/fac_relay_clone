@@ -15144,6 +15144,7 @@
                         <text x="109.22" y="-15.24" size="1.778" layer="91">status led</text>
                         <text x="213.36" y="76.2" size="1.778" layer="91">conn</text>
                         <text x="233.68" y="76.2" size="1.778" layer="91">wake</text>
+                        <text x="-10.16" y="25.4" size="1.778" layer="91">seperate pin</text>
                     </plain>
                     <instances>
                         <instance part="U$1" gate="G$1" x="175.26" y="60.96"/>

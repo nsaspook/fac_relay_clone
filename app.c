@@ -153,18 +153,27 @@ void APP_Tasks(void)
 					appData.potValueLastTX = appData.potValue;
 					StartTimer(TMR_POT, POT_TX_MS);
 				}
-
-				//Form message
-				sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", (appData.potValue >> 6)&0b00111111);
-				//Try to transmit the message; reset timer if successful
-				BT_SendCommand(appData.transmit_packet, false);
-				sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_HRM",%02x%02x\r", 0, (appData.potValue >> 4)&0xff); // format mask and ADC data
-				//Try to transmit the message; reset timer if successful
-				BT_SendCommand(appData.transmit_packet, false);
-
 			} else {
 				StartTimer(TMR_POT, POT_TX_MS);
 			} //value not changed - skip this transmission
+		}
+
+		if (TimerDone(TMR_BATT)) {
+			//Form message
+			sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", (appData.potValue >> 6)&0b00111111);
+			//Try to transmit the message; reset timer if successful
+			if (BT_SendCommand(appData.transmit_packet, true)) {
+				StartTimer(TMR_BATT, BATT_TX_MS);
+			}
+		}
+
+		if (TimerDone(TMR_HR)) {
+			//Form message
+			sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_HRM",%02x%02x\r", 0, (appData.potValue >> 4)&0xff); // format mask and ADC data
+			//Try to transmit the message; reset timer if successful
+			if (BT_SendCommand(appData.transmit_packet, true)) {
+				StartTimer(TMR_HR, HR_TX_MS);
+			}
 		}
 
 		//Process any new messages received from RN module

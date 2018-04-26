@@ -56,6 +56,9 @@ enum APP_TIMERS {
     TMR_BT_TX,
     TMR_BAT_CHECK,
     TMR_SPI,
+    TMR_HR,
+    TMR_BATT,
+    TMR_AIO,
     //
     //(Add timers here as needed)
     //
