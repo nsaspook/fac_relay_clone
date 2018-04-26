@@ -160,7 +160,7 @@ void APP_Tasks(void)
 
 		if (TimerDone(TMR_BATT)) {
 			//Form message
-			sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", (appData.potValue >> 6)&0b00111111);
+			sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%02d\r", (appData.potValue >> 6)&0b00111111);
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
 				StartTimer(TMR_BATT, BATT_TX_MS);
