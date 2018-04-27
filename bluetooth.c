@@ -367,12 +367,9 @@ bool BT_SetupModule(void)
 		}
 	}
 
-	BT_SendCommand("g-\r", false);
-	if (!BT_CheckResponseWithWildcard("FRClone",'-')) {
-		BT_SendCommand("s-,FRClone-\r", false);
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	BT_SendCommand("s-,FRC-\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
 	}
 
 	//  initial connection parameters 
