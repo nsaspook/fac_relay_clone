@@ -407,7 +407,7 @@ bool BT_SetupModule(void)
 		}
 
 		// Automation IO digital characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",16,0F\r", false); //Notify, Write , Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",16,08\r", false); //Notify, Write , Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}

@@ -54,9 +54,11 @@
 #include "sleep.h"
 #include "spi.h"
 #include "link.h"
+#include "automio.h"
 
 APP_DATA appData;
 ADC_DATA adcData;
+AIO_DATA aioData;
 
 //Primary application state machine
 
@@ -175,6 +177,15 @@ void APP_Tasks(void)
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
 				StartTimer(TMR_HR, HR_TX_MS);
+			}
+		}
+		
+		if (TimerDone(TMR_AIO_DIG)) {
+			//Form message
+			sprintf(appData.transmit_packet, "shw,"PUBLIC_AIO_CHAR_DIG_H",0101010101010101\r"); // digital data
+			//Try to transmit the message; reset timer if successful
+			if (BT_SendCommand(appData.transmit_packet, true)) {
+				StartTimer(TMR_AIO_DIG, HR_TX_MS);
 			}
 		}
 
