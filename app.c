@@ -136,7 +136,7 @@ void APP_Tasks(void)
 			appData.accumReady = false; //Clear app flags
 			appData.ADCinUse = false;
 		}
-		
+
 		// packet transmission queue, TimerDone puts packet in the transmission stream
 
 		//Start new ADC read if timer expired, not currently sampling, and not waiting to process accumulator
@@ -179,13 +179,13 @@ void APP_Tasks(void)
 				StartTimer(TMR_HR, HR_TX_MS);
 			}
 		}
-		
+
 		if (TimerDone(TMR_AIO_DIG)) {
 			//Form message
 			sprintf(appData.transmit_packet, "shw,"PUBLIC_AIO_CHAR_DIG_H",0101010101010101\r"); // digital data
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
-				StartTimer(TMR_AIO_DIG, HR_TX_MS);
+				StartTimer(TMR_AIO_DIG, AIO_TX_MS);
 			}
 		}
 

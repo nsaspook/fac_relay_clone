@@ -337,9 +337,9 @@ bool BT_SetupModule(void)
 
 	//Send "GR" to get feature settings
 	BT_SendCommand("gr\r", false); //Get RN4020 module feature settings
-	if (!BT_CheckResponse("22000000\r\n")) //Check if features are set for auto advertise and flow control
+	if (!BT_CheckResponse("26060000\r\n")) //Check if features are set for auto advertise and flow control, No Input, no output, no direct advertisement
 	{ //auto enable MLDP, suppress messages during MLDP
-		BT_SendCommand("sr,22000000\r", false); //Features not correct so set features
+		BT_SendCommand("sr,26060000\r", false); //Features not correct so set features
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -365,6 +365,20 @@ bool BT_SetupModule(void)
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
+	}
+
+	BT_SendCommand("g-\r", false);
+	if (!BT_CheckResponseWithWildcard("FRClone",'-')) {
+		BT_SendCommand("s-,FRClone-\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+	}
+
+	//  initial connection parameters 
+	BT_SendCommand("st,003c,0000,0064\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
 	}
 
 	// Clear all settings of defined services and characteristics
@@ -407,19 +421,19 @@ bool BT_SetupModule(void)
 		}
 
 		// Automation IO digital characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",16,08\r", false); //Notify, Write , Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",16,08,33\r", false); //Notify, Write , Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
 		// Automation IO analog characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",16,02\r", false); //Notify, Write , Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",16,02,33\r", false); //Notify, Write , Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
 
 		// Automation IO agg characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",12,0F\r", false); //Notify, Read
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",12,0F,33\r", false); //Notify, Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
