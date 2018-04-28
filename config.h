@@ -40,11 +40,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define APP_VERSION_STR "3.1"       //This firmware version
+#define APP_VERSION_STR "3.2"       //This firmware version
 //	2.8	increase ADC sampling and message transmission rates
 //	2.9	minor spelling fixes
 //	3.0	Add some public service support
 //	3.1	heart rate service added (demo data) makes software version 1.33.4 firmware dependant
+//	3.2	add automation io service
 
 /*******************************************************************************
  * Application settings - these will change application behavior

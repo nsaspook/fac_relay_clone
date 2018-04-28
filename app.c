@@ -177,6 +177,8 @@ void APP_Tasks(void)
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
 				StartTimer(TMR_HR, HR_TX_MS);
+				sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_BSL",%02x\r", 3);
+				BT_SendCommand(appData.transmit_packet, false);
 			}
 		}
 

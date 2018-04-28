@@ -367,7 +367,7 @@ bool BT_SetupModule(void)
 		}
 	}
 
-	BT_SendCommand("s-,FRC-\r", false);
+	BT_SendCommand("s-,FRC-\r", false); // set serialized name  Bluetooth-friendly name
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
