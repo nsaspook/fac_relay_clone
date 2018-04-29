@@ -394,7 +394,7 @@ bool BT_SetupModule(void)
 		}
 
 		// heart rate measurement characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",12,02\r", false); //Notify, Read
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",12,04\r", false); //Notify, Read
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}

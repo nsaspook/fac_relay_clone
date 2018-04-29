@@ -173,12 +173,13 @@ void APP_Tasks(void)
 
 		if (TimerDone(TMR_HR)) {
 			//Form message
-			sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_HRM",%02x%02x\r", 0, (appData.potValue >> 4)&0xff); // format mask and ADC data
+			sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_HRM",%02x%02x%02x%02x\r", 0x08, (appData.potValue >> 4)&0xff, appData.hrmEnergy & 0x00ff, appData.hrmEnergy >> 8); // format mask and ADC data
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
 				StartTimer(TMR_HR, HR_TX_MS);
 				sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_BSL",%02x\r", 3);
 				BT_SendCommand(appData.transmit_packet, false);
+				appData.hrmEnergy++;
 			}
 		}
 
@@ -218,6 +219,10 @@ void APP_Tasks(void)
 			//receive new SPI SLAVE request
 			if (strstr(appData.receive_packet, "WV,"PRIVATE_CHAR_PIC_SLAVE_H",")) {
 
+			}
+			// HRM energy expended reset
+			if (strstr(appData.receive_packet, "WV,"PUBLIC_HR_CHAR_RCP_H",01.")) {
+				appData.hrmEnergy = 0;
 			}
 			//receive new BATTERY request
 			if (strstr(appData.receive_packet, "RV,"PUBLIC_BATT_CHAR_H".")) {
