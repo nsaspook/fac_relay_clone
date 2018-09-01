@@ -320,6 +320,7 @@ bool BT_CheckResponseWithWildcard(const char *data, char Wildcard)
 	return true; //All bytes matched or were ignored so return success
 }
 
+/* update firmware via wireless app */
 bool BT_check_upd(void)
 {
 	/* Jumper on DFU OTA UPDATE */
@@ -401,7 +402,7 @@ bool BT_check_upd(void)
 		BT_SendCommand("I\r", false); // MLDP mode
 		BT_SendCommand("A\r", false); // start advertising
 
-		/* wait loop controller for power cycle/reset */
+		/* wait loop controller for power cycle/reset after firmware update */
 		while (true) {
 			while (true) { // fast flash waiting for OTA
 				ClrWdt();
@@ -411,7 +412,7 @@ bool BT_check_upd(void)
 						WaitMs(200);
 					}
 				}
-				WaitMs(200);
+				WaitMs(110);
 				SLED = !SLED;
 			}
 
