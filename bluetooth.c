@@ -320,12 +320,117 @@ bool BT_CheckResponseWithWildcard(const char *data, char Wildcard)
 	return true; //All bytes matched or were ignored so return success
 }
 
+bool BT_check_upd(void)
+{
+	/* Jumper on DFU OTA UPDATE */
+	BT_OTA_UPD_TRIS = 1; // set for jumper input
+	CNPU1bits.CN7PUE = 1; // pullup for RB3
+	WaitMs(2); // jumper pullup read delay, rise time is slow
+	if (BT_OTA_UPD == 0) {
+		BT_OTA_UPD_TRIS = 0; // set back to output
+		BT_WAKE_SW = 1;
+		BT_WAKE_HW = 1;
+		BT_CMD = 0;
+
+		WaitMs(100);
+		BT_SendCommand("SF,2\r", false); // perform complete factory reset
+		WaitMs(100);
+		BT_CheckResponse(AOK);
+
+		BT_SendCommand("SF,2\r", false); // perform complete factory reset again
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SDH,4.1\r", false); // defaults
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+		BT_SendCommand("SDM,RN4020\r", false); // defaults
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SDN,Microchip\r", false); // defaults
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SP,7\r", false); // defaults
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SS,C0000000\r", false); // add service
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		BT_SendCommand("SR,32008000\r", false); // support MLDP, enable OTA (peripheral mode is enabled by default)
+		WaitMs(100);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+		BT_SendCommand("R,1\r", false); //Force reboot
+
+		//Wait for WS status high
+		StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
+		while (BT_WS == 0) {
+			if (TimerDone(TMR_RN_COMMS)) //Check if timed out
+			{
+				return false;
+			}
+		}
+
+		//Wait for end of "CMD\r\n" - we don't check for full "CMD\r\n" string because we may 
+		//miss some bits or bytes at the beginning while the UART starts up
+		StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
+		while (UART_ReadRxBuffer() != '\n') {
+			if (TimerDone(TMR_RN_COMMS)) //Check if timed out
+			{
+				return false;
+			}
+		}
+
+		BT_SendCommand("I\r", false); // MLDP mode
+		BT_SendCommand("A\r", false); // start advertising
+
+		/* wait loop controller for power cycle/reset */
+		while (true) {
+			while (true) { // fast flash waiting for OTA
+				ClrWdt();
+				while (UART_IsNewRxData()) { //While buffer contains old data
+					UART_ReadRxBuffer(); //Keep reading until empty
+					if (!UART_IsNewRxData()) {
+						WaitMs(200);
+					}
+				}
+				WaitMs(200);
+				SLED = !SLED;
+			}
+
+		}
+
+	}
+	BT_OTA_UPD_TRIS = 0;
+	return true;
+}
+
 //**********************************************************************************************************************
 // Set up the RN4020 module
 
 bool BT_SetupModule(void)
 {
 	uint16_t version_code;
+
+	/* check for over the air firmware updates */
+	BT_check_upd();
 
 	//Check RN4020 module's firmware version for version specific setups
 	version_code = BT_CheckFwVer();
