@@ -40,13 +40,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define APP_VERSION_STR "3.3"       //This firmware version
+#define APP_VERSION_STR "3.4"       //This firmware version
 //	2.8	increase ADC sampling and message transmission rates
 //	2.9	minor spelling fixes
 //	3.0	Add some public service support
 //	3.1	heart rate service added (demo data) makes software version 1.33.4 firmware dependant
 //	3.2	add automation io service
 //	3.3	refactor over the air update function code
+//      3.4	add rn4871 click support
 
 /*******************************************************************************
  * Application settings - these will change application behavior
@@ -298,6 +299,7 @@ struct gatts_char_inst {
 #define BT_WAKE_HW_TRIS TRISBbits.TRISB10
 
 #define BT_WAKE_SW      LATBbits.LATB11                       //Deep sleep wake; BT_WAKE_SW
+#define BT_RST_4871	LATBbits.LATB11			      // RN4871 reset
 #define BT_WAKE_SW_TRIS TRISBbits.TRISB11
 
 #define BT_CMD      LATAbits.LATA0                 //Place RN4020 module in command mode, low for MLDP mode
