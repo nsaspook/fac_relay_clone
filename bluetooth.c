@@ -494,7 +494,7 @@ bool BT_SetupModule_4020(void)
 		// Public BTLE services and characteristics
 
 		// heart rate service with standard 16-bit UUID
-		BT_SendCommand("ps,"PUBLIC_HR_UUID",\r", false);
+		BT_SendCommand("ps,"PUBLIC_HR_UUID"\r", false);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -518,7 +518,7 @@ bool BT_SetupModule_4020(void)
 		}
 
 		//  Automation IO service with standard 16-bit UUID
-		BT_SendCommand("ps,"PUBLIC_AIO_UUID",\r", false);
+		BT_SendCommand("ps,"PUBLIC_AIO_UUID"\r", false);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -602,7 +602,7 @@ bool BT_SetupModule_4020(void)
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
-
+BT_SendCommand("LS\r", false);
 	//Send "R,1" to save changes and reboot
 	return BT_RebootEnFlow(true);
 }
@@ -692,7 +692,7 @@ bool BT_SetupModule_4871(void)
 		// Public BTLE services and characteristics
 
 		// heart rate service with standard 16-bit UUID
-		BT_SendCommand("ps,"PUBLIC_HR_UUID",\r", false);
+		BT_SendCommand("ps,"PUBLIC_HR_UUID"\r", false);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
@@ -716,7 +716,7 @@ bool BT_SetupModule_4871(void)
 		}
 
 		//  Automation IO service with standard 16-bit UUID
-		BT_SendCommand("ps,"PUBLIC_AIO_UUID",\r", false);
+		BT_SendCommand("ps,"PUBLIC_AIO_UUID"\r", false);
 		if (!BT_CheckResponse(AOK)) {
 			return false;
 		}
