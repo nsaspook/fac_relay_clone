@@ -76,7 +76,7 @@ void UART_Init(void)
 	U1BRG = 34; //Baud rate 115,200 - actually 115,384 baud 0.16% error
 	//	U1BRG = 7;
 	U1MODE = 0x8008; //Enable UART, no flow control, BRGH = 1 for high speed baud mode
-	U1MODEbits.UEN0=0; //
+	U1MODEbits.UEN0=0; // set uart enable bits
 	U1MODEbits.UEN1=1; // enable RTS/CTS
 	U1MODEbits.RTSMD = 0; // pin is in flow control mode
 	U1STA = 0x0400; //Enable transmit

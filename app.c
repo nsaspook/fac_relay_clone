@@ -299,6 +299,28 @@ bool APP_Initialize(void)
 #endif  //USE_SLEEP
 
 	BT_WAKE_SW = 1; //wake module
+
+#ifdef BT_RN4871
+	BT_RST_4871 = 1; // come out of reset
+	SLED = 1;
+	U1MODEbits.UARTEN=0;
+	WaitMs(50);
+	U1MODEbits.UEN0=0; // NO RTS/CTS
+	U1MODEbits.UEN1=0; // NO RTS/CTS
+//	U1MODEbits.RTSMD = 0; // pin is in flow control mode
+	U1MODEbits.UARTEN=1;
+	U1STA = 0x0400; //Enable transmit
+	WaitMs(500);
+	// BTCMD("$");
+	BT_SendCommand("$", false);
+	WaitMs(100);
+	// BTCMD("$$$");
+	BT_SendCommand("$$$", false);
+	WaitMs(1000);
+	SLED = 0;
+#endif
+
+#if defined(BT_RN4020) && defined(VERIFY_RN_FW_VER)
 	//Wait for WS status high
 	StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
 	while (BT_WS == 0) {
@@ -319,6 +341,7 @@ bool APP_Initialize(void)
 			return false;
 		}
 	}
+#endif
 
 	//Module is now in command mode and ready for input
 	if (!BT_SetupModule()) { //Setup RN4020 module
@@ -326,7 +349,7 @@ bool APP_Initialize(void)
 		return false;
 	}
 
-#ifdef VERIFY_RN_FW_VER
+#if defined(BT_RN4020) && defined(VERIFY_RN_FW_VER)
 	//Verify RN4020 module's firmware version
 	if (!(appData.version_code = BT_CheckFwVer())) {
 		appData.error_code = ERROR_RN_FW;
