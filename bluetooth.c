@@ -691,6 +691,18 @@ bool BT_SetupModule_4871(void)
 	if (version_code >= 33) { // public services
 		// Public BTLE services and characteristics
 
+		// battery level service with standard 16-bit UUID
+		BT_SendCommand("ps,"PUBLIC_BATT_UUID"\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// battery level measurement characteristic
+		BT_SendCommand("pc,"PUBLIC_BATT_CHAR_BL",12,04\r", false); //Notify, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
 		// heart rate service with standard 16-bit UUID
 		BT_SendCommand("ps,"PUBLIC_HR_UUID"\r", false);
 		if (!BT_CheckResponse(AOK)) {
@@ -820,7 +832,7 @@ bool BT_RebootEnFlow(bool do_flow)
 
 	if (do_ls) {
 		BT_SendCommand("LS\r", false); // list services
-		WaitMs(10);
+		WaitMs(100);
 		//Clear any UART error bits
 		U1STAbits.FERR = 0;
 		U1STAbits.PERR = 0;
