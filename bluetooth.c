@@ -426,7 +426,7 @@ bool BT_check_upd(void)
 //**********************************************************************************************************************
 // Set up the RN4020 module
 
-bool BT_SetupModule(void)
+bool BT_SetupModule_4020(void)
 {
 	uint16_t version_code;
 
@@ -436,7 +436,7 @@ bool BT_SetupModule(void)
 	//Check RN4020 module's firmware version for version specific setups
 	version_code = BT_CheckFwVer();
 
-	BT_SendCommand("sf,2\r", false); //Get RN4020 module feature settings
+	BT_SendCommand("sf,2\r", false); // Factory reset
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
@@ -604,21 +604,231 @@ bool BT_SetupModule(void)
 	}
 
 	//Send "R,1" to save changes and reboot
-	return BT_RebootEnFlow();
+	return BT_RebootEnFlow(true);
+}
+
+//**********************************************************************************************************************
+// Set up the RN4871 module
+
+bool BT_SetupModule_4871(void)
+{
+	uint16_t version_code;
+
+	/* check for over the air firmware updates */
+	//	BT_check_upd();
+
+	//Check RN4871 module's firmware version for version specific setups
+	//	version_code = BT_CheckFwVer();
+	version_code = 118; // hardcode for now
+
+	BT_SendCommand("SF,2\r", false); // Factory reset
+	if (!BT_CheckResponse(CMD)) {
+		return false;
+	}
+
+	//flush UART RX buffer after reboot
+	WaitMs(100);
+	while (UART_IsNewRxData()) { //While buffer contains old data
+		UART_ReadRxBuffer(); //Keep reading until empty
+		if (!UART_IsNewRxData()) {
+			WaitMs(100);
+		}
+	}
+
+	//Send "GR" to get feature settings
+	BT_SendCommand("GR\r", false); //Get module feature settings
+	if (!BT_CheckResponse("4000\r\n")) //Check if features are set for auto advertise and flow control, No Input, no output, no direct advertisement
+	{ //auto enable MLDP, suppress messages during MLDP
+		BT_SendCommand("SR,4000\r", false); //Features not correct so set features
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+	}
+
+	// assign random mac address
+	BT_SendCommand("&R", false);
+	WaitMs(100);
+
+	char macAddr[16];
+	BT_SendCommand("gds\r", false); // Get mac address
+	while (!BT_ReceivePacket(macAddr));
+
+	char message[12];
+	macAddr[12] = '\0';
+	sprintf(message, "sn,%s_BT\r", &macAddr[8]);
+
+	BT_SendCommand(message, false); //Set advertise name
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	BT_SendCommand("gs\r", false);
+	if (!BT_CheckResponse("C0\r\n")) {
+		//Send "SS" to set default services
+		BT_SendCommand("ss,C0\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+	}
+
+	BT_SendCommand("s-,FRC-\r", false); // set serialized name  Bluetooth-friendly name
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	//  initial connection parameters 
+	BT_SendCommand("st,003c,003c,0000,0064\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// Clear all settings of defined services and characteristics
+	BT_SendCommand("pz\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	if (version_code >= 33) { // public services
+		// Public BTLE services and characteristics
+
+		// heart rate service with standard 16-bit UUID
+		BT_SendCommand("ps,"PUBLIC_HR_UUID",\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// heart rate measurement characteristic
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",12,04\r", false); //Notify, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// heart body sensor location characteristic
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",06,01\r", false); //Write , Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// heart rate control point characteristic
+		BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",06,01\r", false); //Write , Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		//  Automation IO service with standard 16-bit UUID
+		BT_SendCommand("ps,"PUBLIC_AIO_UUID",\r", false);
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// Automation IO digital characteristic
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",16,08,33\r", false); //Notify, Write , Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// Automation IO analog characteristic
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",16,02,33\r", false); //Notify, Write , Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+
+		// Automation IO agg characteristic
+		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",12,0F,33\r", false); //Notify, Read
+		if (!BT_CheckResponse(AOK)) {
+			return false;
+		}
+	}
+
+	// set software version
+	BT_SendCommand("sdr,"APP_VERSION_STR"\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// Private BTLE services and characteristics
+
+	//Send "ps" to set user defined service UUID
+	BT_SendCommand("ps,"PRIVATE_SERVICE",\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// Custom button characteristic with generated UUID
+	BT_SendCommand("pc,"PRIVATE_CHAR_SWITCHES",22,02\r", false); //Notify, Read
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// Custom potentiometer characteristic with generated UUID
+	BT_SendCommand("pc,"PRIVATE_CHAR_POTENTIOMETER",22,02\r", false); //Notify, Read
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// Custom LED characteristic with generated UUID
+	BT_SendCommand("pc,"PRIVATE_CHAR_LEDS",0A,04\r", false); //Write , Read
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// Custom RELAY characteristic with generated UUID
+	BT_SendCommand("pc,"PRIVATE_CHAR_RELAYS",0A,04\r", false); //Write , Read
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// Custom analog input characteristic with generated UUID //Write , Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",0A,04\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// Custom digital device characteristic with generated UUID //Write , Read
+	BT_SendCommand("pc,"PRIVATE_CHAR_PIC_SLAVE",0A,0F\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	BT_SendCommand("wc\r", false); //Command to clear script, just in case there is a script
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	//Send "R,1" to save changes and reboot
+	return BT_RebootEnFlow(false);
 }
 
 //**********************************************************************************************************************
 // Reboot the module and enable flow control on PIC UART
 
-bool BT_RebootEnFlow(void)
+bool BT_RebootEnFlow(bool do_flow)
 {
 	bool do_ls = true, good_boot; // causes a control lockup if enabled
 	//Send "R,1" to save changes and reboot
 	BT_SendCommand("r,1\r", false); //Force reboot
-	if (!BT_CheckResponse("Reboot\r\n")) {
-		return false;
+
+#ifdef BT_RN4871
+
+	//flush UART RX buffer 
+	while (UART_IsNewRxData()) { //While buffer contains old data
+		UART_ReadRxBuffer(); //Keep reading until empty
+		if (!UART_IsNewRxData()) {
+			WaitMs(100);
+		}
 	}
 
+	if (do_ls) {
+		BT_SendCommand("LS\r", false); // list services
+		WaitMs(10);
+		//Clear any UART error bits
+		U1STAbits.FERR = 0;
+		U1STAbits.PERR = 0;
+	}
+	good_boot = true;
+#endif
+
+#ifdef BT_RN4020
 	//Disable UART while TX line from RN is low during reset and bootup
 	StartTimer(TMR_RN_COMMS, 1000);
 	U1MODE &= 0x7FFF;
@@ -633,6 +843,7 @@ bool BT_RebootEnFlow(void)
 			break;
 		}
 	}
+	
 	UART_RX_IF = 0; //Clear UART Receive interrupt flag
 	U1MODE |= 0x8200; //Enable UART, use RTC/CTS flow control
 	U1STA |= 0x0400; //Enable transmit
@@ -669,6 +880,7 @@ bool BT_RebootEnFlow(void)
 		U1STAbits.FERR = 0;
 		U1STAbits.PERR = 0;
 	}
+#endif
 
 	return good_boot; //Check that we received CMD indicating reboot is done	
 }

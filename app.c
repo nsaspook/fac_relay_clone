@@ -303,7 +303,6 @@ bool APP_Initialize(void)
 	// set RN4871 to command mode
 #ifdef BT_RN4871
 	BT_RST_4871 = 1; // come out of reset
-	SLED = 1;
 	U1MODEbits.UARTEN = 0; // disable UART so we can change flow control to none
 	WaitMs(50);
 	U1MODEbits.UEN0 = 0; // NO RTS/CTS
@@ -317,10 +316,15 @@ bool APP_Initialize(void)
 	// BTCMD("$$$");
 	BT_SendCommand("$$$", false);
 	WaitMs(500);
-	SLED = 0;
+
+	//Module is now in command mode and ready for input
+	if (!BT_SetupModule_4871()) { //Setup RN4871 module
+		appData.error_code = ERROR_INITIALIZATION;
+		return false;
+	}
 #endif
 
-#if defined(BT_RN4020) && defined(VERIFY_RN_FW_VER)
+#ifdef	BT_RN4020
 	//Wait for WS status high
 	StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
 	while (BT_WS == 0) {
@@ -341,21 +345,21 @@ bool APP_Initialize(void)
 			return false;
 		}
 	}
-#endif
 
 	//Module is now in command mode and ready for input
-	if (!BT_SetupModule()) { //Setup RN4020 module
+	if (!BT_SetupModule_4020()) { //Setup RN4020 module
 		appData.error_code = ERROR_INITIALIZATION;
 		return false;
 	}
 
-#if defined(BT_RN4020) && defined(VERIFY_RN_FW_VER)
+#ifdef VERIFY_RN_FW_VER
 	//Verify RN4020 module's firmware version
 	if (!(appData.version_code = BT_CheckFwVer())) {
 		appData.error_code = ERROR_RN_FW;
 		return false;
 	}
 #endif // VERIFY_RN_FW_VER 
+#endif
 
 	//flush UART RX buffer as a precaution before starting app state machine
 	while (UART_IsNewRxData()) { //While buffer contains old data

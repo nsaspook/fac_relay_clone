@@ -57,8 +57,9 @@ bool BT_GetResponse(char *data);
 bool BT_CompareResponse(const char *data1, const char *data2);
 bool BT_CheckResponse(const char *);
 bool BT_CheckResponseWithWildcard(const char *data, char Wildcard);
-bool BT_SetupModule(void);
-bool BT_RebootEnFlow(void);
+bool BT_SetupModule_4020(void);
+bool BT_SetupModule_4871(void);
+bool BT_RebootEnFlow(bool);
 
 #ifdef VERIFY_RN_FW_VER
 uint16_t BT_CheckFwVer(void);
