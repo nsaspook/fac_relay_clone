@@ -300,15 +300,15 @@ bool APP_Initialize(void)
 
 	BT_WAKE_SW = 1; //wake module
 
+	// set RN4871 to command mode
 #ifdef BT_RN4871
 	BT_RST_4871 = 1; // come out of reset
 	SLED = 1;
-	U1MODEbits.UARTEN=0;
+	U1MODEbits.UARTEN = 0; // disable UART so we can change flow control to none
 	WaitMs(50);
-	U1MODEbits.UEN0=0; // NO RTS/CTS
-	U1MODEbits.UEN1=0; // NO RTS/CTS
-//	U1MODEbits.RTSMD = 0; // pin is in flow control mode
-	U1MODEbits.UARTEN=1;
+	U1MODEbits.UEN0 = 0; // NO RTS/CTS
+	U1MODEbits.UEN1 = 0; // NO RTS/CTS
+	U1MODEbits.UARTEN = 1; // enable UART
 	U1STA = 0x0400; //Enable transmit
 	WaitMs(500);
 	// BTCMD("$");
@@ -316,7 +316,7 @@ bool APP_Initialize(void)
 	WaitMs(100);
 	// BTCMD("$$$");
 	BT_SendCommand("$$$", false);
-	WaitMs(1000);
+	WaitMs(500);
 	SLED = 0;
 #endif
 
