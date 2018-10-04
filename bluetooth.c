@@ -602,7 +602,7 @@ bool BT_SetupModule_4020(void)
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
-BT_SendCommand("LS\r", false);
+
 	//Send "R,1" to save changes and reboot
 	return BT_RebootEnFlow(true);
 }
@@ -829,6 +829,9 @@ bool BT_RebootEnFlow(bool do_flow)
 #endif
 
 #ifdef BT_RN4020
+	if (!BT_CheckResponse("Reboot\r\n")) {
+		return false;
+	}
 	//Disable UART while TX line from RN is low during reset and bootup
 	StartTimer(TMR_RN_COMMS, 1000);
 	U1MODE &= 0x7FFF;
@@ -843,7 +846,7 @@ bool BT_RebootEnFlow(bool do_flow)
 			break;
 		}
 	}
-	
+
 	UART_RX_IF = 0; //Clear UART Receive interrupt flag
 	U1MODE |= 0x8200; //Enable UART, use RTC/CTS flow control
 	U1STA |= 0x0400; //Enable transmit

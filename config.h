@@ -291,8 +291,9 @@ struct gatts_char_inst {
 // Clock frequency
 #define FCY (16000000)                              //8MHz FRC, 4XPLL, /2 for Fcy
 
-//#define BT_RN4871
-#define BT_RN4020
+// select type of BLE module
+#define BT_RN4871
+//#define BT_RN4020
 
 //RN4020 BTLE
 #define BT_OTA_UPD	PORTBbits.RB3
