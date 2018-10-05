@@ -648,8 +648,12 @@ bool BT_SetupModule_4871(void)
 	//	version_code = BT_CheckFwVer();
 	version_code = 118; // hardcode for now
 
+	//Send "GR" to get feature settings
+	//	BT_SendCommand("GN\r", false);
+	//	BT_SendCommand("GR\r", false); //Get module feature settings
+	//	BT_SendCommand("gs\r", false);
 	// Clear all settings of defined services and characteristics
-	BT_SendCommand("pz\r", false);
+	BT_SendCommand("pz\r", false); // must reboot next to clear handles
 	BT_SendCommand("SF,1\r", false); // Factory reset
 	WaitMs(500);
 
@@ -668,11 +672,15 @@ bool BT_SetupModule_4871(void)
 	BT_SendCommand("S%,%,#\r", false);
 	WaitMs(100);
 
-	//	BT_SendCommand("LS\r", false);
-
-	//Send "GR" to get feature settings
-	BT_SendCommand("GR\r", false); //Get module feature settings
+	U1RTS_LAT = 0;
 	BT_SendCommand("SR,4000\r", false); //Features not correct so set features
+
+	//	U1MODEbits.UARTEN = 0; // disable UART so we can change flow control to none
+	//	WaitMs(50);
+	//	U1MODEbits.UEN0 = 0; // NO RTS/CTS
+	//	U1MODEbits.UEN1 = 0; // NO RTS/CTS
+	//	U1MODEbits.UARTEN = 1; // enable UART
+	//	U1STA = 0x0400; //Enable transmit
 
 	// assign random mac address
 	BT_SendCommand("&R", false);
@@ -693,13 +701,10 @@ bool BT_SetupModule_4871(void)
 		return false;
 	}
 
-	BT_SendCommand("gs\r", false);
-	if (!BT_CheckResponse("C0\r\n")) {
-		//Send "SS" to set default services
-		BT_SendCommand("ss,C0\r", false);
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	//Send "SS" to set default services
+	BT_SendCommand("ss,C0\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
 	}
 
 	BT_SendCommand("s-,FRC-\r", false); // set serialized name  Bluetooth-friendly name
@@ -718,21 +723,6 @@ bool BT_SetupModule_4871(void)
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
-
-	// Clear all settings of defined services and characteristics
-	BT_SendCommand("pz\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
-
-	//flush UART RX buffer 
-	while (UART_IsNewRxData()) { //While buffer contains old data
-		UART_ReadRxBuffer(); //Keep reading until empty
-		if (!UART_IsNewRxData()) {
-			WaitMs(100);
-		}
-	}
-	//	BT_SendCommand("LS\r", false); // list services
 
 	if (version_code >= 33) { // public services
 		// Public BTLE services and characteristics
@@ -798,7 +788,6 @@ bool BT_SetupModule_4871(void)
 		}
 	}
 
-#ifdef	BT_RN4871
 	// Private BTLE services and characteristics
 
 	//Send "ps" to set user defined service UUID
@@ -842,7 +831,7 @@ bool BT_SetupModule_4871(void)
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
-#endif
+
 	BT_SendCommand("wc\r", false); //Command to clear script, just in case there is a script
 	if (!BT_CheckResponse(AOK)) {
 		return false;
@@ -857,23 +846,21 @@ bool BT_SetupModule_4871(void)
 
 bool BT_RebootEnFlow(bool do_flow)
 {
-	bool do_ls = false, good_boot; // causes a mpu serial control lockup if enabled
-	//Send "R,1" to save changes and reboot
-	BT_SendCommand("r,1\r", false); //Force reboot
+	bool do_ls = true, good_boot; // causes a mpu serial control lockup if enabled
 
 #ifdef BT_RN4871
-
+	BT_SendCommand("GN\r", false);
 	clear_bt_port();
-
 	if (do_ls) {
 		BT_SendCommand("LS\r", false); // list services
-		WaitMs(400);
-		clear_bt_port();
+		WaitMs(4000);
 	}
 	good_boot = true;
 #endif
 
 #ifdef BT_RN4020
+	//Send "R,1" to save changes and reboot
+	BT_SendCommand("r,1\r", false); //Force reboot
 	if (!BT_CheckResponse("Reboot\r\n")) {
 		return false;
 	}

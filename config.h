@@ -189,7 +189,7 @@
 #define PUBLIC_AIO_CHAR_ANA     "2A58" // Automation IO analog
 #define PUBLIC_AIO_CHAR_AGG     "2A5A" // Automation IO Aggregate
 
-// handles that change with added services and characteristics
+// handles that change with added/modified services and characteristics
 // manually parse the LS command for UUID handles
 #ifdef	BT_RN4020
 #define PUBLIC_HR_CHAR_HRM_H		"001B"
@@ -217,10 +217,10 @@
 #define PUBLIC_HR_CHAR_HRM_C		"0093"
 #define PUBLIC_HR_CHAR_BSL_H		"0095"
 #define PUBLIC_HR_CHAR_RCP_H		"0097"
-#define PUBLIC_AIO_CHAR_DIG_H		"0023" 
-#define PUBLIC_AIO_CHAR_ANA_H		"0026"
-#define PUBLIC_AIO_CHAR_AGG_H		"0029"
-#define PUBLIC_AIO_CHAR_AGG_C		"002A"
+#define PUBLIC_AIO_CHAR_DIG_H		"00B2" 
+#define PUBLIC_AIO_CHAR_ANA_H		"00B5"
+#define PUBLIC_AIO_CHAR_AGG_H		"00B8"
+#define PUBLIC_AIO_CHAR_AGG_C		"00B9"
 #define PUBLIC_BATT_CHAR_H		"0072"
 #define PUBLIC_BATT_CHAR_C		"0073"
 #define PRIVATE_CHAR_SWITCHES_H		"00D2"
@@ -229,8 +229,8 @@
 #define PRIVATE_CHAR_POTENTIOMETER_C	"00D6"
 #define PRIVATE_CHAR_LEDS_H		"00D8"
 #define PRIVATE_CHAR_RELAYS_H		"00DA"
-#define PRIVATE_CHAR_ADC_CHAN_H		"00Dc"
-#define PRIVATE_CHAR_PIC_SLAVE_H	"00De"
+#define PRIVATE_CHAR_ADC_CHAN_H		"00DC"
+#define PRIVATE_CHAR_PIC_SLAVE_H	"00DE"
 #endif
 
 //attribute for ISRs that do not alter PSV registers

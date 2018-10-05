@@ -177,7 +177,7 @@ void APP_Tasks(void)
 
 		if (TimerDone(TMR_BATT)) {
 			//Form message
-			sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%02d\r", (appData.potValue >> 6)&0b00111111);
+			sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_CHAR_H",%02d\r\n", (appData.potValue >> 6)&0b00111111);
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
 				StartTimer(TMR_BATT, BATT_TX_MS);
@@ -186,11 +186,11 @@ void APP_Tasks(void)
 
 		if (TimerDone(TMR_HR)) {
 			//Form message
-			sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_HRM",%02x%02x%02x%02x\r", 0x08, (appData.potValue >> 4)&0xff, appData.hrmEnergy & 0x00ff, appData.hrmEnergy >> 8); // format mask and ADC data
+			sprintf(appData.transmit_packet, "shw,"PUBLIC_HR_CHAR_HRM_H",%02x%02x%02x%02x\r\n", 0x08, (appData.potValue >> 4)&0xff, appData.hrmEnergy & 0x00ff, appData.hrmEnergy >> 8); // format mask and ADC data
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
 				StartTimer(TMR_HR, HR_TX_MS);
-				sprintf(appData.transmit_packet, "suw,"PUBLIC_HR_CHAR_BSL",%02x\r", 3);
+				sprintf(appData.transmit_packet, "shw,"PUBLIC_HR_CHAR_BSL_H",%02x\r\n", 3);
 				BT_SendCommand(appData.transmit_packet, false);
 				appData.hrmEnergy++;
 			}
@@ -198,7 +198,7 @@ void APP_Tasks(void)
 
 		if (TimerDone(TMR_AIO_DIG)) {
 			//Form message
-			sprintf(appData.transmit_packet, "shw,"PUBLIC_AIO_CHAR_DIG_H",0101010101010101\r"); // digital data
+			sprintf(appData.transmit_packet, "shw,"PUBLIC_AIO_CHAR_DIG_H",0101010101010101\r\n"); // digital data
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
 				StartTimer(TMR_AIO_DIG, AIO_TX_MS);
