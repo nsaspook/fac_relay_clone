@@ -104,6 +104,10 @@
 //Number of samples to average for potentiometer ADC reading, in addition to hardware oversampling
 #define ADC_NUM_AVGS        5
 
+// select type of BLE module
+#define BT_RN4871
+//#define BT_RN4020
+
 //If defined, the RN4020's firmware version will be checked as part of initialization.
 //If the version is not equal to the version specified below, the board will
 //error out with the initialization error code display and not operate
@@ -187,7 +191,7 @@
 
 // handles that change with added services and characteristics
 // manually parse the LS command for UUID handles
-
+#ifdef	BT_RN4020
 #define PUBLIC_HR_CHAR_HRM_H		"001B"
 #define PUBLIC_HR_CHAR_HRM_C		"001C"
 #define PUBLIC_HR_CHAR_BSL_H		"001E"
@@ -206,6 +210,28 @@
 #define PRIVATE_CHAR_RELAYS_H		"0035"
 #define PRIVATE_CHAR_ADC_CHAN_H		"0037"
 #define PRIVATE_CHAR_PIC_SLAVE_H	"0039"
+#endif
+
+#ifdef	BT_RN4871
+#define PUBLIC_HR_CHAR_HRM_H		"0092"
+#define PUBLIC_HR_CHAR_HRM_C		"0093"
+#define PUBLIC_HR_CHAR_BSL_H		"0095"
+#define PUBLIC_HR_CHAR_RCP_H		"0097"
+#define PUBLIC_AIO_CHAR_DIG_H		"0023" 
+#define PUBLIC_AIO_CHAR_ANA_H		"0026"
+#define PUBLIC_AIO_CHAR_AGG_H		"0029"
+#define PUBLIC_AIO_CHAR_AGG_C		"002A"
+#define PUBLIC_BATT_CHAR_H		"0072"
+#define PUBLIC_BATT_CHAR_C		"0073"
+#define PRIVATE_CHAR_SWITCHES_H		"00D2"
+#define PRIVATE_CHAR_SWITCHES_C		"00D3"
+#define PRIVATE_CHAR_POTENTIOMETER_H	"00D5"
+#define PRIVATE_CHAR_POTENTIOMETER_C	"00D6"
+#define PRIVATE_CHAR_LEDS_H		"00D8"
+#define PRIVATE_CHAR_RELAYS_H		"00DA"
+#define PRIVATE_CHAR_ADC_CHAN_H		"00Dc"
+#define PRIVATE_CHAR_PIC_SLAVE_H	"00De"
+#endif
 
 //attribute for ISRs that do not alter PSV registers
 #define _ISR_NO_AUTO_PSV __attribute__((interrupt,no_auto_psv))
@@ -290,10 +316,6 @@ struct gatts_char_inst {
 
 // Clock frequency
 #define FCY (16000000)                              //8MHz FRC, 4XPLL, /2 for Fcy
-
-// select type of BLE module
-#define BT_RN4871
-//#define BT_RN4020
 
 //RN4020 BTLE
 #define BT_OTA_UPD	PORTBbits.RB3

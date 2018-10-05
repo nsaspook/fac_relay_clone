@@ -38,6 +38,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "config.h"
 
 //List of message responses
 
@@ -48,7 +49,6 @@
 enum BluetoothDecodeState {
     WaitForCR, WaitForLF
 };
-
 
 bool BT_ReceivePacket(char *message);
 bool BT_SendCommand(const char *data, bool wait);

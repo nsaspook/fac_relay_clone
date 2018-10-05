@@ -96,7 +96,20 @@ void APP_Tasks(void)
 		//We're not connected to a device - advertise mode
 	case APP_BLUETOOTH_ADVERTISE:
 		LED_SET_LightShow(LED_BTLE_ADVERTISING);
-		if (BT_CONNECTED) {
+
+#ifdef	BT_RN4871
+		appData.rn_4871_packets = true;
+		appData.got_packet = BT_ReceivePacket(appData.receive_packet); // check for RN4871 connect packet
+		if (appData.got_packet == true) { //true if new packet received
+			// rn4871 connection status packets
+			if (strstr(appData.receive_packet, "CONNECT,")) {
+				appData.rn4871_connected = true;
+			}
+			appData.got_packet = false;
+		}
+#endif
+
+		if (BT_CONNECTED || appData.rn4871_connected) {
 			appData.state = APP_BLUETOOTH_PAIRED;
 		}
 		break;
@@ -106,7 +119,7 @@ void APP_Tasks(void)
 		//Update LEDs
 		LED_SET_LightShow(LED_BTLE_PAIRED);
 		//Check to see if we are still connected; return to advertise state if not
-		if (!BT_CONNECTED) {
+		if (!BT_CONNECTED && !appData.rn4871_connected) {
 			appData.update_packet = false;
 			LED_SET_LightShow(LED_BTLE_ADVERTISING);
 			appData.state = APP_BLUETOOTH_ADVERTISE;
@@ -193,6 +206,9 @@ void APP_Tasks(void)
 		}
 
 		//Process any new messages received from RN module
+#ifdef	BT_RN4871
+		appData.rn_4871_packets = true;
+#endif
 		appData.got_packet = BT_ReceivePacket(appData.receive_packet); //Get new message if one has been received from the RN4020
 		if (appData.got_packet == true) { //true if new packet received
 
@@ -231,6 +247,12 @@ void APP_Tasks(void)
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
 			}
+
+#ifdef	BT_RN4871
+			if (strstr(appData.receive_packet, "DISCONNECT")) {
+				appData.rn4871_connected = false;
+			}
+#endif
 		}
 		break;
 
@@ -283,6 +305,7 @@ bool APP_Initialize(void)
 	appData.accumReady = false;
 	appData.ADCinUse = false;
 	appData.timer1Flag = false;
+	appData.rn4871_connected = false;
 
 	/****************************************************************************
 	 * Peripherals Init
@@ -309,7 +332,7 @@ bool APP_Initialize(void)
 	U1MODEbits.UEN1 = 0; // NO RTS/CTS
 	U1MODEbits.UARTEN = 1; // enable UART
 	U1STA = 0x0400; //Enable transmit
-	WaitMs(500);
+
 	// BTCMD("$");
 	BT_SendCommand("$", false);
 	WaitMs(100);

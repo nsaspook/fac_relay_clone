@@ -45,6 +45,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+extern APP_DATA appData;
+
 uint16_t BT_CheckFwVer(void);
 
 struct gatts_service_inst gatts_service[] = {
@@ -127,6 +129,19 @@ uint16_t get_char_handle(struct gatts_char_inst *bt, char *rxbuf)
 	return 0;
 }
 
+void clear_bt_port(void)
+{
+	while (UART_IsNewRxData()) { //While buffer contains old data
+		UART_ReadRxBuffer(); //Keep reading until empty
+		if (!UART_IsNewRxData()) {
+			WaitMs(100);
+		}
+	}
+	//Clear any UART error bits
+	U1STAbits.FERR = 0;
+	U1STAbits.PERR = 0;
+}
+
 
 //**********************************************************************************************************************
 // Receive a message over the Bluetooth link
@@ -143,25 +158,37 @@ bool BT_ReceivePacket(char * Message)
 			i = 0;
 		}
 
-		switch (btDecodeState) {
-		case WaitForCR:
-			if (Message[i - 1] == '\r') { //See if this is the CR
-				btDecodeState = WaitForLF; //Is CR so wait for LF
-			}
-			break;
+		if (!appData.rn_4871_packets) {
+			switch (btDecodeState) {
+			case WaitForCR:
+				if (Message[i - 1] == '\r') { //See if this is the CR
+					btDecodeState = WaitForLF; //Is CR so wait for LF
+				}
+				break;
 
-		case WaitForLF:
-			btDecodeState = WaitForCR; //Will be looking for a new packet next
-			if (Message[i - 1] == '\n') //See if this is the LF
+			case WaitForLF:
+				btDecodeState = WaitForCR; //Will be looking for a new packet next
+				if (Message[i - 1] == '\n') //See if this is the LF
+				{
+					Message[i] = NULL; //Got a complete message!
+					i = 0;
+					return true;
+				}
+				break;
+
+			default: //Invalid state so start looking for a new start of frame
+				btDecodeState = WaitForCR;
+			}
+
+		} else {
+			appData.rn_4871_packets = false;
+			if (Message[i - 1] == '#') //See if this is the end
 			{
+				btDecodeState = WaitForCR; //Will be looking for a new packet next
 				Message[i] = NULL; //Got a complete message!
 				i = 0;
 				return true;
 			}
-			break;
-
-		default: //Invalid state so start looking for a new start of frame
-			btDecodeState = WaitForCR;
 		}
 	}
 	return false;
@@ -621,29 +648,31 @@ bool BT_SetupModule_4871(void)
 	//	version_code = BT_CheckFwVer();
 	version_code = 118; // hardcode for now
 
-	BT_SendCommand("SF,2\r", false); // Factory reset
-	if (!BT_CheckResponse(CMD)) {
-		return false;
-	}
+	// Clear all settings of defined services and characteristics
+	BT_SendCommand("pz\r", false);
+	BT_SendCommand("SF,1\r", false); // Factory reset
+	WaitMs(500);
 
-	//flush UART RX buffer after reboot
+	//Clear any UART error bits
+	U1STAbits.FERR = 0;
+	U1STAbits.PERR = 0;
+
+	// BTCMD("$");
+	BT_SendCommand("$", false);
 	WaitMs(100);
-	while (UART_IsNewRxData()) { //While buffer contains old data
-		UART_ReadRxBuffer(); //Keep reading until empty
-		if (!UART_IsNewRxData()) {
-			WaitMs(100);
-		}
-	}
+	// BTCMD("$$$");
+	BT_SendCommand("$$$", false);
+	WaitMs(500);
+
+	// assign delimiters
+	BT_SendCommand("S%,%,#\r", false);
+	WaitMs(100);
+
+	//	BT_SendCommand("LS\r", false);
 
 	//Send "GR" to get feature settings
 	BT_SendCommand("GR\r", false); //Get module feature settings
-	if (!BT_CheckResponse("4000\r\n")) //Check if features are set for auto advertise and flow control, No Input, no output, no direct advertisement
-	{ //auto enable MLDP, suppress messages during MLDP
-		BT_SendCommand("SR,4000\r", false); //Features not correct so set features
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
-	}
+	BT_SendCommand("SR,4000\r", false); //Features not correct so set features
 
 	// assign random mac address
 	BT_SendCommand("&R", false);
@@ -656,6 +685,8 @@ bool BT_SetupModule_4871(void)
 	char message[12];
 	macAddr[12] = '\0';
 	sprintf(message, "sn,%s_BT\r", &macAddr[8]);
+
+	clear_bt_port();
 
 	BT_SendCommand(message, false); //Set advertise name
 	if (!BT_CheckResponse(AOK)) {
@@ -676,6 +707,12 @@ bool BT_SetupModule_4871(void)
 		return false;
 	}
 
+	// set software version
+	BT_SendCommand("sdr,"APP_VERSION_STR"\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
 	//  initial connection parameters 
 	BT_SendCommand("st,003c,003c,0000,0064\r", false);
 	if (!BT_CheckResponse(AOK)) {
@@ -687,6 +724,15 @@ bool BT_SetupModule_4871(void)
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
+
+	//flush UART RX buffer 
+	while (UART_IsNewRxData()) { //While buffer contains old data
+		UART_ReadRxBuffer(); //Keep reading until empty
+		if (!UART_IsNewRxData()) {
+			WaitMs(100);
+		}
+	}
+	//	BT_SendCommand("LS\r", false); // list services
 
 	if (version_code >= 33) { // public services
 		// Public BTLE services and characteristics
@@ -752,12 +798,7 @@ bool BT_SetupModule_4871(void)
 		}
 	}
 
-	// set software version
-	BT_SendCommand("sdr,"APP_VERSION_STR"\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
-
+#ifdef	BT_RN4871
 	// Private BTLE services and characteristics
 
 	//Send "ps" to set user defined service UUID
@@ -801,7 +842,7 @@ bool BT_SetupModule_4871(void)
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
-
+#endif
 	BT_SendCommand("wc\r", false); //Command to clear script, just in case there is a script
 	if (!BT_CheckResponse(AOK)) {
 		return false;
@@ -816,26 +857,18 @@ bool BT_SetupModule_4871(void)
 
 bool BT_RebootEnFlow(bool do_flow)
 {
-	bool do_ls = true, good_boot; // causes a control lockup if enabled
+	bool do_ls = false, good_boot; // causes a mpu serial control lockup if enabled
 	//Send "R,1" to save changes and reboot
 	BT_SendCommand("r,1\r", false); //Force reboot
 
 #ifdef BT_RN4871
 
-	//flush UART RX buffer 
-	while (UART_IsNewRxData()) { //While buffer contains old data
-		UART_ReadRxBuffer(); //Keep reading until empty
-		if (!UART_IsNewRxData()) {
-			WaitMs(100);
-		}
-	}
+	clear_bt_port();
 
 	if (do_ls) {
 		BT_SendCommand("LS\r", false); // list services
-		WaitMs(100);
-		//Clear any UART error bits
-		U1STAbits.FERR = 0;
-		U1STAbits.PERR = 0;
+		WaitMs(400);
+		clear_bt_port();
 	}
 	good_boot = true;
 #endif
@@ -877,7 +910,7 @@ bool BT_RebootEnFlow(bool do_flow)
 
 	if (do_ls) {
 		BT_SendCommand("LS\r", false); // list services
-		WaitMs(10);
+
 		U1MODE &= 0x7FFF;
 		WaitMs(1000);
 		UART_RX_IF = 0; //Clear UART Receive interrupt flag
