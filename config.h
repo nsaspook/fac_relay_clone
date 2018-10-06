@@ -40,7 +40,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define APP_VERSION_STR "3.4"       //This firmware version
+#define APP_VERSION_STR "3.5"       //This firmware version
 //	2.8	increase ADC sampling and message transmission rates
 //	2.9	minor spelling fixes
 //	3.0	Add some public service support
@@ -48,6 +48,7 @@
 //	3.2	add automation io service
 //	3.3	refactor over the air update function code
 //      3.4	add rn4871 click support
+//	3.5	merge rn4020 and rn4871 code
 
 /*******************************************************************************
  * Application settings - these will change application behavior
@@ -189,6 +190,7 @@
 #define PUBLIC_AIO_CHAR_ANA     "2A58" // Automation IO analog
 #define PUBLIC_AIO_CHAR_AGG     "2A5A" // Automation IO Aggregate
 
+// ************************ IMPORTANT *********************************
 // handles that change with added/modified services and characteristics
 // manually parse the LS command for UUID handles
 #ifdef	BT_RN4020
@@ -252,62 +254,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-typedef struct {
-#define ESP_UUID_LEN_16     2
-#define ESP_UUID_LEN_32     4
-#define ESP_UUID_LEN_128    16
-	uint16_t len; /*!< UUID length, 16bit, 32bit or 128bit */
-
-	union {
-		uint16_t uuid16;
-		uint32_t uuid32;
-		uint8_t uuid128[ESP_UUID_LEN_128];
-	} uuid; /*!< UUID */
-} __attribute__((packed)) esp_bt_uuid_t;
-
-typedef struct {
-	esp_bt_uuid_t uuid; /*!< UUID */
-	uint8_t inst_id; /*!< Instance id */
-} __attribute__((packed)) esp_gatt_id_t;
-
-/**
- * @brief Gatt service id, include id
- *        (uuid and instance id) and primary flag
- */
-typedef struct {
-	esp_gatt_id_t id; /*!< Gatt id, include uuid and instance */
-	bool is_primary; /*!< This service is primary or not */
-} __attribute__((packed)) esp_gatt_srvc_id_t;
-
-typedef uint16_t esp_gatt_perm_t;
-typedef uint8_t esp_gatt_char_prop_t;
-
-/**
- * @brief set the attribute value type
- */
-typedef struct {
-	uint16_t attr_max_len; /*!<  attribute max value length */
-	uint16_t attr_len; /*!<  attribute current value length */
-	uint8_t *attr_value; /*!<  the pointer to attribute value */
-} esp_attr_value_t;
-
-struct gatts_service_inst {
-	uint16_t gatts_if;
-	uint16_t app_id;
-	uint16_t conn_id;
-	uint16_t service_handle;
-	esp_gatt_srvc_id_t service_id;
-	uint16_t num_handles;
-};
-
-struct gatts_char_inst {
-	uint32_t service_pos;
-	esp_gatt_perm_t char_perm;
-	char char_property[8];
-	esp_attr_value_t *char_val;
-	char char_handle[16];
-	char char_nvs[16];
-};
 
 /*******************************************************************************
  * End application configuration settings

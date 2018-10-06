@@ -14,16 +14,16 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-    void SPI_Init(void);
-    void SPI_Speed(const uint8_t);
-    void SPI_ClearBufs(void);
-    void SPI_TxStart(void);
-    bool SPI_IsNewRxData(void);
-    uint8_t SPI_ReadRxBuffer(void);
-    bool SPI_IsTxData(void);
-    void SPI_WriteTxBuffer(const uint8_t);
-    uint16_t SPI_GetTXBufferFreeSpace(void);
-    uint8_t SPI_PeekRxBuffer(void);
+	void SPI_Init(void);
+	void SPI_Speed(const uint8_t);
+	void SPI_ClearBufs(void);
+	void SPI_TxStart(void);
+	bool SPI_IsNewRxData(void);
+	uint8_t SPI_ReadRxBuffer(void);
+	bool SPI_IsTxData(void);
+	void SPI_WriteTxBuffer(const uint8_t);
+	uint16_t SPI_GetTXBufferFreeSpace(void);
+	uint8_t SPI_PeekRxBuffer(void);
 
 #ifdef	__cplusplus
 }

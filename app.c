@@ -332,7 +332,6 @@ bool APP_Initialize(void)
 
 	// set RN4871 to command mode
 #ifdef BT_RN4871
-	BT_RST_4871 = 1; // come out of reset
 	U1MODEbits.UARTEN = 0; // disable UART so we can change flow control to none
 	WaitMs(50);
 	U1MODEbits.UEN0 = 0; // NO RTS/CTS
@@ -393,12 +392,7 @@ bool APP_Initialize(void)
 #endif
 
 	//flush UART RX buffer as a precaution before starting app state machine
-	while (UART_IsNewRxData()) { //While buffer contains old data
-		UART_ReadRxBuffer(); //Keep reading until empty
-		if (!UART_IsNewRxData()) {
-			WaitMs(100);
-		}
-	}
+	clear_bt_port();
 
 	SLED = 1; // init completed
 	return true;

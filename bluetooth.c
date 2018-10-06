@@ -49,86 +49,7 @@ extern APP_DATA appData;
 
 uint16_t BT_CheckFwVer(void);
 
-struct gatts_service_inst gatts_service[] = {
-	{
-		.gatts_if = 0, /* gatts_if not known yet, so initial is ESP_GATT_IF_NONE */
-	},
-	{
-		.gatts_if = 0, /* gatts_if not known yet, so initial is ESP_GATT_IF_NONE */
-	}
-};
-
-struct gatts_char_inst gatts_char[] = {
-	{
-		/* Battery Service -> Battery Level */
-		.service_pos = 0, // Battery service
-		.char_perm = ESP_GATT_PERM_READ,
-		.char_property = "",
-		.char_val = NULL,
-		.char_handle = "0032",
-		.char_nvs = "2A19"
-	},
-	{
-		.service_pos = 1, // heart rate service
-		.char_perm = ESP_GATT_PERM_READ,
-		.char_property = "22,02",
-		.char_val = NULL,
-		.char_handle = "001B",
-		.char_nvs = "2A37"
-	}
-};
-
-uint16_t get_char_handle(struct gatts_char_inst *bt, char *rxbuf)
-{
-	char* pch;
-	uint8_t state = 0;
-
-	char* tempBuf = (char*) malloc(strlen(rxbuf) + 1);
-	if (!tempBuf) {
-		return false;
-	}
-	strcpy(tempBuf, rxbuf);
-	//Parse response line by line
-	pch = strtok(tempBuf, "\r\n");
-	do {
-		switch (state) {
-		case 0:
-			//Check if the line contains a service
-			if (strstr(pch, bt->char_nvs)) {
-				//Service found, now looking for line with characteristic
-				state = 1;
-				break;
-			}
-			break;
-		case 1:
-			if (strncmp(pch, "  ", 2)) {
-				//String doesn't start with two spaces, so this is not a characteristic.  This is an error.
-				free(tempBuf);
-				return 0;
-			}
-			if (strstr(pch, bt->char_nvs)) {
-				//Characteristic found, now looking for handle
-				char* pch2 = strchr(pch, ',') + 1;
-				uint16_t handle;
-				if (sscanf(pch2, "%x,", &handle) == 1) {
-					//#if DEBUG_LEVEL >= DEBUG_ALL
-					//                    sPortDebug->println("Setting handle");
-					//                    sPortDebug->println(handle, HEX);
-					//#endif
-					free(tempBuf);
-					return handle;
-
-				}
-				state = 0;
-				break;
-			}
-		}
-		pch = strtok(NULL, "\r\n");
-	} while (pch != NULL);
-	free(tempBuf);
-	return 0;
-}
-
+// dump serial buffer and clean possible lockup flags
 void clear_bt_port(void)
 {
 	while (UART_IsNewRxData()) { //While buffer contains old data
@@ -141,7 +62,6 @@ void clear_bt_port(void)
 	U1STAbits.FERR = 0;
 	U1STAbits.PERR = 0;
 }
-
 
 //**********************************************************************************************************************
 // Receive a message over the Bluetooth link

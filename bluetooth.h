@@ -47,7 +47,7 @@
 #define CMD "CMD\r\n"
 
 enum BluetoothDecodeState {
-    WaitForCR, WaitForLF
+	WaitForCR, WaitForLF
 };
 
 bool BT_ReceivePacket(char *message);
@@ -61,6 +61,7 @@ bool BT_CheckResponseWithWildcard(const char *data, char Wildcard);
 bool BT_SetupModule_4020(void);
 bool BT_SetupModule_4871(void);
 bool BT_RebootEnFlow(bool);
+void clear_bt_port(void);
 
 #ifdef VERIFY_RN_FW_VER
 uint16_t BT_CheckFwVer(void);
