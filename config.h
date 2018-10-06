@@ -105,8 +105,8 @@
 #define ADC_NUM_AVGS        5
 
 // select type of BLE module
-#define BT_RN4871
-//#define BT_RN4020
+//#define BT_RN4871
+#define BT_RN4020
 
 //If defined, the RN4020's firmware version will be checked as part of initialization.
 //If the version is not equal to the version specified below, the board will
