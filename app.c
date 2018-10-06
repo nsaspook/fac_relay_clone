@@ -315,6 +315,7 @@ bool APP_Initialize(void)
 	appData.ADCinUse = false;
 	appData.timer1Flag = false;
 	appData.rn4871_connected = false;
+	appData.rn_4871_packets = false;
 
 	/****************************************************************************
 	 * Peripherals Init

@@ -29,11 +29,11 @@
  * Date:        Oct 27, 2016
  * Compiler:    XC16 v1.26
  * 
- * Remote Relay mods Oct 2016 FGB@MCHP
+ * Remote Relay mods Oct 2018 FGB@MCHP
  * ported to PIC24FV 
  * Version updates
  * V2.1 DFU OTA mode added, input port shared with relay #4 output
- *
+ * V3.5 RN4871 support added by source #define in config.h
  */
 
 #include <xc.h>
@@ -77,11 +77,11 @@ void initBoard(void);
 #pragma config WINDIS = OFF             // Windowed Watchdog Timer Disable bit (Standard WDT selected(windowed WDT disabled))
 
 // FPOR
-#pragma config BOREN = BOR0             // Brown-out Reset Enable bits (Brown-out Reset disabled in hardware, SBOREN bit disabled)
+#pragma config BOREN = BOR3             // Brown-out Reset Enable bits
 #pragma config RETCFG = OFF             //  (Retention regulator is not available)
 #pragma config PWRTEN = ON              // Power-up Timer Enable bit (PWRT enabled)
 #pragma config I2C1SEL = SEC            // Alternate I2C1 Pin Mapping bit (Use  Alternate ASCL1/ASDA1 Pins For I2C1)
-#pragma config BORV = V18               // Brown-out Reset Voltage bits (Brown-out Reset set to lowest voltage (1.8V))
+#pragma config BORV = V30               // Brown-out Reset Voltage bits
 #pragma config MCLRE = ON               // MCLR Pin Enable bit (RA5 input pin disabled, MCLR pin enabled)
 
 // FICD
@@ -217,7 +217,7 @@ void initBoard(void)
 #endif
 
 #ifdef	BT_RN4871
-	BT_WAKE_SW_TRIS = 1;
+	BT_WAKE_SW_TRIS = 1; // make input for RN4871 click BO chip
 #endif
 
 	BT_CMD = 0; //Command mode on
@@ -267,7 +267,7 @@ void initBoard(void)
 	 ***************************************************************************/
 
 	// SPI
-	// error
+	// error vector
 	IPC12bits.BCL2IP = 6;
 	// spi_buf
 	IPC12bits.SSP2IP = 5;
