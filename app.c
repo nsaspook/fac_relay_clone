@@ -209,7 +209,7 @@ void APP_Tasks(void)
 #ifdef	BT_RN4871
 		appData.rn_4871_packets = true;
 #endif
-		appData.got_packet = BT_ReceivePacket(appData.receive_packet); //Get new message if one has been received from the RN4020
+		appData.got_packet = BT_ReceivePacket(appData.receive_packet); //Get new message if one has been received from the RNxxxx
 		if (appData.got_packet == true) { //true if new packet received
 
 			appData.packet_data = Get_Link_Packet();
@@ -218,11 +218,11 @@ void APP_Tasks(void)
 			Write_Link_Packet((uint8_t *) appData.packet_data, true);
 
 			if (strstr(appData.receive_packet, "WV,001E,")) { //Check for LED update message 1.23
-				GetNewLEDs(); //Latch new LED values
+				GetNewLEDs(strstr(appData.receive_packet, "WV,001E,")); //Latch new LED values
 				appData.update_packet = true;
 			}
 			if (strstr(appData.receive_packet, "WV,"PRIVATE_CHAR_LEDS_H",")) { //Check for LED update message 1.33
-				GetNewLEDs(); //Latch new LED values
+				GetNewLEDs(strstr(appData.receive_packet, "WV,"PRIVATE_CHAR_LEDS_H",")); //Latch new LED values
 				appData.update_packet = true;
 			}
 			//
@@ -230,7 +230,7 @@ void APP_Tasks(void)
 			//
 			//receive new SPI ADC channel
 			if (strstr(appData.receive_packet, "WV,"PRIVATE_CHAR_ADC_CHAN_H",")) {
-				GetNewADC_Chan(); // new ADC config data
+				GetNewADC_Chan(strstr(appData.receive_packet, "WV,"PRIVATE_CHAR_ADC_CHAN_H",")); // new ADC config data
 			}
 			//receive new SPI SLAVE request
 			if (strstr(appData.receive_packet, "WV,"PRIVATE_CHAR_PIC_SLAVE_H",")) {
@@ -241,7 +241,7 @@ void APP_Tasks(void)
 				appData.hrmEnergy = 0;
 			}
 			//receive new BATTERY request
-			if (strstr(appData.receive_packet, "RV,"PUBLIC_BATT_CHAR_H".")) {
+			if (strstr(appData.receive_packet, "RV,"PUBLIC_BATT_CHAR_H"")) {
 				//Form message
 				sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_CHAR_H",%d\r", 63);
 				//Try to transmit the message; reset timer if successful

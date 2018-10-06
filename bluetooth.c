@@ -270,7 +270,7 @@ bool BT_CompareResponse(const char *data1, const char *data2)
 }
 
 //**********************************************************************************************************************
-// Get a response from the RN4020 module and compare with an expected response
+// Get a response from the RNxxxx module and compare with an expected response
 
 bool BT_CheckResponse(const char *data)
 {
@@ -345,6 +345,14 @@ bool BT_CheckResponseWithWildcard(const char *data, char Wildcard)
 			return false; //Bytes differ so return failure
 	}
 	return true; //All bytes matched or were ignored so return success
+}
+
+static uint16_t BT_CheckResponse_AOK(uint16_t * tally)
+{
+	if (!BT_CheckResponse(AOK))
+		*tally += 1;
+
+	return *tally;
 }
 
 /* update firmware via wireless app */
@@ -450,6 +458,7 @@ bool BT_check_upd(void)
 	return true;
 }
 
+#ifdef	BT_RN4020
 //**********************************************************************************************************************
 // Set up the RN4020 module
 
@@ -633,13 +642,15 @@ bool BT_SetupModule_4020(void)
 	//Send "R,1" to save changes and reboot
 	return BT_RebootEnFlow(true);
 }
+#endif
 
+#ifdef	BT_RN4871
 //**********************************************************************************************************************
 // Set up the RN4871 module
 
 bool BT_SetupModule_4871(void)
 {
-	uint16_t version_code;
+	uint16_t version_code, failure = 0;
 
 	//Check RN4871 module's firmware version for version specific setups
 	//	version_code = BT_CheckFwVer();
@@ -659,21 +670,13 @@ bool BT_SetupModule_4871(void)
 	WaitMs(100);
 	// BTCMD("$$$");
 	BT_SendCommand("$$$", false);
-	WaitMs(500);
+	WaitMs(100);
 
 	// assign delimiters
 	BT_SendCommand("S%,%,#\r", false);
 	WaitMs(100);
 
-	U1RTS_LAT = 0;
 	BT_SendCommand("SR,4000\r", false); //Features not correct so set features
-
-	//	U1MODEbits.UARTEN = 0; // disable UART so we can change flow control to none
-	//	WaitMs(50);
-	//	U1MODEbits.UEN0 = 0; // NO RTS/CTS
-	//	U1MODEbits.UEN1 = 0; // NO RTS/CTS
-	//	U1MODEbits.UARTEN = 1; // enable UART
-	//	U1STA = 0x0400; //Enable transmit
 
 	// assign random mac address
 	BT_SendCommand("&R", false);
@@ -686,185 +689,137 @@ bool BT_SetupModule_4871(void)
 	char message[12];
 	macAddr[12] = '\0';
 	sprintf(message, "sn,%s_BT\r", &macAddr[8]);
-
+	// cleanup serial message buffer
 	clear_bt_port();
 
 	BT_SendCommand(message, false); //Set advertise name
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	//Send "SS" to set default services
 	BT_SendCommand("ss,80\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	//Send "SC" for advertisement settings
 	BT_SendCommand("sc,2\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	BT_SendCommand("s-,FRC-\r", false); // set serialized name  Bluetooth-friendly name
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// set software version
 	BT_SendCommand("sdr,"APP_VERSION_STR"\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// set firmware version
 	BT_SendCommand("sdf,"APP_VERSION_STR"\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
+
 
 	// set appearance
 	BT_SendCommand("sda,0002\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// set serial
 	BT_SendCommand("sds,1957\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	//  initial connection parameters 
 	BT_SendCommand("st,000C,0032,0000,0064\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
-	if (version_code >= 33) { // public services
-		// Public BTLE services and characteristics
+	// Public BTLE services and characteristics
+	// battery level service with standard 16-bit UUID
+	BT_SendCommand("ps,"PUBLIC_BATT_UUID"\r", false);
+	BT_CheckResponse_AOK(&failure);
 
-		// battery level service with standard 16-bit UUID
-		BT_SendCommand("ps,"PUBLIC_BATT_UUID"\r", false);
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	// battery level measurement characteristic
+	BT_SendCommand("pc,"PUBLIC_BATT_CHAR_BL",12,04\r", false); //Notify, Read
+	BT_CheckResponse_AOK(&failure);
 
-		// battery level measurement characteristic
-		BT_SendCommand("pc,"PUBLIC_BATT_CHAR_BL",12,04\r", false); //Notify, Read
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	// heart rate service with standard 16-bit UUID
+	BT_SendCommand("ps,"PUBLIC_HR_UUID"\r", false);
+	BT_CheckResponse_AOK(&failure);
 
-		// heart rate service with standard 16-bit UUID
-		BT_SendCommand("ps,"PUBLIC_HR_UUID"\r", false);
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	// heart rate measurement characteristic
+	BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",12,04\r", false); //Notify, Read
+	BT_CheckResponse_AOK(&failure);
 
-		// heart rate measurement characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_HRM",12,04\r", false); //Notify, Read
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	// heart body sensor location characteristic
+	BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",06,01\r", false); //Write , Read
+	BT_CheckResponse_AOK(&failure);
 
-		// heart body sensor location characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_BSL",06,01\r", false); //Write , Read
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	// heart rate control point characteristic
+	BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",06,01\r", false); //Write , Read
+	BT_CheckResponse_AOK(&failure);
 
-		// heart rate control point characteristic
-		BT_SendCommand("pc,"PUBLIC_HR_CHAR_RCP",06,01\r", false); //Write , Read
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	//  Automation IO service with standard 16-bit UUID
+	BT_SendCommand("ps,"PUBLIC_AIO_UUID"\r", false);
+	BT_CheckResponse_AOK(&failure);
 
-		//  Automation IO service with standard 16-bit UUID
-		BT_SendCommand("ps,"PUBLIC_AIO_UUID"\r", false);
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	// Automation IO digital characteristic
+	BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",16,08,33\r", false); //Notify, Write , Read
+	BT_CheckResponse_AOK(&failure);
 
-		// Automation IO digital characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_DIG",16,08,33\r", false); //Notify, Write , Read
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
+	// Automation IO analog characteristic
+	BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",16,02,33\r", false); //Notify, Write , Read
+	BT_CheckResponse_AOK(&failure);
 
-		// Automation IO analog characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_ANA",16,02,33\r", false); //Notify, Write , Read
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
-
-		// Automation IO agg characteristic
-		BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",12,0F,33\r", false); //Notify, Read
-		if (!BT_CheckResponse(AOK)) {
-			return false;
-		}
-	}
+	// Automation IO agg characteristic
+	BT_SendCommand("pc,"PUBLIC_AIO_CHAR_AGG",12,0F,33\r", false); //Notify, Read
+	BT_CheckResponse_AOK(&failure);
 
 	// Private BTLE services and characteristics
-
 	//Send "ps" to set user defined service UUID
 	BT_SendCommand("ps,"PRIVATE_SERVICE",\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// Custom button characteristic with generated UUID
 	BT_SendCommand("pc,"PRIVATE_CHAR_SWITCHES",22,02\r", false); //Notify, Read
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// Custom potentiometer characteristic with generated UUID
 	BT_SendCommand("pc,"PRIVATE_CHAR_POTENTIOMETER",22,02\r", false); //Notify, Read
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// Custom LED characteristic with generated UUID
 	BT_SendCommand("pc,"PRIVATE_CHAR_LEDS",0A,04\r", false); //Write , Read
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// Custom RELAY characteristic with generated UUID
 	BT_SendCommand("pc,"PRIVATE_CHAR_RELAYS",0A,04\r", false); //Write , Read
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// Custom analog input characteristic with generated UUID //Write , Read
 	BT_SendCommand("pc,"PRIVATE_CHAR_ADC_CHAN",0A,04\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	// Custom digital device characteristic with generated UUID //Write , Read
 	BT_SendCommand("pc,"PRIVATE_CHAR_PIC_SLAVE",0A,0F\r", false);
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
 	BT_SendCommand("wc\r", false); //Command to clear script, just in case there is a script
-	if (!BT_CheckResponse(AOK)) {
-		return false;
-	}
+	BT_CheckResponse_AOK(&failure);
 
-	// setup advertisement data
+	// setup advertisement data packet
 	BT_SendCommand("IA,Z\r", false); // clear AD data
+	BT_CheckResponse_AOK(&failure);
 	BT_SendCommand("IA,01,06\r", false); // set connection flags
+	BT_CheckResponse_AOK(&failure);
 	BT_SendCommand("IA,09,424C45434D32\r", false); // AD name
+	BT_CheckResponse_AOK(&failure);
 	// set 128-bit UUID in swapped format for client BLECM2 filter
 	BT_SendCommand("IA,07,9DEC6AD92C00E086304155EC91872328\r", false);
+	BT_CheckResponse_AOK(&failure);
 	BT_SendCommand("A\r", false); // start advertisement
+	BT_CheckResponse_AOK(&failure);
+
+	if (failure)
+		return false;
 
 	//Send "R,1" to save changes and reboot (if needed))
 	return BT_RebootEnFlow(false);
 }
+#endif
 
 //**********************************************************************************************************************
 // Reboot the module and enable flow control on PIC UART

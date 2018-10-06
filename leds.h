@@ -48,7 +48,7 @@ typedef enum {
 
 void LED_Tasks(void);
 inline void LED_SET_LightShow(LED_LIGHTSHOW_T setting);
-void GetNewLEDs(void);
+void GetNewLEDs(char *);
 
 #endif	/* LEDS_H */
 

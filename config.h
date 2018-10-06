@@ -124,10 +124,10 @@
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
 #define ADC_REFRESH_MS      10           //delay between ADC reads, 10 nom value
-#define POT_TX_MS           50         //delay between transmitting new pot values, 10 min value
-#define BATT_TX_MS	    100 
-#define HR_TX_MS            80
-#define AIO_TX_MS           40 
+#define POT_TX_MS           100         //delay between transmitting new pot values, 10 min value
+#define BATT_TX_MS	    400 
+#define HR_TX_MS            200
+#define AIO_TX_MS           200 
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
 #define BT_TX_MS            10         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks

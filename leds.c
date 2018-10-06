@@ -101,7 +101,7 @@ inline void LED_SET_LightShow(LED_LIGHTSHOW_T setting)
 
 //Update LEDs with status from LED update message
 
-void GetNewLEDs(void)
+void GetNewLEDs(char * receive_packet)
 {
 	if (!appData.update_packet) {
 		appData.led1 = appData.oled1;
@@ -109,10 +109,10 @@ void GetNewLEDs(void)
 		appData.led3 = appData.oled3;
 		appData.led4 = appData.oled4;
 	} else {
-		appData.led1 = appData.receive_packet[9] == '1' ? 1 : 0;
-		appData.led2 = appData.receive_packet[11] == '1' ? 1 : 0;
-		appData.led3 = appData.receive_packet[13] == '1' ? 1 : 0;
-		appData.led4 = appData.receive_packet[15] == '1' ? 1 : 0;
+		appData.led1 = receive_packet[9] == '1' ? 1 : 0;
+		appData.led2 = receive_packet[11] == '1' ? 1 : 0;
+		appData.led3 = receive_packet[13] == '1' ? 1 : 0;
+		appData.led4 = receive_packet[15] == '1' ? 1 : 0;
 		appData.oled1 = appData.led1;
 		appData.oled2 = appData.led2;
 		appData.oled3 = appData.led3;
