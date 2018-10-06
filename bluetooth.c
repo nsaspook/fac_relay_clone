@@ -641,17 +641,10 @@ bool BT_SetupModule_4871(void)
 {
 	uint16_t version_code;
 
-	/* check for over the air firmware updates */
-	//	BT_check_upd();
-
 	//Check RN4871 module's firmware version for version specific setups
 	//	version_code = BT_CheckFwVer();
-	version_code = 118; // hardcode for now
+	version_code = 118; // hard-code for now
 
-	//Send "GR" to get feature settings
-	//	BT_SendCommand("GN\r", false);
-	//	BT_SendCommand("GR\r", false); //Get module feature settings
-	//	BT_SendCommand("gs\r", false);
 	// Clear all settings of defined services and characteristics
 	BT_SendCommand("pz\r", false); // must reboot next to clear handles
 	BT_SendCommand("SF,1\r", false); // Factory reset
@@ -701,13 +694,8 @@ bool BT_SetupModule_4871(void)
 		return false;
 	}
 
-	//	BT_SendCommand("sdm,NSA\r", false); //Set model name
-	//	if (!BT_CheckResponse(AOK)) {
-	//		return false;
-	//	}
-
 	//Send "SS" to set default services
-	BT_SendCommand("ss,E0\r", false);
+	BT_SendCommand("ss,80\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
@@ -866,7 +854,15 @@ bool BT_SetupModule_4871(void)
 		return false;
 	}
 
-	//Send "R,1" to save changes and reboot
+	// setup advertisement data
+	BT_SendCommand("IA,Z\r", false); // clear AD data
+	BT_SendCommand("IA,01,06\r", false); // set connection flags
+	BT_SendCommand("IA,09,424C45434D32\r", false); // AD name
+	// set 128-bit UUID in swapped format for client BLECM2 filter
+	BT_SendCommand("IA,07,9DEC6AD92C00E086304155EC91872328\r", false);
+	BT_SendCommand("A\r", false); // start advertisement
+
+	//Send "R,1" to save changes and reboot (if needed))
 	return BT_RebootEnFlow(false);
 }
 
