@@ -347,7 +347,7 @@ bool BT_CheckResponseWithWildcard(const char *data, char Wildcard)
 	return true; //All bytes matched or were ignored so return success
 }
 
-static uint16_t BT_CheckResponse_AOK(uint16_t * tally)
+uint16_t BT_CheckResponse_AOK(uint16_t * tally)
 {
 	if (!BT_CheckResponse(AOK))
 		*tally += 1;

@@ -64,6 +64,7 @@ AIO_DATA aioData;
 
 void APP_Tasks(void)
 {
+	static uint16_t failure = 0;
 #ifdef USE_SLEEP                //see config.h, Application setting section
 	APP_STATE_T savedState;
 	int16_t potDiff;
@@ -133,6 +134,7 @@ void APP_Tasks(void)
 			sprintf(appData.transmit_packet, "shw,"PRIVATE_CHAR_SWITCHES_H",%d%d%d%d\r", appData.sw1, appData.sw2, appData.sw3, appData.sw4);
 			//Try to transmit the message; reset flag if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
+				BT_CheckResponse_AOK(&failure);
 				appData.sendSwitches = false;
 			}
 		}
@@ -180,6 +182,7 @@ void APP_Tasks(void)
 			sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_CHAR_H",%02d\r\n", (appData.potValue >> 6)&0b00111111);
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
+				BT_CheckResponse_AOK(&failure);
 				StartTimer(TMR_BATT, BATT_TX_MS);
 			}
 		}
@@ -189,6 +192,7 @@ void APP_Tasks(void)
 			sprintf(appData.transmit_packet, "shw,"PUBLIC_HR_CHAR_HRM_H",%02x%02x%02x%02x\r\n", 0x08, (appData.potValue >> 4)&0xff, appData.hrmEnergy & 0x00ff, appData.hrmEnergy >> 8); // format mask and ADC data
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
+				BT_CheckResponse_AOK(&failure);
 				StartTimer(TMR_HR, HR_TX_MS);
 				sprintf(appData.transmit_packet, "shw,"PUBLIC_HR_CHAR_BSL_H",%02x\r\n", 3);
 				BT_SendCommand(appData.transmit_packet, false);
@@ -201,6 +205,7 @@ void APP_Tasks(void)
 			sprintf(appData.transmit_packet, "shw,"PUBLIC_AIO_CHAR_DIG_H",0101010101010101\r\n"); // digital data
 			//Try to transmit the message; reset timer if successful
 			if (BT_SendCommand(appData.transmit_packet, true)) {
+				BT_CheckResponse_AOK(&failure);
 				StartTimer(TMR_AIO_DIG, AIO_TX_MS);
 			}
 		}
@@ -246,11 +251,14 @@ void APP_Tasks(void)
 				sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_CHAR_H",%d\r", 63);
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
+				BT_CheckResponse_AOK(&failure);
 			}
 
 #ifdef	BT_RN4871
-			if (strstr(appData.receive_packet, "DISCONNECT")) {
+
+			if (strstr(appData.receive_packet, "DISCONNECT") || (failure > 25)) {
 				appData.rn4871_connected = false;
+				failure=0;
 			}
 #endif
 		}
@@ -262,6 +270,7 @@ void APP_Tasks(void)
 		appData.sleepFlag = 0; //clear flag and call sleep function
 		APP_SleepNow();
 		appData.state = savedState; //Woken from sleep; restore state
+
 		break;
 #endif //USE_SLEEP
 

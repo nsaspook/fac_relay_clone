@@ -56,6 +56,7 @@ void BT_SendByte(char data);
 bool BT_GetResponse(char *data);
 bool BT_CompareResponse(const char *data1, const char *data2);
 bool BT_CheckResponse(const char *);
+uint16_t BT_CheckResponse_AOK(uint16_t *);
 bool BT_CheckResponseWithWildcard(const char *data, char Wildcard);
 bool BT_SetupModule_4020(void);
 bool BT_SetupModule_4871(void);

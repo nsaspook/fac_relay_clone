@@ -124,12 +124,12 @@
 #define SLEEP_TIME          TIMER_5MIN_PERIOD_PS256     //inactivity timer for sleep - applies only when USE_SLEEP is defined
 #define DEBOUNCE_MS         75          //debounce time for switches 1 - 4
 #define ADC_REFRESH_MS      10           //delay between ADC reads, 10 nom value
-#define POT_TX_MS           100         //delay between transmitting new pot values, 10 min value
+#define POT_TX_MS           20         //delay between transmitting new pot values, 10 min value
 #define BATT_TX_MS	    400 
 #define HR_TX_MS            200
 #define AIO_TX_MS           200 
 #define LED_BLINK_MS        900         //LED blink rate for advertise mode
-#define BT_TX_MS            10         //minimum time between consecutive BTLE message transmissions
+#define BT_TX_MS            60         //minimum time between consecutive BTLE message transmissions
 #define BAT_CHK_DELAY_MS    30000       //delay between input voltage checks
 #define BAT_CHK_WAIT_MS     10          //CVref & CMP stabilization time
 //Periods for timer 1 sleep mode (for periodic sleep wakeup); 31KHz LPRC; 1:256 prescale
@@ -141,8 +141,8 @@
 #define SIZE_TxBuffer   256               //UART TX software buffer size in bytes
 #define SIZE_SPI_Buffer 64
 
-#define BT_RX_PKT_SZ    100               //Max receive packet length
-#define BT_TX_PKT_SZ    100               //Max transmit packet length
+#define BT_RX_PKT_SZ    256               //Max receive packet length
+#define BT_TX_PKT_SZ    128               //Max transmit packet length
 
 #define    ESP_GATT_PERM_READ                  (1 << 0)   /* bit 0 -  0x0001 */    /* relate to BTA_GATT_PERM_READ in bta_gatt_api.h */
 #define    ESP_GATT_PERM_READ_ENCRYPTED        (1 << 1)   /* bit 1 -  0x0002 */    /* relate to BTA_GATT_PERM_READ_ENCRYPTED in bta_gatt_api.h */
