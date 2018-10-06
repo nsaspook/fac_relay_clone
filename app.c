@@ -164,7 +164,7 @@ void APP_Tasks(void)
 			//Send message only if pot value has changed
 			if (appData.potValue != appData.potValueLastTX) {
 				//Form message
-				sprintf(appData.transmit_packet, "shw,"PRIVATE_CHAR_POTENTIOMETER_H",%04d\r\n", appData.potValue);
+				sprintf(appData.transmit_packet, "shw,"PRIVATE_CHAR_POTENTIOMETER_H",%04d\r", appData.potValue);
 				//Try to transmit the message; reset timer if successful
 				if (BT_SendCommand(appData.transmit_packet, true)) {
 					appData.potValueLastTX = appData.potValue;
@@ -237,13 +237,13 @@ void APP_Tasks(void)
 
 			}
 			// HRM energy expended reset
-			if (strstr(appData.receive_packet, "WV,"PUBLIC_HR_CHAR_RCP_H",01.")) {
+			if (strstr(appData.receive_packet, "WV,"PUBLIC_HR_CHAR_RCP_H",01")) {
 				appData.hrmEnergy = 0;
 			}
 			//receive new BATTERY request
 			if (strstr(appData.receive_packet, "RV,"PUBLIC_BATT_CHAR_H".")) {
 				//Form message
-				sprintf(appData.transmit_packet, "suw,"PUBLIC_BATT_CHAR_BL",%d\r", 63);
+				sprintf(appData.transmit_packet, "shw,"PUBLIC_BATT_CHAR_H",%d\r", 63);
 				//Try to transmit the message; reset timer if successful
 				BT_SendCommand(appData.transmit_packet, false);
 			}

@@ -701,8 +701,19 @@ bool BT_SetupModule_4871(void)
 		return false;
 	}
 
+	//	BT_SendCommand("sdm,NSA\r", false); //Set model name
+	//	if (!BT_CheckResponse(AOK)) {
+	//		return false;
+	//	}
+
 	//Send "SS" to set default services
-	BT_SendCommand("ss,C0\r", false);
+	BT_SendCommand("ss,E0\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	//Send "SC" for advertisement settings
+	BT_SendCommand("sc,2\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
@@ -718,8 +729,26 @@ bool BT_SetupModule_4871(void)
 		return false;
 	}
 
+	// set firmware version
+	BT_SendCommand("sdf,"APP_VERSION_STR"\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// set appearance
+	BT_SendCommand("sda,0002\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
+	// set serial
+	BT_SendCommand("sds,1957\r", false);
+	if (!BT_CheckResponse(AOK)) {
+		return false;
+	}
+
 	//  initial connection parameters 
-	BT_SendCommand("st,003c,003c,0000,0064\r", false);
+	BT_SendCommand("st,000C,0032,0000,0064\r", false);
 	if (!BT_CheckResponse(AOK)) {
 		return false;
 	}
@@ -846,7 +875,7 @@ bool BT_SetupModule_4871(void)
 
 bool BT_RebootEnFlow(bool do_flow)
 {
-	bool do_ls = true, good_boot; // causes a mpu serial control lockup if enabled
+	bool do_ls = false, good_boot; // causes a mpu serial control lockup if enabled
 
 #ifdef BT_RN4871
 	BT_SendCommand("GN\r", false);
@@ -859,6 +888,9 @@ bool BT_RebootEnFlow(bool do_flow)
 #endif
 
 #ifdef BT_RN4020
+	if (do_ls)
+		BT_SendCommand("LS\r", false); // list services
+
 	//Send "R,1" to save changes and reboot
 	BT_SendCommand("r,1\r", false); //Force reboot
 	if (!BT_CheckResponse("Reboot\r\n")) {
@@ -895,28 +927,11 @@ bool BT_RebootEnFlow(bool do_flow)
 
 	good_boot = BT_CheckResponse("MD\r\n"); //Check that we received CMD indicating reboot is done
 
-	if (do_ls) {
-		BT_SendCommand("LS\r", false); // list services
 
-		U1MODE &= 0x7FFF;
-		WaitMs(1000);
-		UART_RX_IF = 0; //Clear UART Receive interrupt flag
-		U1MODE |= 0x8200; //Enable UART, use RTC/CTS flow control
-		U1STA |= 0x0400; //Enable transmit
-
-		//flush UART RX buffer as a precaution before starting app state machine
-		while (UART_IsNewRxData()) { //While buffer contains old data
-			UART_ReadRxBuffer(); //Keep reading until empty
-			if (!UART_IsNewRxData()) {
-				WaitMs(100);
-			}
-		}
-		//Clear any UART error bits
-		U1STAbits.FERR = 0;
-		U1STAbits.PERR = 0;
-	}
 #endif
-
+	//Clear any UART error bits
+	U1STAbits.FERR = 0;
+	U1STAbits.PERR = 0;
 	return good_boot; //Check that we received CMD indicating reboot is done	
 }
 
