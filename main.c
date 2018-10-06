@@ -211,8 +211,14 @@ void initBoard(void)
 	BT_WAKE_HW = 1; //Dormant line is set high
 	BT_WAKE_HW_TRIS = 0; //Dormant line is output
 
+#ifdef	BT_RN4020
 	BT_WAKE_SW = 0; //keep low until after UART is initialized
 	BT_WAKE_SW_TRIS = 0;
+#endif
+
+#ifdef	BT_RN4871
+	BT_WAKE_SW_TRIS = 1;
+#endif
 
 	BT_CMD = 0; //Command mode on
 	BT_CMD_TRIS = 0;

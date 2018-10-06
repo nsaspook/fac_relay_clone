@@ -258,7 +258,7 @@ void APP_Tasks(void)
 
 			if (strstr(appData.receive_packet, "DISCONNECT") || (failure > 25)) {
 				appData.rn4871_connected = false;
-				failure=0;
+				failure = 0;
 			}
 #endif
 		}
@@ -330,8 +330,6 @@ bool APP_Initialize(void)
 #endif  //SLEEP_MODE_RTCC
 #endif  //USE_SLEEP
 
-	BT_WAKE_SW = 1; //wake module
-
 	// set RN4871 to command mode
 #ifdef BT_RN4871
 	BT_RST_4871 = 1; // come out of reset
@@ -357,6 +355,7 @@ bool APP_Initialize(void)
 #endif
 
 #ifdef	BT_RN4020
+	BT_WAKE_SW = 1; //wake module
 	//Wait for WS status high
 	StartTimer(TMR_RN_COMMS, 4000); //Start 4s timeout
 	while (BT_WS == 0) {
